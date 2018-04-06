@@ -1,0 +1,9 @@
+mutation LoginMutation{
+  login(
+     username:"miavillamilca",
+     password:"123456"
+  ){
+     userid
+     name
+  }
+}

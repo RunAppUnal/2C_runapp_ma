@@ -253,7 +253,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * the user.
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-        private Boolean status = false;
+        Boolean status = false;
         private final String mEmail;
         private final String mPassword;
 
@@ -265,7 +265,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
-//            Boolean status = false;
             final String TAG = "LoginActivity";
             MyApolloClient.getMyApolloClient().mutate(
                     LoginMutation.builder()
@@ -274,8 +273,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     .enqueue(new ApolloCall.Callback<LoginMutation.Data>() {
                         @Override
                         public void onResponse(@Nonnull Response<LoginMutation.Data> response) {
-                            Log.d(TAG, "OnResponse: "+ response.data().login().username());
-                            if (response.data().login().username() != mEmail) {
+                            Log.d(TAG, "OnResponse: "+ response.toString());
+                            Log.d(TAG, "OnResponse: "+ response.data().login().username().toString());
+                            String temp = response.data().login().username().toString();
+                            Log.d(TAG, "temp: " +temp);
+                            Log.d(TAG, "mEmail: "+mEmail);
+                            if (temp.equals(mEmail)) {
+                                Log.d(TAG, "if username");
                                 status = true;
                                 LoginActivity.this.runOnUiThread(new Runnable() {
                                     @Override
@@ -284,14 +288,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                     }
                                 });
                             }else{
-                                status = false;}
+                                Log.d(TAG, "else no username");
+                                status = false;
+                            }
                         }
 
                         @Override
                         public void onFailure(@Nonnull ApolloException e) {
                             status = false;
+                            Log.d(TAG, "OnFailure: " + e.toString());
                         }
                     });
+            Log.d(TAG, "status: "+status.toString());
 
             return status;
         }
@@ -304,7 +312,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             if (success) {
                 finish();
                 Intent myIntent = new Intent(LoginActivity.this,MainActivity.class);
-                LoginActivity.this.startActivity(myIntent);
+                startActivity(myIntent);
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();

@@ -3,7 +3,9 @@ package com.runapp.runapp_ma;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -50,12 +52,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
 
     private UserLoginTask mAuthTask = null;
-
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -256,7 +258,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         Boolean status = false;
         private final String mEmail;
         private final String mPassword;
-
+        final String TAG = "LoginActivity";
+        SharedPreferences sharedPrefes = getSharedPreferences("userData",context.MODE_PRIVATE);
         UserLoginTask(String email, String password) {
             mEmail = email;
             mPassword = password;
@@ -265,7 +268,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
-            final String TAG = "LoginActivity";
+
             MyApolloClient.getMyApolloClient().mutate(
                     LoginMutation.builder()
                     .username(mEmail.toString())
@@ -273,14 +276,30 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     .enqueue(new ApolloCall.Callback<LoginMutation.Data>() {
                         @Override
                         public void onResponse(@Nonnull Response<LoginMutation.Data> response) {
-                            Log.d(TAG, "OnResponse: "+ response.toString());
-                            Log.d(TAG, "OnResponse: "+ response.data().login().username().toString());
-                            String temp = response.data().login().username().toString();
+                            String temp = "";
+//                            Log.d(TAG, "OnResponse: "+ response.toString());
+                            Log.d(TAG, "OnResponse: "+ response.data());
+//                            if (response.data().toString().compareTo("null")==0){
+//                                temp = "";
+//                            }else {
+                                temp = response.data().login().username().toString();
+//                            }
                             Log.d(TAG, "temp: " +temp);
                             Log.d(TAG, "mEmail: "+mEmail);
                             if (temp.equals(mEmail)) {
+                                SharedPreferences sharedPref = getPreferences(context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPref.edit();
+                                editor.putInt("userid",response.data().login().userid());
+                                editor.putString("username", response.data().login().username());
+                                editor.putBoolean("logged", true);
+                                editor.putString("name",response.data().login().name());
+                                editor.putString("lastname", response.data().login().lastname());
+                                editor.apply();
                                 Log.d(TAG, "if username");
                                 status = true;
+                                Log.d(TAG, "status if: "+status);
+                                Intent myIntent = new Intent(LoginActivity.this,MainActivity.class);
+                                startActivity(myIntent);
                                 LoginActivity.this.runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
@@ -289,7 +308,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 });
                             }else{
                                 Log.d(TAG, "else no username");
-                                status = false;
+                                //status = false;
                             }
                         }
 
@@ -299,7 +318,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             Log.d(TAG, "OnFailure: " + e.toString());
                         }
                     });
-            Log.d(TAG, "status: "+status.toString());
+            Log.d(TAG, "status: ");
 
             return status;
         }
@@ -308,21 +327,24 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
             showProgress(false);
-
-            if (success) {
-                finish();
-                Intent myIntent = new Intent(LoginActivity.this,MainActivity.class);
-                startActivity(myIntent);
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
-            }
+            Log.d(TAG, "postExecute : " );
+//            if (success) {
+//                finish();
+//                Intent myIntent = new Intent(LoginActivity.this,MainActivity.class);
+//                startActivity(myIntent);
+//                Log.d(TAG, "postExecute if success: " );
+//            } else {
+//                mPasswordView.setError(getString(R.string.error_incorrect_password));
+//                mPasswordView.requestFocus();
+//                Log.d(TAG, "postExecute if no success: " );
+//            }
         }
 
         @Override
         protected void onCancelled() {
             mAuthTask = null;
             showProgress(false);
+            Log.d(TAG, "onCancelled: " );
         }
     }
 }

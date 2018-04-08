@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_createRoute"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Crear Ruta" />
+        <item
+            android:id="@+id/nav_searchRoute"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Buscar Ruta" />
+        <item
+            android:id="@+id/nav_favoriteRoute"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Rutas favoritas" />
+        <item
+            android:id="@+id/nav_myCars"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Mis Vehiculos" />
+        <item
+            android:id="@+id/nav_bicycle"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Bicicletas" />
+    </group>
+
+</menu>

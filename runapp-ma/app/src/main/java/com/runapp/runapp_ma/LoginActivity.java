@@ -271,8 +271,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             MyApolloClient.getMyApolloClient().mutate(
                     LoginMutation.builder()
-                    .username(mEmail.toString())
-                    .password(mPassword.toString()).build())
+                    .username(mEmail)
+                    .password(mPassword).build())
                     .enqueue(new ApolloCall.Callback<LoginMutation.Data>() {
                         @Override
                         public void onResponse(@Nonnull Response<LoginMutation.Data> response) {
@@ -282,12 +282,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 //                            if (response.data().toString().compareTo("null")==0){
 //                                temp = "";
 //                            }else {
-                                temp = response.data().login().username().toString();
+                                temp = response.data().login().username();
 //                            }
                             Log.d(TAG, "temp: " +temp);
                             Log.d(TAG, "mEmail: "+mEmail);
                             if (temp.equals(mEmail)) {
-                                SharedPreferences sharedPref = getPreferences(context.MODE_PRIVATE);
+                                SharedPreferences sharedPref = getPreferences(MODE_PRIVATE);
                                 SharedPreferences.Editor editor = sharedPref.edit();
                                 editor.putInt("userid",response.data().login().userid());
                                 editor.putString("username", response.data().login().username());

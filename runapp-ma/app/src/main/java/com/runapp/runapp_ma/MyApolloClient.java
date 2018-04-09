@@ -11,15 +11,18 @@ public class MyApolloClient {
     private static ApolloClient myApolloClient;
 
     public static ApolloClient getMyApolloClient(){
-        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .addInterceptor(loggingInterceptor)
-                .build();
-        myApolloClient = ApolloClient.builder()
-                .serverUrl(BASE_URL)
-                .okHttpClient(okHttpClient)
-                .build();
+        if(myApolloClient == null) {
+            HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                    .addInterceptor(loggingInterceptor)
+                    .build();
+            myApolloClient = ApolloClient.builder()
+                    .serverUrl(BASE_URL)
+                    .okHttpClient(okHttpClient)
+                    .build();
+        }
         return myApolloClient;
+
     }
 }

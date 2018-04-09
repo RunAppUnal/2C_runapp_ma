@@ -276,39 +276,51 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     .enqueue(new ApolloCall.Callback<LoginMutation.Data>() {
                         @Override
                         public void onResponse(@Nonnull Response<LoginMutation.Data> response) {
-                            String temp = "";
+                            String username = "";
 //                            Log.d(TAG, "OnResponse: "+ response.toString());
                             Log.d(TAG, "OnResponse: "+ response.data());
-//                            if (response.data().toString().compareTo("null")==0){
-//                                temp = "";
-//                            }else {
-                                temp = response.data().login().username();
-//                            }
-                            Log.d(TAG, "temp: " +temp);
-                            Log.d(TAG, "mEmail: "+mEmail);
-                            if (temp.equals(mEmail)) {
-                                SharedPreferences sharedPref = getPreferences(MODE_PRIVATE);
-                                SharedPreferences.Editor editor = sharedPref.edit();
-                                editor.putInt("userid",response.data().login().userid());
-                                editor.putString("username", response.data().login().username());
-                                editor.putBoolean("logged", true);
-                                editor.putString("name",response.data().login().name());
-                                editor.putString("lastname", response.data().login().lastname());
-                                editor.apply();
-                                Log.d(TAG, "if username");
-                                status = true;
-                                Log.d(TAG, "status if: "+status);
-                                Intent myIntent = new Intent(LoginActivity.this,MainActivity.class);
-                                startActivity(myIntent);
+
+                            if(response.data() == null){
+                                Log.d(TAG, "null data response");
                                 LoginActivity.this.runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Toast.makeText(LoginActivity.this, "Logged succesfully", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(LoginActivity.this, "Username or password incorrects", Toast.LENGTH_SHORT).show();
                                     }
                                 });
-                            }else{
-                                Log.d(TAG, "else no username");
-                                //status = false;
+                            }else {
+                                username = response.data().login().username();
+                                Log.d(TAG, "temp: " + username);
+                                Log.d(TAG, "mEmail: " + mEmail);
+                                if (username.equals(mEmail)) {
+                                    SharedPreferences sharedPref = getPreferences(MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sharedPref.edit();
+                                    editor.putInt("userid", response.data().login().userid());
+                                    editor.putString("username", response.data().login().username());
+                                    editor.putBoolean("logged", true);
+                                    editor.putString("name", response.data().login().name());
+                                    editor.putString("lastname", response.data().login().lastname());
+                                    editor.apply();
+                                    Log.d(TAG, "if username");
+                                    status = true;
+                                    Log.d(TAG, "status if: " + status);
+                                    Intent myIntent = new Intent(LoginActivity.this, MainActivity.class);
+                                    startActivity(myIntent);
+                                    LoginActivity.this.runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(LoginActivity.this, "Logged succesfully", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                } else {
+                                    Log.d(TAG, "else no username");
+                                    LoginActivity.this.runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(LoginActivity.this, "Username or password incorrects", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
                             }
                         }
 
@@ -316,6 +328,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         public void onFailure(@Nonnull ApolloException e) {
                             status = false;
                             Log.d(TAG, "OnFailure: " + e.toString());
+                            Toast.makeText(LoginActivity.this, "unable to connect to the server", Toast.LENGTH_SHORT).show();
+
                         }
                     });
             Log.d(TAG, "status: ");

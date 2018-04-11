@@ -18,6 +18,5 @@ query searchRoutesQuery(
     departure
     cost
     spaces_available
-
   }
 }

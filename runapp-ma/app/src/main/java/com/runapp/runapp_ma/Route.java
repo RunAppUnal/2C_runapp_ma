@@ -1,6 +1,7 @@
 package com.runapp.runapp_ma;
 
 public class Route {
+    
     private int id;
     private String title;
     private String description;

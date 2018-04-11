@@ -31,10 +31,14 @@
         <activity
             android:name=".LateralMenuActivity"
             android:label="RunApp"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SearchActivity"
+            android:label="@string/title_activity_search" />
+        <activity
+            android:name=".ShowRoute"
+            android:label="@string/title_activity_show_route"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-    <activity
-        android:name=".SearchActivity"
-        android:label="@string/title_activity_search"></activity>
     </application>
 
 </manifest>

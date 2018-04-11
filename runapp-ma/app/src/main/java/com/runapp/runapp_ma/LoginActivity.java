@@ -278,15 +278,21 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         public void onResponse(@Nonnull Response<LoginMutation.Data> response) {
                             String temp = "";
 //                            Log.d(TAG, "OnResponse: "+ response.toString());
-                            Log.d(TAG, "OnResponse: "+ response.data());
+                            Log.d(TAG, "OnResponse: "+ response.data()+"-");
 //                            if (response.data().toString().compareTo("null")==0){
 //                                temp = "";
-//                            }else {
-                                temp = response.data().login().username().toString();
-//                            }
-                            Log.d(TAG, "temp: " +temp);
-                            Log.d(TAG, "mEmail: "+mEmail);
-                            if (temp.equals(mEmail)) {
+//                            }else
+//                            boolean test = false;
+                            if (response.data()==null) {
+                                LoginActivity.this.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mPasswordView.setError(getString(R.string.error_incorrect_password));
+                                        mPasswordView.requestFocus();
+                                    }
+                                });
+
+                            }else{
                                 SharedPreferences sharedPref = getPreferences(context.MODE_PRIVATE);
                                 SharedPreferences.Editor editor = sharedPref.edit();
                                 editor.putInt("userid",response.data().login().userid());
@@ -298,7 +304,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 Log.d(TAG, "if username");
                                 status = true;
                                 Log.d(TAG, "status if: "+status);
-                                Intent myIntent = new Intent(LoginActivity.this,MainActivity.class);
+                                Intent myIntent = new Intent(LoginActivity.this,SearchActivity.class);
                                 startActivity(myIntent);
                                 LoginActivity.this.runOnUiThread(new Runnable() {
                                     @Override
@@ -306,16 +312,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                         Toast.makeText(LoginActivity.this, "Logged succesfully", Toast.LENGTH_SHORT).show();
                                     }
                                 });
-                            }else{
-                                Log.d(TAG, "else no username");
-                                //status = false;
                             }
                         }
 
                         @Override
                         public void onFailure(@Nonnull ApolloException e) {
+
                             status = false;
                             Log.d(TAG, "OnFailure: " + e.toString());
+                            Toast.makeText(LoginActivity.this, "Something went wrong, check your network", Toast.LENGTH_SHORT).show();
                         }
                     });
             Log.d(TAG, "status: ");

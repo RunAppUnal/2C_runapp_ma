@@ -99,6 +99,9 @@ public class LateralMenuActivity extends AppCompatActivity
         } else if (id == R.id.nav_bicycle) {
             //Intent i = new Intent(this, BicycleActivity.class);
             //startActivity(i);
+        } else if (id == R.id.nav_user) {
+            Intent i = new Intent(this, UserActivity.class);
+            startActivity(i);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

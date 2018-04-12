@@ -39,21 +39,25 @@
         <activity
             android:name=".ShowRoute"
             android:label="@string/title_activity_show_route"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-            <activity
-                android:name=".ShowRoute"
-                android:label="@string/title_activity_show_route"
-                android:theme="@style/AppTheme.NoActionBar"></activity>
-            <activity
-                android:name=".BikeRoutesActivity"
-                android:label="@string/title_activity_bike_routes"
-                android:parentActivityName=".MainActivity"
-                android:theme="@style/AppTheme.NoActionBar"
-                tools:targetApi="jelly_bean">
-                <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.runapp.runapp_ma.MainActivity" />
-            </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ShowRoute"
+            android:label="@string/title_activity_show_route"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".BikeRoutesActivity"
+            android:label="@string/title_activity_bike_routes"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            tools:targetApi="jelly_bean">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.runapp.runapp_ma.MainActivity" />
+        </activity>
+        <activity
+            android:name=".UserActivity"
+            android:label="Usuario"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

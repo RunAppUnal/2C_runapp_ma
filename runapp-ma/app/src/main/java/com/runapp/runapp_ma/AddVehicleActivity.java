@@ -83,6 +83,8 @@ public class AddVehicleActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(@Nonnull Response<CreateVehicleMutation.Data> response) {
                         Intent myIntent = new Intent(AddVehicleActivity.this,VehiclesActivity.class);
+                        myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(myIntent);
                     }
 

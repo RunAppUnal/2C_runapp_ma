@@ -35,18 +35,18 @@ public class Route {
     }
 
     public String getDate(){
-        return departure.substring(5,6) + "/" + departure.substring(8,9);
+        return departure.substring(5,7) + "/" + departure.substring(8,10);
     }
 
     public String getTime(){
-        return departure.substring(11,15);
+        return departure.substring(11,16);
     }
 
-    public float getCost() {
-        return cost;
+    public String getCost() {
+        return String.valueOf(cost);
     }
 
-    public int getSpaces_available() {
-        return spaces_available;
+    public String getSpaces_available() {
+        return String.valueOf(spaces_available);
     }
 }

@@ -10,7 +10,7 @@
     tools:showIn="@layout/activity_search">
 
     <ImageButton
-        android:id="@+id/b_picker2"
+        android:id="@+id/reset"
         android:layout_width="49dp"
         android:layout_height="50dp"
         android:src="@android:drawable/ic_menu_close_clear_cancel"
@@ -42,7 +42,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/spaces"
-        app:layout_constraintTop_toBottomOf="@+id/b_picker2"
+        app:layout_constraintTop_toBottomOf="@+id/reset"
         app:srcCompat="?android:attr/actionModeWebSearchDrawable" />
 
     <ImageButton
@@ -50,7 +50,7 @@
         android:layout_width="49dp"
         android:layout_height="50dp"
         app:layout_constraintBottom_toTopOf="@+id/spaces"
-        app:layout_constraintEnd_toStartOf="@+id/b_picker2"
+        app:layout_constraintEnd_toStartOf="@+id/reset"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/word"
         app:layout_constraintTop_toTopOf="parent"

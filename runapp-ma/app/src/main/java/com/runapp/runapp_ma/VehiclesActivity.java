@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.apollographql.apollo.ApolloCall;
@@ -56,6 +57,13 @@ public class VehiclesActivity extends AppCompatActivity {
         lvItems = (ListView) findViewById(R.id.lvItems);
         vehicleAdapter = new VehicleAdapter(vehicles, this);
         lvItems.setAdapter(vehicleAdapter);
+
+        lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d(TAG, "onItemClick: tab en el la lista" + position);
+            }
+        });
     }
 
     private void getMyVehicles(){

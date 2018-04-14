@@ -56,15 +56,15 @@
         </activity>
         <activity
             android:name=".UserActivity"
-            android:label="Usuario"/>
+            android:label="Usuario" />
         <activity
             android:name=".VehiclesActivity"
             android:label="Mis Vehiculos"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".AddVehicleActivity"
-            android:label="Nuevo vehiculo">
-        </activity>
+            android:label="Nuevo vehiculo"></activity>
+        <activity android:name=".MenuActivity"></activity>
     </application>
 
 </manifest>

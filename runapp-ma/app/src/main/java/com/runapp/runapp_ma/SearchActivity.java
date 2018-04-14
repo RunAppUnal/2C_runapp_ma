@@ -3,17 +3,10 @@ package com.runapp.runapp_ma;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -35,7 +28,7 @@ import javax.annotation.Nonnull;
 public class SearchActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
 
     ImageButton b_picker;
-    ImageButton b_picker2;
+    ImageButton b_reset;
     ImageButton b_find;
     EditText e_word;
     EditText e_cost;
@@ -60,7 +53,7 @@ public class SearchActivity extends AppCompatActivity implements DatePickerDialo
 
         c = Calendar.getInstance();
         b_picker = (ImageButton) findViewById(R.id.b_picker);
-        b_picker2 = (ImageButton) findViewById(R.id.b_picker2);
+        b_reset = (ImageButton) findViewById(R.id.reset);
         b_find = (ImageButton) findViewById(R.id.find);
         e_word = (EditText) findViewById(R.id.word);
         e_cost = (EditText) findViewById(R.id.cost);
@@ -79,6 +72,8 @@ public class SearchActivity extends AppCompatActivity implements DatePickerDialo
             }
         });
 
+
+
         b_picker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,10 +87,10 @@ public class SearchActivity extends AppCompatActivity implements DatePickerDialo
             }
         });
 
-        b_picker2.setOnClickListener(new View.OnClickListener() {
+        b_reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //reset all
+
             }
         });
     }

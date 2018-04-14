@@ -35,10 +35,10 @@ public class RouteAdapter extends ArrayAdapter<Route>{
 
         title.setText(singleRouteItem.getTitle());
         description.setText(singleRouteItem.getDescription());
-//        seats.setText(singleRouteItem.getSpaces_available()); //not working, parse to string
+        seats.setText(singleRouteItem.getSpaces_available());
         date.setText(singleRouteItem.getDate());
         time.setText(singleRouteItem.getTime());
-//        cost.setText((int) singleRouteItem.getCost());
+        cost.setText(singleRouteItem.getCost());
 
         return rowView;
 

@@ -322,7 +322,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                             status = false;
                             Log.d(TAG, "OnFailure: " + e.toString());
-                            Toast.makeText(LoginActivity.this, "Something went wrong, check your network", Toast.LENGTH_SHORT).show();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(LoginActivity.this, "Something went wrong, check your network", Toast.LENGTH_SHORT).show();
+
+                                }
+                            });
                         }
                     });
             Log.d(TAG, "status: ");

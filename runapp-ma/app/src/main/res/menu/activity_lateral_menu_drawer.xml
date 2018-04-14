@@ -5,25 +5,33 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_user"
+            android:icon="@drawable/ic_ico_user"
+            android:title="Información de usuario" />
+        <item
             android:id="@+id/nav_createRoute"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_ico_create_rute"
             android:title="Crear Ruta" />
         <item
             android:id="@+id/nav_searchRoute"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_ico_search"
             android:title="Buscar Ruta" />
         <item
             android:id="@+id/nav_favoriteRoute"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/ic_ico_favorite"
             android:title="Rutas favoritas" />
         <item
             android:id="@+id/nav_myCars"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_ico_car"
             android:title="Mis Vehiculos" />
         <item
             android:id="@+id/nav_bicycle"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/ic_ico_bicycle"
             android:title="Bicicletas" />
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_ico_sign_out"
+            android:title="Cerrar sesión" />
     </group>
 
 </menu>

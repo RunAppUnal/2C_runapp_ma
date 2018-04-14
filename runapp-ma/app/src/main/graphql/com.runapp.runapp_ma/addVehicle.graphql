@@ -1,0 +1,32 @@
+mutation CreateVehicleMutation(
+     $plate: String!
+     $user_id: Int!
+     $kind: String!
+     $model: Int!
+     $color: String!
+     $capacity: Int!
+     $image: String!
+     $brand: String!
+
+
+  ){
+  createVehicle(vehicle:{
+    plate: $plate
+    user_id: $user_id
+    kind: $kind
+    model: $model
+    color: $color
+    capacity: $capacity
+    image: $image
+    brand: $brand
+  }){
+    plate
+    user_id
+    kind
+    model
+    color
+    capacity
+    image
+    brand
+  }
+}

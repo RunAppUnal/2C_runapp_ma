@@ -1,0 +1,14 @@
+query myVehiclesQuery(
+    $userid: Int!
+  ){myVehicles(user: $userid){
+    id
+    plate
+    user_id
+    kind
+    model
+    color
+    capacity
+    image
+    brand
+  }
+}

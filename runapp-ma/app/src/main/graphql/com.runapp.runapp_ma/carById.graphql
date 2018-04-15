@@ -1,0 +1,13 @@
+query vehicleById(
+    $id: Int!
+){
+  vehicleById(
+  id:$id
+  ){
+  plate
+  kind
+  model
+  color
+  brand
+  }
+}

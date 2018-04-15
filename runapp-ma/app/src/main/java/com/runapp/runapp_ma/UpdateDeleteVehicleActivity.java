@@ -3,7 +3,6 @@ package com.runapp.runapp_ma;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.PatternMatcher;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,7 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
@@ -26,9 +24,11 @@ import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
 
-public class AddVehicleActivity extends AppCompatActivity {
+public class UpdateDeleteVehicleActivity extends AppCompatActivity {
 
-    private Context context = this;
+    Bundle datos;
+
+    private Context context;
     private String plate;
     private Integer model;
     private String color ;
@@ -37,17 +37,20 @@ public class AddVehicleActivity extends AppCompatActivity {
     private String kind;
     private SharedPreferences sharedPrefes;
     private Integer userid;
+    private Integer id;
+    private String img;
 
     private TextView tiplate;
     private TextView timodel;
     private TextView ticolor;
     private TextView ticapacity;
     private TextView tibrand;
+    private Spinner sKind;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_vehicle);
+        setContentView(R.layout.activity_update_delete_vehicle);
 
         setupActionBar();
 
@@ -71,16 +74,58 @@ public class AddVehicleActivity extends AppCompatActivity {
         // attaching data adapter to spinner
         spinner.setAdapter(dataAdapter);
 
+        datos = getIntent().getExtras();
+
+        id = datos.getInt("id");
+        plate = datos.getString("plate");
+        model = datos.getInt("model");
+        color = datos.getString("color");
+        capacity = datos.getInt("capacity");
+        brand = datos.getString("brand");
+        kind = datos.getString("kind");
+        img = datos.getString("image");
+
         tiplate = (TextView) findViewById(R.id.tiPlate);
         timodel = (TextView) findViewById(R.id.tiModel);
         ticolor = (TextView) findViewById(R.id.tiColor);
         ticapacity = (TextView) findViewById(R.id.tiCapacity);
         tibrand = (TextView) findViewById(R.id.tiBrand);
+        sKind = (Spinner) findViewById(R.id.sKind);
 
+        tiplate.setText(plate);
+        timodel.setText(model.toString());
+        ticolor.setText(color);
+        ticapacity.setText(capacity.toString());
+        tibrand.setText(brand);
+        sKind.setSelection(categories.indexOf(kind));
 
-        Button btnSave = (Button) findViewById(R.id.btnSave);
+        Button btnUpdate = (Button) findViewById(R.id.btnUpdate);
+        Button btnDelete = (Button) findViewById(R.id.btnDelete);
 
-        btnSave.setOnClickListener(new View.OnClickListener() {
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyApolloClient.getMyApolloClient().mutate(DeleteVehicleMutation.builder()
+                    .id(id).build()).enqueue(new ApolloCall.Callback<DeleteVehicleMutation.Data>() {
+                    @Override
+                    public void onResponse(@Nonnull Response<DeleteVehicleMutation.Data> response) {
+
+                        Intent myIntent = new Intent(UpdateDeleteVehicleActivity.this, VehiclesActivity.class);
+                        myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(myIntent);
+
+                    }
+
+                    @Override
+                    public void onFailure(@Nonnull ApolloException e) {
+
+                    }
+                });
+            }
+        });
+
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 plate = tiplate.getText().toString();
@@ -101,29 +146,30 @@ public class AddVehicleActivity extends AppCompatActivity {
                 sharedPrefes = getSharedPreferences("userData",context.MODE_PRIVATE);
                 userid = sharedPrefes.getInt("userid", 0);
                 boolean valid = validForm();
-                if (!valid) {
-                    MyApolloClient.getMyApolloClient().mutate(CreateVehicleMutation.builder()
+                if (!valid){
+                    MyApolloClient.getMyApolloClient().mutate(UpdateVehicleMutation.builder()
+                            .id(id)
                             .plate(plate)
                             .user_id(userid)
                             .kind(kind)
                             .model(model)
-                            .color(color)
                             .capacity(capacity)
-                            .image("img.jpg")
-                            .brand(brand).build()).enqueue(new ApolloCall.Callback<CreateVehicleMutation.Data>() {
+                            .image(img)
+                            .brand(brand)
+                            .color(color).build()).enqueue(new ApolloCall.Callback<UpdateVehicleMutation.Data>() {
                         @Override
-                        public void onResponse(@Nonnull Response<CreateVehicleMutation.Data> response) {
+                        public void onResponse(@Nonnull Response<UpdateVehicleMutation.Data> response) {
                             if (response.data() == null){
-                                AddVehicleActivity.this.runOnUiThread(new Runnable() {
+                                UpdateDeleteVehicleActivity.this.runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        tiplate.setError("La placa ya existe");
+                                        tiplate.setError("La placa no existe");
                                         tiplate.requestFocus();
                                     }
                                 });
                             }
                             else {
-                                Intent myIntent = new Intent(AddVehicleActivity.this, VehiclesActivity.class);
+                                Intent myIntent = new Intent(UpdateDeleteVehicleActivity.this, VehiclesActivity.class);
                                 myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(myIntent);
@@ -136,10 +182,12 @@ public class AddVehicleActivity extends AppCompatActivity {
                         }
                     });
                 }
+
             }
         });
 
     }
+
 
     private void setupActionBar(){
         ActionBar actionBar = getSupportActionBar();
@@ -162,7 +210,7 @@ public class AddVehicleActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(AddVehicleActivity.this, VehiclesActivity.class);
+        Intent intent = new Intent(UpdateDeleteVehicleActivity.this, VehiclesActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }

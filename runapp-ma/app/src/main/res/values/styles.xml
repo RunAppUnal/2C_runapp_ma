@@ -10,8 +10,6 @@
         <item name="colorControlActivated">@color/colorAccent</item>
         <item name="colorControlHighlight">@color/colorAccent</item>
         <item name="android:windowContentTransitions">true</item>
-        <item name="android:windowContentTransitions">true</item>
-
     </style>
 
     <style name="AppTheme.NoActionBar">

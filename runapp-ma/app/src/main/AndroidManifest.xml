@@ -64,6 +64,7 @@
         <activity
             android:name=".AddVehicleActivity"
             android:label="Nuevo vehiculo" />
+<<<<<<< HEAD
         <activity
             android:name=".ShowRouteActivity"
             android:label="@string/title_activity_show_route"
@@ -75,6 +76,10 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+=======
+        <activity android:name=".MenuActivity" />
+        <activity android:name=".UpdateDeleteVehicleActivity"></activity>
+>>>>>>> 7b4ffae1a4a2b1f761f0acae4f63021387545e81
     </application>
 
 </manifest>

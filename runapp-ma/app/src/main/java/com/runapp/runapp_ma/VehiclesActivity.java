@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.apollographql.apollo.ApolloCall;
@@ -56,6 +57,25 @@ public class VehiclesActivity extends AppCompatActivity {
         lvItems = (ListView) findViewById(R.id.lvItems);
         vehicleAdapter = new VehicleAdapter(vehicles, this);
         lvItems.setAdapter(vehicleAdapter);
+
+        lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //Log.d(TAG, "onItemClick: tab en el la lista" + position);
+                //Log.d(TAG, "onItemClick: " + vehicles.get(0).getPlate().toString());
+                Intent intent = new Intent(VehiclesActivity.this, UpdateDeleteVehicleActivity.class);
+                intent.putExtra("id", vehicles.get(position).getId());
+                intent.putExtra("plate", vehicles.get(position).getPlate());
+                intent.putExtra("user_id", vehicles.get(position).getUser_id());
+                intent.putExtra("kind", vehicles.get(position).getKind());
+                intent.putExtra("model", vehicles.get(position).getModel());
+                intent.putExtra("capacity", vehicles.get(position).getCapacity());
+                intent.putExtra("image", vehicles.get(position).getImage());
+                intent.putExtra("brand", vehicles.get(position).getBrand());
+                intent.putExtra("color", vehicles.get(position).getColor());
+                startActivity(intent);
+            }
+        });
     }
 
     private void getMyVehicles(){

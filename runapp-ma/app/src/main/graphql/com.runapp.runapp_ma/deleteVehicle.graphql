@@ -1,0 +1,15 @@
+mutation DeleteVehicle(
+  $id: Int!
+  ){
+  deleteVehicle(id: $id){
+    id
+    plate
+    user_id
+    kind
+    model
+    color
+    capacity
+    image
+    brand
+  }
+}

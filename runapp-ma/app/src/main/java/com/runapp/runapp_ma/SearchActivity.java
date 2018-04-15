@@ -139,13 +139,10 @@ public class SearchActivity extends AppCompatActivity implements DatePickerDialo
                     public void onResponse(@Nonnull Response<SearchRoutesQuery.Data> response) {
                         Log.d(TAG, "data: "+ response.data().searchOtherRoutes().isEmpty());
                         Log.d(TAG, "data: "+ response.data().searchOtherRoutes().size());
-                        if (response.data().searchOtherRoutes().isEmpty()== true){
+                        if (response.data() == null || response.data().searchOtherRoutes().isEmpty()==true){
                             status = false;
-
-
-
-
                         }else{
+
                             //RouteAdapter adapter = new RouteAdapter(this, routes);
                             int j = response.data().searchOtherRoutes().size();
                             for (int i = 0;i<j;i++){

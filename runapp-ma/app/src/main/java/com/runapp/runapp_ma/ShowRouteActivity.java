@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-public class ShowRoute extends AppCompatActivity {
+public class ShowRouteActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,8 +24,6 @@ public class ShowRoute extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-
-        //show route here
-
     }
+
 }

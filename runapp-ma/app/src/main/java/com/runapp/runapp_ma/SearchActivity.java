@@ -2,11 +2,14 @@ package com.runapp.runapp_ma;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -30,6 +33,7 @@ public class SearchActivity extends AppCompatActivity implements DatePickerDialo
     ImageButton b_picker;
     ImageButton b_reset;
     ImageButton b_find;
+    ImageButton b_menu;
     EditText e_word;
     EditText e_cost;
     EditText e_spaces;
@@ -55,6 +59,7 @@ public class SearchActivity extends AppCompatActivity implements DatePickerDialo
         b_picker = (ImageButton) findViewById(R.id.b_picker);
         b_reset = (ImageButton) findViewById(R.id.reset);
         b_find = (ImageButton) findViewById(R.id.find);
+        b_menu = (ImageButton) findViewById(R.id.menu);
         e_word = (EditText) findViewById(R.id.word);
         e_cost = (EditText) findViewById(R.id.cost);
         e_spaces = (EditText) findViewById(R.id.spaces);
@@ -63,6 +68,13 @@ public class SearchActivity extends AppCompatActivity implements DatePickerDialo
         s_date = "";
         s_time = "";
 
+        b_menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(SearchActivity.this,LateralMenuActivity.class);
+                startActivity(myIntent);
+            }
+        });
 
         b_find.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,6 +141,10 @@ public class SearchActivity extends AppCompatActivity implements DatePickerDialo
                         Log.d(TAG, "data: "+ response.data().searchOtherRoutes().size());
                         if (response.data().searchOtherRoutes().isEmpty()== true){
                             status = false;
+
+
+
+
                         }else{
                             //RouteAdapter adapter = new RouteAdapter(this, routes);
                             int j = response.data().searchOtherRoutes().size();
@@ -141,9 +157,11 @@ public class SearchActivity extends AppCompatActivity implements DatePickerDialo
                                         response.data().searchOtherRoutes().get(i).spaces_available()
                                 ));
                             }
-                            fill();
                             status = true;
+
+
                         }
+                        fill(status);
                         //status = true;
                     }
 
@@ -173,14 +191,34 @@ public class SearchActivity extends AppCompatActivity implements DatePickerDialo
         Log.d(TAG, "time: "+s_time);
     }
 
-    public void fill(){
+    public void fill(final boolean stat){
         SearchActivity.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 RouteAdapter routeAdapter = new RouteAdapter(SearchActivity.this, routes);
-                e_list.setAdapter(routeAdapter);
+                if (stat == true) {
+                    e_list.setAdapter(null);
+                    e_list.setAdapter(routeAdapter);
+                }else{
+                    e_list.setAdapter(null);
+                }
+
+
             }
         });
+        e_list.setOnItemClickListener(
+                new AdapterView.OnItemClickListener(){
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+                        Context ctx = view.getContext();
+                        Route r = (Route) e_list.getItemAtPosition(position);
+                        int r_id = r.getId();
+                        Intent myIntent = new Intent(SearchActivity.this,ShowRouteActivity.class);
+                        myIntent.putExtra("routeid", r_id);
+                        startActivity(myIntent);
+                    }
+                }
+        );
 
     }
 }

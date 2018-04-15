@@ -119,7 +119,6 @@ public class ShowRouteActivity extends AppCompatActivity {
         mapView = (MapView) findViewById(R.id.mapView);
 
         getRoute();
-        getOwner();
 
 //        mapView.onCreate(savedInstanceState);
 //        setUpMap();
@@ -161,6 +160,7 @@ public class ShowRouteActivity extends AppCompatActivity {
                                 s_departure.setText(departure.substring(5,7)+"/"+departure.substring(8,10)+" "+departure.substring(11,16));
                             }
                         });
+                        getOwner();
                     }
 
                     @Override
@@ -172,6 +172,7 @@ public class ShowRouteActivity extends AppCompatActivity {
 
 
     private void getOwner(){
+        Log.d(TAG, "userid: "+user_id);
         MyApolloClient.getMyApolloClient().query(
                 UserByIdQuery.builder()
                 .userid(user_id).build())
@@ -201,5 +202,9 @@ public class ShowRouteActivity extends AppCompatActivity {
     }
 
 
+
+    private void getCarInfo(){
+        
+    }
 
 }

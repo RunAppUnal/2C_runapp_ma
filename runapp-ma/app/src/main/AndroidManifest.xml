@@ -63,8 +63,18 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".AddVehicleActivity"
-            android:label="Nuevo vehiculo"></activity>
-        <activity android:name=".MenuActivity"></activity>
+            android:label="Nuevo vehiculo" />
+        <activity
+            android:name=".ShowRouteActivity"
+            android:label="@string/title_activity_show_route"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCi9Onueh7PIF_uajhKVoSTtJURbLgccV8" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
     </application>
 
 </manifest>

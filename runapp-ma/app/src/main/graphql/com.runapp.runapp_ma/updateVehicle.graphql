@@ -1,0 +1,34 @@
+mutation UpdateVehicleMutation(
+    $id: Int!
+    $plate: String!
+    $user_id: Int!
+    $kind: String!
+    $model: Int!
+    $capacity: Int!
+    $image: String!
+    $brand: String!
+    $color: String!
+  ){
+  updateVehicle(id: $id
+    vehicle:{
+      plate: $plate
+      user_id: $user_id
+      kind: $kind
+      model: $model
+      capacity: $capacity
+      image: $image
+      brand: $brand
+      color: $color
+  })
+  {
+    id
+    plate
+    user_id
+    kind
+    model
+    color
+    capacity
+    image
+    brand
+  }
+}

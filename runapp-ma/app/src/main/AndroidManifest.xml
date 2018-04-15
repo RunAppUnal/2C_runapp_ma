@@ -63,8 +63,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".AddVehicleActivity"
-            android:label="Nuevo vehiculo"></activity>
-        <activity android:name=".MenuActivity"></activity>
+            android:label="Nuevo vehiculo" />
+        <activity android:name=".MenuActivity" />
+        <activity android:name=".UpdateDeleteVehicleActivity"></activity>
     </application>
 
 </manifest>

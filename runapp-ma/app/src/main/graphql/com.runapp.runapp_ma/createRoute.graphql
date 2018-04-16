@@ -1,0 +1,49 @@
+mutation CreateRouteMutation(
+    $user_id: Int!
+    $car_id: Int!
+    $title: String!
+    $description: String!
+    $from_lat: Float!
+    $from_lng: Float!
+    $to_lat: Float!
+    $to_lng: Float!
+    $waypoints: String!
+    $departure: String!
+    $cost: Float!
+    $users_in_route: String!
+    $active: Boolean!
+    $spaces_available: Int!
+  ){
+  createRoute(route:{
+    user_id: $user_id
+ 	car_id: $car_id
+ 	title: $title
+ 	description: $description
+    from_lat: $from_lat
+    from_lng: $from_lng
+    to_lat: $to_lat
+    to_lng: $to_lng
+    waypoints: $waypoints
+    departure: $departure
+    cost: $cost
+    users_in_route: $users_in_route
+    active: $active
+    spaces_available: $spaces_available
+  }) {
+    id
+    user_id
+    car_id
+    title
+    description
+    from_lat
+    from_lng
+    to_lat
+    to_lng
+    waypoints
+    departure
+    cost
+    users_in_route
+    active
+    spaces_avaible
+  }
+}

@@ -107,10 +107,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="15dp" />
 
+            <TextView
+                android:id="@+id/spaces_available"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Asientos Disponibles"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/s_spaces_available"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="15dp" />
+
             <com.google.android.gms.maps.MapView
                 android:id="@+id/mapView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="300dp"
+                />
 
             <Space
                 android:layout_width="match_parent"
@@ -201,6 +220,20 @@
 
             <TextView
                 android:id="@+id/s_model"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+
+            <TextView
+                android:id="@+id/capacity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Capacidad"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/s_capacity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView" />

@@ -2,6 +2,7 @@ package com.runapp.runapp_ma;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -13,20 +14,40 @@ import android.widget.TextView;
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
+//import com.google.android.gms.maps.model.*;
+import com.google.maps.DirectionsApi;
+import com.google.maps.GeoApiContext;
+import com.google.maps.android.PolyUtil;
+import com.google.maps.errors.ApiException;
+import com.google.maps.model.DirectionsResult;
+import com.google.maps.model.TravelMode;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Nonnull;
 
 import static com.runapp.runapp_ma.R.id.find;
+import static com.runapp.runapp_ma.R.id.results;
 import static com.runapp.runapp_ma.R.id.s_title;
 
-public class ShowRouteActivity extends AppCompatActivity {
+public class ShowRouteActivity extends AppCompatActivity implements OnMapReadyCallback{
 
-    GoogleMap googleMap;
+    GoogleMap gmap;
+    MapView mapView;
+
 
     String TAG = "ShowRouteActivity";
+    private static final String MAP_VIEW_BUNDLE_KEY = "MapViewBundleKey";
 
     int r_id;
 
@@ -34,14 +55,15 @@ public class ShowRouteActivity extends AppCompatActivity {
     TextView s_description;
     TextView s_cost;
     TextView s_departure;
+    TextView s_spaces_available;
     TextView s_plate;
     TextView s_type;
     TextView s_brand;
     TextView s_colour;
     TextView s_model;
+    TextView s_capacity;
     TextView s_name;
     TextView s_email;
-    MapView mapView;
 
     int user_id;
     int car_id;
@@ -68,10 +90,41 @@ public class ShowRouteActivity extends AppCompatActivity {
     String name;
     String email;
 
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        Bundle mapViewBundle = outState.getBundle(MAP_VIEW_BUNDLE_KEY);
+        if (mapViewBundle == null) {
+            mapViewBundle = new Bundle();
+            outState.putBundle(MAP_VIEW_BUNDLE_KEY, mapViewBundle);
+        }
+        mapView.onSaveInstanceState(mapViewBundle);
+    }
+
     @Override
     protected void onResume(){
         super.onResume();
         mapView.onResume();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mapView.onStart();
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        mapView.onStop();
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        mapView.onPause();
     }
 
     @Override
@@ -81,10 +134,39 @@ public class ShowRouteActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPause(){
-        super.onPause();
-        mapView.onPause();
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
     }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        gmap = googleMap;
+        gmap.setMinZoomPreference(8);
+        gmap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        UiSettings uiSettings = gmap.getUiSettings();
+        uiSettings.setZoomControlsEnabled(true);
+        uiSettings.setScrollGesturesEnabled(true);
+        LatLng unal = new LatLng(4.635540, -74.082807);
+        gmap.moveCamera(CameraUpdateFactory.newLatLng(unal));
+//        SystemClock.sleep(7000);
+        ShowRouteActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                DirectionsResult route = getDirections();
+                if (route != null) {
+                    addPolyline(route, gmap);
+                    addMarkersToMap(route, gmap);
+                    positionCamera(route, gmap);
+                }
+            }
+        });
+
+
+
+    }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +184,15 @@ public class ShowRouteActivity extends AppCompatActivity {
             }
         });
 
+        Bundle mapViewBundle = null;
+        if (savedInstanceState !=null) {
+            mapViewBundle = savedInstanceState.getBundle(MAP_VIEW_BUNDLE_KEY);
+        }
+
+        mapView = (MapView) findViewById(R.id.mapView);
+        mapView.onCreate(mapViewBundle);
+        mapView.getMapAsync(this);
+
         Intent myIntent = getIntent();
         r_id = myIntent.getIntExtra("routeid",0);
 
@@ -109,14 +200,20 @@ public class ShowRouteActivity extends AppCompatActivity {
         s_description = (TextView) findViewById(R.id.s_description);
         s_cost = (TextView) findViewById(R.id.s_cost);
         s_departure = (TextView) findViewById(R.id.s_departure);
+        s_spaces_available = (TextView) findViewById(R.id.s_spaces_available);
         s_plate = (TextView) findViewById(R.id.s_plate);
         s_type = (TextView) findViewById(R.id.s_type);
         s_brand = (TextView) findViewById(R.id.s_brand);
         s_colour = (TextView) findViewById(R.id.s_colour);
         s_model = (TextView) findViewById(R.id.s_model);
+        s_capacity = (TextView) findViewById(R.id.s_capacity);
         s_name = (TextView) findViewById(R.id.s_name);
         s_email = (TextView) findViewById(R.id.s_email);
-        mapView = (MapView) findViewById(R.id.mapView);
+
+//        android.view.ViewGroup.LayoutParams mParams = mapView.getLayoutParams();
+//        mParams.height = mapView.getWidth();
+//        mapView.setLayoutParams(mParams);
+
 
         getRoute();
 
@@ -143,6 +240,7 @@ public class ShowRouteActivity extends AppCompatActivity {
                         to_lat = String.valueOf(response.data().routeById().to_lat());
                         to_lng = String.valueOf(response.data().routeById().to_lng());
                         waypoints = response.data().routeById().waypoints();
+                        Log.d(TAG, "waypoints: "+waypoints);
                         departure = response.data().routeById().departure();
                         cost = String.valueOf(response.data().routeById().cost());
                         users_in_route = response.data().routeById().users_in_route().split(",");
@@ -158,9 +256,13 @@ public class ShowRouteActivity extends AppCompatActivity {
                                 s_description.setText(description);
                                 s_cost.setText(cost);
                                 s_departure.setText(departure.substring(5,7)+"/"+departure.substring(8,10)+" "+departure.substring(11,16));
+                                s_spaces_available.setText(spaces_available);
                             }
                         });
                         getOwner();
+                        getCarInfo();
+//                        getDirections();
+
                     }
 
                     @Override
@@ -169,7 +271,6 @@ public class ShowRouteActivity extends AppCompatActivity {
                     }
                 });
     }
-
 
     private void getOwner(){
         Log.d(TAG, "userid: "+user_id);
@@ -201,10 +302,91 @@ public class ShowRouteActivity extends AppCompatActivity {
 
     }
 
-
-
     private void getCarInfo(){
-        
+        MyApolloClient.getMyApolloClient().query(
+                VehicleByIdQuery.builder()
+                .id(car_id).build())
+                .enqueue(new ApolloCall.Callback<VehicleByIdQuery.Data>() {
+                    @Override
+                    public void onResponse(@Nonnull Response<VehicleByIdQuery.Data> response) {
+                        if (response.data()!=null){
+                            plate = response.data().vehicleById().plate();
+                            type = response.data().vehicleById().kind();
+                            brand = response.data().vehicleById().brand();
+                            model = String.valueOf(response.data().vehicleById().model());
+                            colour = response.data().vehicleById().color();
+                            capacity = String.valueOf(response.data().vehicleById().capacity());
+                            ShowRouteActivity.this.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    s_plate.setText(plate);
+                                    s_type.setText(type);
+                                    s_brand.setText(brand);
+                                    s_model.setText(model);
+                                    s_colour.setText(colour);
+                                    s_capacity.setText(capacity);
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@Nonnull ApolloException e) {
+
+                    }
+                });
     }
+
+    private GeoApiContext getGeoContext() {
+        GeoApiContext geoApiContext = new GeoApiContext();
+        return geoApiContext.setQueryRateLimit(3)
+                .setApiKey(getString(R.string.directionsApiKey))
+                .setConnectTimeout(1, TimeUnit.SECONDS)
+                .setReadTimeout(1, TimeUnit.SECONDS)
+                .setWriteTimeout(1, TimeUnit.SECONDS);
+    }
+
+    private DirectionsResult getDirections(){
+        com.google.maps.model.LatLng origin = new com.google.maps.model.LatLng(Float.parseFloat(from_lat),Float.parseFloat(from_lng));
+        com.google.maps.model.LatLng end = new com.google.maps.model.LatLng(Float.parseFloat(to_lat),Float.parseFloat(to_lng));
+        GeoApiContext geo = getGeoContext();
+        try {
+            return DirectionsApi.newRequest(geo)
+                    .mode(TravelMode.DRIVING)
+                    .origin(origin)
+                    .destination(end)
+//                    .waypoints("["+waypoints+"]")
+                    .await();
+        } catch (ApiException e) {
+            Log.d(TAG, "ApiException: "+e);
+            return null;
+        } catch (InterruptedException e) {
+            Log.d(TAG, "InterruptedException: "+e);
+            return null;
+        } catch (IOException e) {
+            Log.d(TAG, "IOException: "+e);
+            return null;
+        }
+
+    }
+
+    private void addMarkersToMap(DirectionsResult results, GoogleMap mMap) {
+        mMap.addMarker(new MarkerOptions().position(new LatLng(results.routes[0].legs[0].startLocation.lat,results.routes[0].legs[0].startLocation.lng)).title("Salida"));
+        mMap.addMarker(new MarkerOptions().position(new LatLng(results.routes[0].legs[0].endLocation.lat,results.routes[0].legs[0].endLocation.lng)).title("Llegada"));
+    }
+
+    private void addPolyline(DirectionsResult results, GoogleMap mMap) {
+        List<LatLng> decodedPath = PolyUtil.decode(results.routes[0].overviewPolyline.getEncodedPath());
+        mMap.addPolyline(new PolylineOptions().addAll(decodedPath));
+    }
+
+//    private com.google.maps.model.LatLng getMidPoint(DirectionsResult results, GoogleMap mMap){
+//
+//    }
+
+    private void positionCamera(DirectionsResult results, GoogleMap mMap) {
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(results.routes[0].legs[0].startLocation.lat, results.routes[0].legs[0].startLocation.lng), 12));
+    }
+
 
 }

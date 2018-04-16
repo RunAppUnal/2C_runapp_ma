@@ -1,4 +1,4 @@
-query vehicleById(
+query VehicleByIdQuery(
     $id: Int!
 ){
   vehicleById(
@@ -9,5 +9,6 @@ query vehicleById(
   model
   color
   brand
+  capacity
   }
 }

@@ -67,9 +67,8 @@
         <activity
             android:name=".ShowRouteActivity"
             android:label="@string/title_activity_show_route"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-
-        <activity android:name=".UpdateDeleteVehicleActivity"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".UpdateDeleteVehicleActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -77,6 +76,9 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <activity android:name=".CreateRouteActivity"
+            android:label="Crear ruta"></activity>
     </application>
 
 </manifest>

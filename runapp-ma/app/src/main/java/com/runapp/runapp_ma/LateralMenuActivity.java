@@ -85,8 +85,8 @@ public class LateralMenuActivity extends AppCompatActivity
         android.support.v4.app.Fragment fragment = null;
 
         if (id == R.id.nav_createRoute) {
-            //Intent i = new Intent(this, CreateRouteActivity.class);
-            //startActivity(i);
+            Intent i = new Intent(this, CreateRouteActivity.class);
+            startActivity(i);
         } else if (id == R.id.nav_searchRoute) {
             //Intent i = new Intent(this, SearchRouteActivity.class);
             //startActivity(i);

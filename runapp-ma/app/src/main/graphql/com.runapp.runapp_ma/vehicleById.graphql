@@ -1,4 +1,4 @@
-query vehicleById(
+query VehicleByIdQuery(
     $id: Int!
 ){
   vehicleById(

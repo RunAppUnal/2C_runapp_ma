@@ -16,17 +16,21 @@ import com.apollographql.apollo.exception.ApolloException;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
 
 import javax.annotation.Nonnull;
 
 import static com.runapp.runapp_ma.R.id.find;
 import static com.runapp.runapp_ma.R.id.s_title;
 
-public class ShowRouteActivity extends AppCompatActivity {
+public class ShowRouteActivity extends AppCompatActivity implements OnMapReadyCallback{
 
-    GoogleMap googleMap;
+    GoogleMap gmap;
+    MapView mapView;
+
 
     String TAG = "ShowRouteActivity";
+    private static final String MAP_VIEW_BUNDLE_KEY = "MapViewBundleKey";
 
     int r_id;
 
@@ -34,14 +38,15 @@ public class ShowRouteActivity extends AppCompatActivity {
     TextView s_description;
     TextView s_cost;
     TextView s_departure;
+    TextView s_spaces_available;
     TextView s_plate;
     TextView s_type;
     TextView s_brand;
     TextView s_colour;
     TextView s_model;
+    TextView s_capacity;
     TextView s_name;
     TextView s_email;
-    MapView mapView;
 
     int user_id;
     int car_id;
@@ -68,10 +73,41 @@ public class ShowRouteActivity extends AppCompatActivity {
     String name;
     String email;
 
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        Bundle mapViewBundle = outState.getBundle(MAP_VIEW_BUNDLE_KEY);
+        if (mapViewBundle == null) {
+            mapViewBundle = new Bundle();
+            outState.putBundle(MAP_VIEW_BUNDLE_KEY, mapViewBundle);
+        }
+        mapView.onSaveInstanceState(mapViewBundle);
+    }
+
     @Override
     protected void onResume(){
         super.onResume();
         mapView.onResume();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mapView.onStart();
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        mapView.onStop();
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        mapView.onPause();
     }
 
     @Override
@@ -81,10 +117,19 @@ public class ShowRouteActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPause(){
-        super.onPause();
-        mapView.onPause();
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
     }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        gmap = googleMap;
+        gmap.setMinZoomPreference(30);
+        LatLng unal = new LatLng(4.635540, -74.082807);
+    }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +147,15 @@ public class ShowRouteActivity extends AppCompatActivity {
             }
         });
 
+        Bundle mapViewBundle = null;
+        if (savedInstanceState !=null) {
+            mapViewBundle = savedInstanceState.getBundle(MAP_VIEW_BUNDLE_KEY);
+        }
+
+        mapView = (MapView) findViewById(R.id.mapView);
+        mapView.onCreate(mapViewBundle);
+        mapView.getMapAsync(this);
+
         Intent myIntent = getIntent();
         r_id = myIntent.getIntExtra("routeid",0);
 
@@ -109,14 +163,20 @@ public class ShowRouteActivity extends AppCompatActivity {
         s_description = (TextView) findViewById(R.id.s_description);
         s_cost = (TextView) findViewById(R.id.s_cost);
         s_departure = (TextView) findViewById(R.id.s_departure);
+        s_spaces_available = (TextView) findViewById(R.id.s_spaces_available);
         s_plate = (TextView) findViewById(R.id.s_plate);
         s_type = (TextView) findViewById(R.id.s_type);
         s_brand = (TextView) findViewById(R.id.s_brand);
         s_colour = (TextView) findViewById(R.id.s_colour);
         s_model = (TextView) findViewById(R.id.s_model);
+        s_capacity = (TextView) findViewById(R.id.s_capacity);
         s_name = (TextView) findViewById(R.id.s_name);
         s_email = (TextView) findViewById(R.id.s_email);
-        mapView = (MapView) findViewById(R.id.mapView);
+
+//        android.view.ViewGroup.LayoutParams mParams = mapView.getLayoutParams();
+//        mParams.height = mapView.getWidth();
+//        mapView.setLayoutParams(mParams);
+
 
         getRoute();
 
@@ -158,9 +218,11 @@ public class ShowRouteActivity extends AppCompatActivity {
                                 s_description.setText(description);
                                 s_cost.setText(cost);
                                 s_departure.setText(departure.substring(5,7)+"/"+departure.substring(8,10)+" "+departure.substring(11,16));
+                                s_spaces_available.setText(spaces_available);
                             }
                         });
                         getOwner();
+                        getCarInfo();
                     }
 
                     @Override
@@ -204,7 +266,39 @@ public class ShowRouteActivity extends AppCompatActivity {
 
 
     private void getCarInfo(){
-        
+        MyApolloClient.getMyApolloClient().query(
+                VehicleByIdQuery.builder()
+                .id(car_id).build())
+                .enqueue(new ApolloCall.Callback<VehicleByIdQuery.Data>() {
+                    @Override
+                    public void onResponse(@Nonnull Response<VehicleByIdQuery.Data> response) {
+                        if (response.data()!=null){
+                            plate = response.data().vehicleById().plate();
+                            type = response.data().vehicleById().kind();
+                            brand = response.data().vehicleById().brand();
+                            model = String.valueOf(response.data().vehicleById().model());
+                            colour = response.data().vehicleById().color();
+                            capacity = String.valueOf(response.data().vehicleById().capacity());
+                            ShowRouteActivity.this.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    s_plate.setText(plate);
+                                    s_type.setText(type);
+                                    s_brand.setText(brand);
+                                    s_model.setText(model);
+                                    s_colour.setText(colour);
+                                    s_capacity.setText(capacity);
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@Nonnull ApolloException e) {
+
+                    }
+                });
     }
+
 
 }

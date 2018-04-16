@@ -88,8 +88,8 @@ public class LateralMenuActivity extends AppCompatActivity
             //Intent i = new Intent(this, CreateRouteActivity.class);
             //startActivity(i);
         } else if (id == R.id.nav_searchRoute) {
-            //Intent i = new Intent(this, SearchRouteActivity.class);
-            //startActivity(i);
+            Intent i = new Intent(this, SearchActivity.class);
+            startActivity(i);
         } else if (id == R.id.nav_favoriteRoute) {
             //Intent i = new Intent(this, FavoriteRouteActivity.class);
             //startActivity(i);

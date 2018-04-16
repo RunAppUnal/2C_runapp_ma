@@ -9,5 +9,6 @@ query VehicleByIdQuery(
   model
   color
   brand
+  capacity
   }
 }

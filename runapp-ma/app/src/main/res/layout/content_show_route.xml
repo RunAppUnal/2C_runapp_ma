@@ -8,278 +8,314 @@
     tools:context=".ShowRouteActivity"
     tools:showIn="@layout/activity_show_route">
 
-    <android.support.v4.widget.NestedScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginLeft="15dp"
-            android:layout_marginBottom="20dp"
-            android:layout_marginRight="15dp">
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/cat1"
-                android:layout_width="match_parent"
+            <Button
+                android:id="@+id/edit"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Informacion de la ruta"
-                android:textAlignment="center"
-                android:textColor="@android:color/black"
-                android:textStyle="bold"
-                tools:text="Informacion de la ruta" />
+                android:layout_weight="1"
+                android:text="Editar" />
 
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="match_parent"
+            <Button
+                android:id="@+id/delete"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Titulo"
-                android:textColor="@android:color/black"
-                android:textStyle="bold"
-                tools:text="Titulo" />
-
-            <TextView
-                android:id="@+id/s_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="15dp" />
-
-            <TextView
-                android:id="@+id/description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Descripcion"
-                android:textColor="@android:color/black"
-                android:textStyle="bold"
-                tools:text="Descripcion" />
-
-            <TextView
-                android:id="@+id/s_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="15dp" />
-
-            <TextView
-                android:id="@+id/cost"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Costo"
-                android:textColor="@android:color/black"
-                android:textStyle="bold"
-                tools:text="Costo" />
-
-            <TextView
-                android:id="@+id/s_cost"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="15dp" />
-
-            <TextView
-                android:id="@+id/departure"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Salida"
-                android:textColor="@android:color/black"
-                android:textStyle="bold"
-                tools:text="Salida" />
-
-            <TextView
-                android:id="@+id/s_departure"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="15dp" />
-
-            <TextView
-                android:id="@+id/spaces_available"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Asientos Disponibles"
-                android:textColor="@android:color/black"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/s_spaces_available"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="15dp" />
-
-            <com.google.android.gms.maps.MapView
-                android:id="@+id/mapView"
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="15dp" />
-
-            <TextView
-                android:id="@+id/cat2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Informacion del vehiculo"
-                android:textAlignment="center"
-                android:textColor="@android:color/black"
-                android:textStyle="bold"
-                tools:text="Informacion del vehiculo" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="15dp" />
-
-            <TextView
-                android:id="@+id/plate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Placa"
-                android:textColor="@android:color/black"
-                android:textStyle="bold"
-                tools:text="placa" />
-
-            <TextView
-                android:id="@+id/s_plate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView" />
-
-            <TextView
-                android:id="@+id/type"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Tipo"
-                android:textColor="@android:color/black"
-                android:textStyle="bold"
-                tools:text="Tipo" />
-
-            <TextView
-                android:id="@+id/s_type"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView" />
-
-            <TextView
-                android:id="@+id/brand"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Marca"
-                android:textColor="@android:color/black"
-                android:textStyle="bold"
-                tools:text="Marca" />
-
-            <TextView
-                android:id="@+id/s_brand"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView" />
-
-            <TextView
-                android:id="@+id/colour"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Color"
-                android:textColor="@android:color/black"
-                android:textStyle="bold"
-                tools:text="Color" />
-
-            <TextView
-                android:id="@+id/s_colour"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView" />
-
-            <TextView
-                android:id="@+id/model"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Modelo"
-                android:textColor="@android:color/black"
-                android:textStyle="bold"
-                tools:text="Modelo" />
-
-            <TextView
-                android:id="@+id/s_model"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView" />
-
-            <TextView
-                android:id="@+id/capacity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Capacidad"
-                android:textColor="@android:color/black"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/s_capacity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView" />
-
-            <TextView
-                android:id="@+id/cat3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Informacion de conductor"
-                android:textAlignment="center"
-                android:textColor="@android:color/black"
-                android:textStyle="bold"
-                tools:text="Informacion de conductor" />
-
-            <TextView
-                android:id="@+id/name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Nombre"
-                android:textColor="@android:color/black"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/s_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="15dp" />
-
-            <TextView
-                android:id="@+id/email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textColor="@android:color/black"
-                android:textStyle="bold"
-                tools:text="Email" />
-
-            <TextView
-                android:id="@+id/s_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:layout_weight="1"
+                android:backgroundTint="@android:color/holo_red_light"
+                android:text="Button"
+                tools:text="Eliminar" />
         </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:orientation="vertical">
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp" />
+
+                <TextView
+                    android:id="@+id/cat1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Informacion de la ruta"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    tools:text="Informacion de la ruta" />
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Titulo"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    tools:text="Titulo" />
+
+                <TextView
+                    android:id="@+id/s_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp" />
+
+                <TextView
+                    android:id="@+id/description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Descripcion"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    tools:text="Descripcion" />
+
+                <TextView
+                    android:id="@+id/s_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp" />
+
+                <TextView
+                    android:id="@+id/cost"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Costo"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    tools:text="Costo" />
+
+                <TextView
+                    android:id="@+id/s_cost"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp" />
+
+                <TextView
+                    android:id="@+id/departure"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Salida"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    tools:text="Salida" />
+
+                <TextView
+                    android:id="@+id/s_departure"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp" />
+
+                <TextView
+                    android:id="@+id/spaces_available"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Asientos Disponibles"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/s_spaces_available"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp" />
+
+                <com.google.android.gms.maps.MapView
+                    android:id="@+id/mapView"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp" />
+
+                <TextView
+                    android:id="@+id/cat2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Informacion del vehiculo"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    tools:text="Informacion del vehiculo" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp" />
+
+                <TextView
+                    android:id="@+id/plate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Placa"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    tools:text="placa" />
+
+                <TextView
+                    android:id="@+id/s_plate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView" />
+
+                <TextView
+                    android:id="@+id/type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tipo"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    tools:text="Tipo" />
+
+                <TextView
+                    android:id="@+id/s_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView" />
+
+                <TextView
+                    android:id="@+id/brand"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Marca"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    tools:text="Marca" />
+
+                <TextView
+                    android:id="@+id/s_brand"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView" />
+
+                <TextView
+                    android:id="@+id/colour"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Color"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    tools:text="Color" />
+
+                <TextView
+                    android:id="@+id/s_colour"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView" />
+
+                <TextView
+                    android:id="@+id/model"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Modelo"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    tools:text="Modelo" />
+
+                <TextView
+                    android:id="@+id/s_model"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView" />
+
+                <TextView
+                    android:id="@+id/capacity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Capacidad"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/s_capacity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView" />
+
+                <TextView
+                    android:id="@+id/cat3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Informacion de conductor"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    tools:text="Informacion de conductor" />
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Nombre"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/s_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp" />
+
+                <TextView
+                    android:id="@+id/email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    tools:text="Email" />
+
+                <TextView
+                    android:id="@+id/s_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp" />
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+    </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>

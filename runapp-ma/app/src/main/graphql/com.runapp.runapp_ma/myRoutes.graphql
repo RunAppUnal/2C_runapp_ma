@@ -1,0 +1,22 @@
+query searchMyRoutesQuery(
+  $userid: Int!
+  $word: String!
+  $cost: String!
+  $spaces: String!
+  $datetime: String!
+  ){
+  searchMyRoutes(
+  userid: $userid
+  word: $word
+  cost: $cost
+  spaces: $spaces
+  date: $datetime
+  ){
+    id
+    title
+    description
+    departure
+    cost
+    spaces_available
+  }
+}

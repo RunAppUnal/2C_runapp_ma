@@ -28,7 +28,7 @@ import java.util.Calendar;
 
 import javax.annotation.Nonnull;
 
-public class SearchActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
+public class SearchActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
 
     ImageButton b_picker;
     ImageButton b_reset;
@@ -122,17 +122,17 @@ public class SearchActivity extends AppCompatActivity implements DatePickerDialo
         word = e_word.getText().toString();
         cost = e_cost.getText().toString();
         spaces = e_spaces.getText().toString();
-        if (s_date == "" || s_time == "") {
+        if (s_date == "") {
             departure = "";
         }else {
-            departure = s_date + s_time;
+            departure = s_date;
         }
         MyApolloClient.getMyApolloClient().query(
                 SearchRoutesQuery.builder()
                 .userid(userid)
                 .word(word)
                 .cost(cost)
-                .datetime(departure)
+                .datetime(s_date)
                 .spaces(spaces).build()).enqueue(
                 new ApolloCall.Callback<SearchRoutesQuery.Data>() {
                     @Override
@@ -145,6 +145,7 @@ public class SearchActivity extends AppCompatActivity implements DatePickerDialo
 
                             //RouteAdapter adapter = new RouteAdapter(this, routes);
                             int j = response.data().searchOtherRoutes().size();
+                            routes = new ArrayList<>();
                             for (int i = 0;i<j;i++){
                                 routes.add(new Route(response.data().searchOtherRoutes().get(i).id(),
                                         response.data().searchOtherRoutes().get(i).title(),
@@ -174,25 +175,17 @@ public class SearchActivity extends AppCompatActivity implements DatePickerDialo
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        s_date = year+"-"+(month+1)+"-"+dayOfMonth+" ";
+        s_date = year+"-"+(month+1)+"-"+dayOfMonth;
         Log.d(TAG, "s_date: "+s_date);
-        hour = c.get(Calendar.HOUR_OF_DAY);
-        minute = c.get(Calendar.MINUTE);
-        TimePickerDialog timePickerDialog = new TimePickerDialog(SearchActivity.this, SearchActivity.this, hour, minute, DateFormat.is24HourFormat(this));
-        timePickerDialog.show();
     }
 
-    @Override
-    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        s_time = hourOfDay+":"+minute+":"+"00";
-        Log.d(TAG, "time: "+s_time);
-    }
 
     public void fill(final boolean stat){
         SearchActivity.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 RouteAdapter routeAdapter = new RouteAdapter(SearchActivity.this, routes);
+                e_list.setAdapter(null);
                 if (stat == true) {
                     e_list.setAdapter(null);
                     e_list.setAdapter(routeAdapter);

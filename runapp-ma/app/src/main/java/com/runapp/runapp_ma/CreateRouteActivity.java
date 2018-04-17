@@ -3,6 +3,7 @@ package com.runapp.runapp_ma;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
@@ -69,7 +70,12 @@ public class CreateRouteActivity extends AppCompatActivity implements OnMapReady
 
     Context context;
 
+    String username;
 
+
+    Bundle datos;
+
+    ImageButton b_menu;
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -157,6 +163,20 @@ public class CreateRouteActivity extends AppCompatActivity implements OnMapReady
         setContentView(R.layout.activity_create_route);
         SharedPreferences sharedPref = getSharedPreferences("userData",context.MODE_PRIVATE);
         user_id = sharedPref.getInt("userid",0);
+        username = datos.getString("username");
+        userid = datos.getInt("userid");
+
+
+        b_menu = (ImageButton) findViewById(R.id.menu);
+        b_menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(CreateRouteActivity.this,LateralMenuActivity.class);
+                myIntent.putExtra("userid",userid);
+                myIntent.putExtra("username", username);
+                startActivity(myIntent);
+            }
+        });
 
         Bundle mapViewBundle = null;
         if (savedInstanceState !=null) {

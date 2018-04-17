@@ -23,7 +23,7 @@
         <item
             android:id="@+id/nav_favoriteRoute"
             android:icon="@drawable/ic_ico_favorite"
-            android:title="Rutas favoritas" />
+            android:title="Mis rutas" />
         <item
             android:id="@+id/nav_myCars"
             android:icon="@drawable/ic_ico_car"

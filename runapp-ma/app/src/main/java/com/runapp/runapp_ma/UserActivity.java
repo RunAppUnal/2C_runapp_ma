@@ -24,18 +24,30 @@ public class UserActivity extends AppCompatActivity {
     Context context = this;
     private TextView uname, name, email, cellphone;
 
+    String username;
+    int userid;
+
+    Bundle datos;
+
     ImageButton b_menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
+        datos = getIntent().getExtras();
+
+        username = datos.getString("username");
+        userid = datos.getInt("userid");
+
 
         b_menu = (ImageButton) findViewById(R.id.menu);
         b_menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(UserActivity.this,LateralMenuActivity.class);
+                myIntent.putExtra("userid",userid);
+                myIntent.putExtra("username", username);
                 startActivity(myIntent);
             }
         });
@@ -52,6 +64,10 @@ public class UserActivity extends AppCompatActivity {
     private void getUserByUserName(){
         SharedPreferences sharedPrefes = getSharedPreferences("userData",context.MODE_PRIVATE);
         String username = sharedPrefes.getString("username", "");
+        datos = getIntent().getExtras();
+
+        username = datos.getString("username")
+;
         MyApolloClient.getMyApolloClient().query(
                 UserByUserNameQuery.builder().username(username).build()).enqueue(new ApolloCall.Callback<UserByUserNameQuery.Data>() {
             @Override

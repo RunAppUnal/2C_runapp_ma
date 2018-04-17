@@ -16,6 +16,11 @@ import android.view.MenuItem;
 
 public class LateralMenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    
+    int userid;
+    String username;
+
+    Bundle datos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +29,12 @@ public class LateralMenuActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        datos = getIntent().getExtras();
+        userid = datos.getInt("userid");
+        username = datos.getString("username");
+        
+        
+        
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,24 +97,40 @@ public class LateralMenuActivity extends AppCompatActivity
 
         if (id == R.id.nav_createRoute) {
             Intent i = new Intent(this, CreateRouteActivity.class);
+            i.putExtra("userid",userid);
+            i.putExtra("username", username);
             startActivity(i);
         } else if (id == R.id.nav_searchRoute) {
             Intent i = new Intent(this, SearchActivity.class);
+            i.putExtra("userid",userid);
+            i.putExtra("username", username);
+            i.putExtra("from", 0);
             startActivity(i);
         } else if (id == R.id.nav_favoriteRoute) {
-            //Intent i = new Intent(this, FavoriteRouteActivity.class);
-            //startActivity(i);
+            Intent i = new Intent(this, SearchActivity.class);
+            i.putExtra("userid",userid);
+            i.putExtra("username", username);
+            i.putExtra("from", 1);
+            startActivity(i);
         } else if (id == R.id.nav_myCars) {
             Intent i = new Intent(this, VehiclesActivity.class);
+            i.putExtra("userid",userid);
+            i.putExtra("username", username);
             startActivity(i);
         } else if (id == R.id.nav_bicycle) {
             Intent i = new Intent(this, BikeRoutesActivity.class);
+            i.putExtra("userid",userid);
+            i.putExtra("username", username);
             startActivity(i);
         } else if (id == R.id.nav_user) {
             Intent i = new Intent(this, UserActivity.class);
+            i.putExtra("userid",userid);
+            i.putExtra("username", username);
             startActivity(i);
         } else if (id == R.id.nav_home) {
             Intent i = new Intent(this, MainActivity.class);
+            i.putExtra("userid",userid);
+            i.putExtra("username", username);
             startActivity(i);
         }
 

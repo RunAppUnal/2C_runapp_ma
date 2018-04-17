@@ -308,6 +308,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 Log.d(TAG, "status if: "+status);
                                 //Intent myIntent = new Intent(LoginActivity.this,VehiclesActivity.class);
                                 Intent myIntent = new Intent(LoginActivity.this,LateralMenuActivity.class);
+                                myIntent.putExtra("userid",response.data().login().userid());
+                                myIntent.putExtra("username", response.data().login().username());
                                 startActivity(myIntent);
                                 LoginActivity.this.runOnUiThread(new Runnable() {
                                     @Override

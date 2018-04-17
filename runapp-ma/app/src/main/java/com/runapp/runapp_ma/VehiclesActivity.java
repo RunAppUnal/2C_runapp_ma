@@ -34,11 +34,21 @@ public class VehiclesActivity extends AppCompatActivity {
     private Context context = this;
     ImageButton b_menu;
 
+    String userid, username;
+
+    Bundle datos;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vehicles);
+
+        datos = getIntent().getExtras();
+        userid = datos.getString("userid");
+        username = datos.getString("username");
+
+
         vehicles = new ArrayList<>();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -62,6 +72,8 @@ public class VehiclesActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(VehiclesActivity.this,LateralMenuActivity.class);
+                myIntent.putExtra("userid",userid);
+                myIntent.putExtra("username", username);
                 startActivity(myIntent);
             }
         });

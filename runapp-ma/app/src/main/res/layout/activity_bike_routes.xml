@@ -5,7 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".BikeRoutesActivity">
+    tools:context=".BikeRoutesActivity"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    >
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
@@ -21,14 +24,14 @@
             android:fitsSystemWindows="true"
             app:contentScrim="@color/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:toolbarId="@+id/toolbar"
-            >
+            app:toolbarId="@+id/toolbar">
 
             <ImageView
                 android:id="@+id/imageView2"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_marginTop="0dp"
+                android:contentDescription="Two bikes"
                 android:foreground="@color/transparentColorPrimary"
                 android:scaleType="centerCrop"
                 android:transitionName="activity_transition_bike_routes"
@@ -45,15 +48,130 @@
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_bike_routes" />
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context=".BikeRoutesActivity"
+        tools:showIn="@layout/activity_bike_routes"
+        android:fillViewport="true">
 
-    <android.support.design.widget.FloatingActionButton
+        <!--<android.support.constraint.ConstraintLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent">-->
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/textInputLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_weight="0.4"
+            app:layout_constraintEnd_toStartOf="@+id/textInputLayout2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <!--<EditText-->
+                <!--android:id="@+id/date"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:backgroundTint="@color/colorPrimary"-->
+                <!--android:drawablePadding="16dp"-->
+                <!--android:drawableStart="@drawable/ic_event_black"-->
+                <!--android:hint="Fecha"-->
+                <!--android:inputType="none" />-->
+
+            <EditText
+                android:id="@+id/date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorPrimary"
+                android:drawablePadding="16dp"
+                android:drawableStart="@drawable/ic_event_black"
+                android:hint="Fecha"
+                android:focusable="false"
+                android:inputType="date" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/textInputLayout2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_weight="0.6"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.6"
+            app:layout_constraintStart_toEndOf="@+id/textInputLayout"
+            app:layout_constraintTop_toTopOf="@+id/textInputLayout">
+
+            <EditText
+                android:id="@+id/time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorPrimary"
+                android:drawablePadding="16dp"
+                android:drawableStart="@drawable/ic_access_time_black"
+                android:hint="Hora"
+                android:focusable="false"
+                android:inputType="none" />
+        </android.support.design.widget.TextInputLayout>
+
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/mapView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="16dp"
+                android:layout_marginBottom="16dp"
+                android:minHeight="200dp"
+                app:layout_constraintBottom_toTopOf="@+id/email_sign_in_button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_min="200dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <Button
+                android:id="@+id/email_sign_in_button"
+                style="?android:textAppearanceSmall"
+                android:layout_width="263dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:background="@color/colorPrimaryDark"
+                android:elevation="2dp"
+                android:text="Crear ruta"
+                android:textColor="@color/white"
+                android:textColorHighlight="@color/colorAccent"
+                android:textColorHint="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:textColor="@color/white"
+                android:onClick="submit"/>
+
+            <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_margin="@dimen/text_margin"-->
+            <!--android:text="@string/large_text" />-->
+
+        <!--</android.support.constraint.ConstraintLayout>-->
+    </android.support.constraint.ConstraintLayout>
+
+    <!--<iclude android:id="@+id/include"-->
+    <!--layout="@layout/content_bike_routes" />-->
+
+    <!--android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
         app:layout_anchor="@+id/fab"
         app:layout_anchorGravity="bottom|center"
-        app:srcCompat="@drawable/ic_check_black_24dp" />
+        app:srcCompat="@drawable/ic_check_black_24dp" /-->
 
 </android.support.design.widget.CoordinatorLayout>

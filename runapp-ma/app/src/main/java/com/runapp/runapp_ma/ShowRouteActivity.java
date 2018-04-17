@@ -2,14 +2,15 @@ package com.runapp.runapp_ma;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
@@ -31,14 +32,11 @@ import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.TravelMode;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Nonnull;
-
-import static com.runapp.runapp_ma.R.id.find;
-import static com.runapp.runapp_ma.R.id.results;
-import static com.runapp.runapp_ma.R.id.s_title;
 
 public class ShowRouteActivity extends AppCompatActivity implements OnMapReadyCallback{
 
@@ -67,6 +65,7 @@ public class ShowRouteActivity extends AppCompatActivity implements OnMapReadyCa
 
     int user_id;
     int car_id;
+    int userLogged;
 
     String title;
     String description;
@@ -89,6 +88,9 @@ public class ShowRouteActivity extends AppCompatActivity implements OnMapReadyCa
 
     String name;
     String email;
+
+    Button b_delete;
+    Button b_edit;
 
 
     @Override
@@ -149,24 +151,20 @@ public class ShowRouteActivity extends AppCompatActivity implements OnMapReadyCa
         uiSettings.setScrollGesturesEnabled(true);
         LatLng unal = new LatLng(4.635540, -74.082807);
         gmap.moveCamera(CameraUpdateFactory.newLatLng(unal));
-//        SystemClock.sleep(7000);
-        ShowRouteActivity.this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                DirectionsResult route = getDirections();
-                if (route != null) {
-                    addPolyline(route, gmap);
-                    addMarkersToMap(route, gmap);
-                    positionCamera(route, gmap);
-                }
-            }
-        });
 
-
+//        ShowRouteActivity.this.runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                DirectionsResult route = getDirections();
+//                if (route != null) {
+//                    addPolyline(route, gmap);
+//                    addMarkersToMap(route, gmap);
+//                    positionCamera(route, gmap);
+//                }
+//            }
+//        });
 
     }
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,12 +173,20 @@ public class ShowRouteActivity extends AppCompatActivity implements OnMapReadyCa
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.adddel);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                if (user_id != userLogged) {
+                    addDeluser();
+                }else {
+                    ShowRouteActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(ShowRouteActivity.this, "No puedes unirte a tu propia ruta ;)", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
             }
         });
 
@@ -188,13 +194,36 @@ public class ShowRouteActivity extends AppCompatActivity implements OnMapReadyCa
         if (savedInstanceState !=null) {
             mapViewBundle = savedInstanceState.getBundle(MAP_VIEW_BUNDLE_KEY);
         }
+        userLogged = 100;
 
         mapView = (MapView) findViewById(R.id.mapView);
         mapView.onCreate(mapViewBundle);
         mapView.getMapAsync(this);
 
+        b_delete = (Button) findViewById(R.id.delete);
+        b_edit = (Button) findViewById(R.id.edit);
+
+        if (user_id != userLogged){
+            android.view.ViewGroup.LayoutParams mParams = b_delete.getLayoutParams();
+            mParams.height = 0;
+            b_delete.setLayoutParams(mParams);
+            mParams = b_edit.getLayoutParams();
+            mParams.height = 0;
+            b_edit.setLayoutParams(mParams);
+//            b_delete.setVisibility(View.INVISIBLE);
+        }
+
+
+        b_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteRoute();
+            }
+        });
+
         Intent myIntent = getIntent();
         r_id = myIntent.getIntExtra("routeid",0);
+
 
         s_title = (TextView) findViewById(R.id.s_title);
         s_description = (TextView) findViewById(R.id.s_description);
@@ -243,6 +272,7 @@ public class ShowRouteActivity extends AppCompatActivity implements OnMapReadyCa
                         departure = response.data().routeById().departure();
                         cost = String.valueOf(response.data().routeById().cost());
                         users_in_route = response.data().routeById().users_in_route().split(",");
+                        Log.d(TAG, "users in route: " + users_in_route.toString());
                         spaces_available = String.valueOf(response.data().routeById().spaces_available());
 
 
@@ -260,7 +290,7 @@ public class ShowRouteActivity extends AppCompatActivity implements OnMapReadyCa
                         });
                         getOwner();
                         getCarInfo();
-//                        getDirections();
+                        getDirections();
 
                     }
 
@@ -386,6 +416,105 @@ public class ShowRouteActivity extends AppCompatActivity implements OnMapReadyCa
     private void positionCamera(DirectionsResult results, GoogleMap mMap) {
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(results.routes[0].legs[0].startLocation.lat, results.routes[0].legs[0].startLocation.lng), 12));
     }
+
+    private void addDeluser(){
+        if (Arrays.asList(users_in_route).contains(String.valueOf(userLogged))){
+            MyApolloClient.getMyApolloClient().mutate(
+                    DelUserFromRouteMutation.builder()
+                    .id(r_id)
+                    .userid(userLogged).build())
+                    .enqueue(new ApolloCall.Callback<DelUserFromRouteMutation.Data>() {
+                        @Override
+                        public void onResponse(@Nonnull Response<DelUserFromRouteMutation.Data> response) {
+                            if (response.data()!=null){
+                                users_in_route = response.data().removeUserFromRoute().users_in_route().split(",");
+                                if (Arrays.asList(users_in_route).contains(String.valueOf(userLogged))!=true) {
+                                    Log.d(TAG, "SALIRSE A RUTA: ");
+                                    ShowRouteActivity.this.runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(ShowRouteActivity.this, "Has abandonado la ruta", Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+                                }
+                                }
+
+                        }
+
+                        @Override
+                        public void onFailure(@Nonnull ApolloException e) {
+
+                        }
+                    });
+
+        }else {
+            if (Integer.parseInt(spaces_available) > 0) {
+                MyApolloClient.getMyApolloClient().mutate(
+                        AddUserMutation.builder()
+                                .id(r_id)
+                                .userid(userLogged).build())
+                        .enqueue(new ApolloCall.Callback<AddUserMutation.Data>() {
+                            @Override
+                            public void onResponse(@Nonnull Response<AddUserMutation.Data> response) {
+                                if (response.data() != null) {
+                                    users_in_route = response.data().addUserFromRoute().users_in_route().split(",");
+                                    if (Arrays.asList(users_in_route).contains(String.valueOf(userLogged))== true) {
+                                        Log.d(TAG, "UNIRSE A RUTA: ");
+                                        ShowRouteActivity.this.runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Toast.makeText(ShowRouteActivity.this, "Te has unido a la ruta", Toast.LENGTH_LONG).show();
+                                            }
+                                        });
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(@Nonnull ApolloException e) {
+
+                            }
+                        });
+
+            }else{
+                Log.d(TAG, "NO HAY ESPACIOS: ");
+                ShowRouteActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(ShowRouteActivity.this, "No hay puestos disponibles en esta ruta", Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+        }
+        }
+
+        private  void deleteRoute(){
+        MyApolloClient.getMyApolloClient().mutate(
+                DeleteRouteMutation.builder()
+                .id(r_id).build())
+                .enqueue(new ApolloCall.Callback<DeleteRouteMutation.Data>() {
+                    @Override
+                    public void onResponse(@Nonnull Response<DeleteRouteMutation.Data> response) {
+                        ShowRouteActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(ShowRouteActivity.this, "Has borrado la ruta", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                        Intent intent = new Intent(ShowRouteActivity.this, SearchActivity.class);
+                        intent.putExtra("from", 1);
+                        startActivity(intent);
+
+                    }
+
+                    @Override
+                    public void onFailure(@Nonnull ApolloException e) {
+
+                    }
+                });
+
+        }
+
 
 
 }

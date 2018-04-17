@@ -42,7 +42,7 @@ public class SearchActivity extends AppCompatActivity implements DatePickerDialo
     String s_time;
     boolean status = false;
     Calendar c;
-    int day, month, year, hour, minute;
+    int day, month, year, hour, minute, from;
 
     ArrayList<Route> routes = new ArrayList<>();
 
@@ -65,6 +65,16 @@ public class SearchActivity extends AppCompatActivity implements DatePickerDialo
         e_spaces = (EditText) findViewById(R.id.spaces);
         e_list = (ListView) findViewById(R.id.results);
 
+        Intent myIntent = getIntent();
+        from = myIntent.getIntExtra("from",0);
+
+//        if (from == 1) {
+//            myRoutesQuery();
+//        }else{
+//            boolean finalStatus = false;
+//            finalStatus = RoutesQuery();
+//        }
+
         s_date = "";
         s_time = "";
 
@@ -79,8 +89,12 @@ public class SearchActivity extends AppCompatActivity implements DatePickerDialo
         b_find.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean finalStatus = false;
-                finalStatus = RoutesQuery();
+                if (from == 1) {
+                    myRoutesQuery();
+                }else{
+                    boolean finalStatus = false;
+                    finalStatus = RoutesQuery();
+                }
             }
         });
 
@@ -153,6 +167,72 @@ public class SearchActivity extends AppCompatActivity implements DatePickerDialo
                                         response.data().searchOtherRoutes().get(i).departure(),
                                         (float) response.data().searchOtherRoutes().get(i).cost(),
                                         response.data().searchOtherRoutes().get(i).spaces_available()
+                                ));
+                            }
+                            status = true;
+
+
+                        }
+                        fill(status);
+                        //status = true;
+                    }
+
+                    @Override
+                    public void onFailure(@Nonnull ApolloException e) {
+                        status = false;
+                    }
+                }
+        );
+
+        return status;
+    }
+
+
+    public boolean myRoutesQuery(){
+        String word = "";
+        String cost = "";
+        String departure = "";
+        String spaces = "";
+        int userid = 0;
+
+//        word = e_word.getText().toString();
+
+        SharedPreferences sharedPrefs = getSharedPreferences("userData", MODE_PRIVATE);
+        userid = sharedPrefs.getInt("userid",0);
+        word = e_word.getText().toString();
+        cost = e_cost.getText().toString();
+        spaces = e_spaces.getText().toString();
+        if (s_date == "") {
+            departure = "";
+        }else {
+            departure = s_date;
+        }
+        MyApolloClient.getMyApolloClient().query(
+                SearchMyRoutesQuery.builder()
+                        .userid(userid)
+                        .word(word)
+                        .cost(cost)
+                        .datetime(s_date)
+                        .spaces(spaces).build()).enqueue(
+                new ApolloCall.Callback<SearchMyRoutesQuery.Data>() {
+                    @Override
+                    public void onResponse(@Nonnull Response<SearchMyRoutesQuery.Data> response) {
+                        Log.d(TAG, "data: "+ response.data().searchMyRoutes().isEmpty());
+                        Log.d(TAG, "data: "+ response.data().searchMyRoutes().size());
+                        if (response.data() == null || response.data().searchMyRoutes().isEmpty()==true){
+                            status = false;
+                        }else{
+
+                            //RouteAdapter adapter = new RouteAdapter(this, routes);
+                            int j = response.data().searchMyRoutes().size();
+                            routes = new ArrayList<>();
+                            for (int i = 0;i<j;i++){
+                                routes.add(new Route(response.data().searchMyRoutes().get(i).id(),
+                                        response.data().searchMyRoutes().get(i).title(),
+                                        response.data().searchMyRoutes().get(i).description(),
+                                        response.data().searchMyRoutes().get(i).departure(),
+                                        (float) response.data().searchMyRoutes().get(i).cost(),
+                                        response.data().searchMyRoutes().get(i).spaces_available()
                                 ));
                             }
                             status = true;

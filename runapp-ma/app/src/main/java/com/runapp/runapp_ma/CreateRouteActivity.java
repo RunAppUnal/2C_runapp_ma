@@ -3,6 +3,7 @@ package com.runapp.runapp_ma;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
@@ -57,12 +58,15 @@ public class CreateRouteActivity extends AppCompatActivity implements OnMapReady
     int day, month, year, hour, minute, counter, user_id;
     int dayFinal, monthFinal, yearFinal, hourFinal, minuteFinal;
 
+    int cost, spaces_available;
+    String title, description, waypoints, departure, users_in_route;
     float from_lat, from_lng, to_lat, to_lng;
+    Boolean active;
     TextInputEditText tiTitle, tiDescription, tiCost, tiSpace;
     Spinner sVehicles;
     Button save;
 
-    int userid, carid, cost, spaces;
+    int userid, carid;
 
     ArrayList<String> cars = new ArrayList<>();
     ArrayList<Integer> cars_id = new ArrayList<>();
@@ -168,9 +172,17 @@ public class CreateRouteActivity extends AppCompatActivity implements OnMapReady
         tiCost = (TextInputEditText) findViewById(R.id.tiCost);
         tiSpace = (TextInputEditText) findViewById(R.id.tiSpace);
         sVehicles = (Spinner) findViewById(R.id.sVehicles);
+//        tiSalida = (TextView) findViewById(R.id.tiSalida);
+        save = (Button) findViewById(R.id.btnSave);
         cars = new ArrayList<>();
         cars_id = new ArrayList<>();
         getMyVehicles();
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createRoute();
+            }
+        });
 
         mapView = (MapView) findViewById(R.id.mapView);
         mapView.onCreate(mapViewBundle);
@@ -293,6 +305,7 @@ public class CreateRouteActivity extends AppCompatActivity implements OnMapReady
                 new ApolloCall.Callback<MyVehiclesQuery.Data>() {
                     @Override
                     public void onResponse(@Nonnull Response<MyVehiclesQuery.Data> response) {
+                        if (response.data()!=null){
                         int s = response.data().myVehicles().size();
                         for (int i =0; i<s; i++){
                             cars.add(response.data().myVehicles().get(i).plate());
@@ -300,7 +313,7 @@ public class CreateRouteActivity extends AppCompatActivity implements OnMapReady
                         }
 //                        if (s >0) {
                             fillSpinner();
-//                        }
+                        }
                     }
 
                     @Override
@@ -334,6 +347,50 @@ public class CreateRouteActivity extends AppCompatActivity implements OnMapReady
                 carid = cars_id.get(0);
             }
         });
+    }
+
+    private void createRoute(){
+        title = tiTitle.getText().toString();
+        description = tiDescription.getText().toString();
+        waypoints = "";
+        departure = tiSalida.getText().toString();
+        cost = Integer.parseInt(tiCost.getText().toString());
+        users_in_route = "{}";
+        active = true;
+        Log.d(TAG, "LATS AND LNGS: "+from_lat + " "+from_lng + " "+ to_lng + "" + to_lat);
+        spaces_available = Integer.parseInt(tiSpace.getText().toString());
+        MyApolloClient.getMyApolloClient().mutate(
+                CreateRouteMutation.builder()
+                .user_id(user_id)
+                .car_id(carid)
+                .title(title)
+                .description(description)
+                .from_lat((double) from_lat)
+                .from_lng((double) from_lng)
+                .to_lat((double) to_lat)
+                .to_lng((double) to_lng)
+                .waypoints(waypoints)
+                .departure(departure)
+                .cost((double) cost)
+                .users_in_route(users_in_route)
+                .active(active)
+                .spaces_available(spaces_available).build())
+                .enqueue(new ApolloCall.Callback<CreateRouteMutation.Data>() {
+                    @Override
+                    public void onResponse(@Nonnull Response<CreateRouteMutation.Data> response) {
+                        if (response.data()!=null) {
+                            Intent intent = new Intent(CreateRouteActivity.this, ShowRouteActivity.class);
+                            intent.putExtra("routeid", response.data().createRoute().id());
+                            startActivity(intent);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@Nonnull ApolloException e) {
+
+                    }
+                });
+
     }
 
 }

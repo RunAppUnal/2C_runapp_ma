@@ -44,6 +44,6 @@ mutation CreateRouteMutation(
     cost
     users_in_route
     active
-    spaces_avaible
+    spaces_available
   }
 }

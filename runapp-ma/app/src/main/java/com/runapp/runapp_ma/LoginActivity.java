@@ -261,7 +261,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         private final String mEmail;
         private final String mPassword;
         final String TAG = "LoginActivity";
-        SharedPreferences sharedPrefes = getSharedPreferences("userData",context.MODE_PRIVATE);
+//        SharedPreferences sharedPrefes = getSharedPreferences("userData",context.MODE_PRIVATE);
         UserLoginTask(String email, String password) {
             mEmail = email;
             mPassword = password;
@@ -295,18 +295,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 });
 
                             }else{
-                                SharedPreferences sharedPref = getPreferences(context.MODE_PRIVATE);
+                                SharedPreferences sharedPref = getPreferences(MODE_PRIVATE);
                                 SharedPreferences.Editor editor = sharedPref.edit();
                                 editor.putInt("userid",response.data().login().userid());
                                 editor.putString("username", response.data().login().username());
                                 editor.putBoolean("logged", true);
                                 editor.putString("name",response.data().login().name());
                                 editor.putString("lastname", response.data().login().lastname());
-                                editor.apply();
+                                editor.commit();
                                 Log.d(TAG, "if username");
                                 status = true;
                                 Log.d(TAG, "status if: "+status);
-                                Intent myIntent = new Intent(LoginActivity.this,SearchActivity.class);
+                                Intent myIntent = new Intent(LoginActivity.this,CreateRouteActivity.class);
                                 startActivity(myIntent);
                                 LoginActivity.this.runOnUiThread(new Runnable() {
                                     @Override

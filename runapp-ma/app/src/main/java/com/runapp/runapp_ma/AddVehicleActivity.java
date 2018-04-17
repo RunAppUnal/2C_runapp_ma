@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,12 +45,25 @@ public class AddVehicleActivity extends AppCompatActivity {
     private TextView ticapacity;
     private TextView tibrand;
 
+    ImageButton b_menu;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_vehicle);
 
-        setupActionBar();
+        //setupActionBar();
+
+        b_menu = (ImageButton) findViewById(R.id.menu);
+
+        b_menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(AddVehicleActivity.this,LateralMenuActivity.class);
+                startActivity(myIntent);
+            }
+        });
 
         // Spinner element
         final Spinner spinner = (Spinner) findViewById(R.id.sKind);

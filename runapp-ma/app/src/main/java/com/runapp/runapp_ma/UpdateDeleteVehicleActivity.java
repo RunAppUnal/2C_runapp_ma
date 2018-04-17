@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -47,12 +48,24 @@ public class UpdateDeleteVehicleActivity extends AppCompatActivity {
     private TextView tibrand;
     private Spinner sKind;
 
+    ImageButton b_menu;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_delete_vehicle);
 
-        setupActionBar();
+        //setupActionBar();
+        b_menu = (ImageButton) findViewById(R.id.menu);
+
+        b_menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(UpdateDeleteVehicleActivity.this,LateralMenuActivity.class);
+                startActivity(myIntent);
+            }
+        });
 
         // Spinner element
         final Spinner spinner = (Spinner) findViewById(R.id.sKind);

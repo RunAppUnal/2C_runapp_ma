@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.apollographql.apollo.ApolloCall;
@@ -64,6 +65,9 @@ public class ShowRouteActivity extends AppCompatActivity implements OnMapReadyCa
     TextView s_capacity;
     TextView s_name;
     TextView s_email;
+
+    ImageButton b_menu;
+
 
     int user_id;
     int car_id;
@@ -174,6 +178,15 @@ public class ShowRouteActivity extends AppCompatActivity implements OnMapReadyCa
         setContentView(R.layout.activity_show_route);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        b_menu = (ImageButton) findViewById(R.id.menu);
+        b_menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(ShowRouteActivity.this,LateralMenuActivity.class);
+                startActivity(myIntent);
+            }
+        });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

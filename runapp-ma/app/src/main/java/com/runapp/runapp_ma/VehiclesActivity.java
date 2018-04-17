@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.apollographql.apollo.ApolloCall;
@@ -31,6 +32,8 @@ public class VehiclesActivity extends AppCompatActivity {
     ArrayList<Vehicle> vehicles;
     private String TAG = "VehiclesActivity";
     private Context context = this;
+    ImageButton b_menu;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +54,17 @@ public class VehiclesActivity extends AppCompatActivity {
             }
         });
 
-        setupActionBar();
+        //setupActionBar();
         getMyVehicles();
+
+        b_menu = (ImageButton) findViewById(R.id.menu);
+        b_menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(VehiclesActivity.this,LateralMenuActivity.class);
+                startActivity(myIntent);
+            }
+        });
 
         lvItems = (ListView) findViewById(R.id.lvItems);
         vehicleAdapter = new VehicleAdapter(vehicles, this);

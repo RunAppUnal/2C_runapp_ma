@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.apollographql.apollo.ApolloCall;
@@ -22,17 +24,27 @@ public class UserActivity extends AppCompatActivity {
     Context context = this;
     private TextView uname, name, email, cellphone;
 
+    ImageButton b_menu;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
-        setupActionBar();
-
+        b_menu = (ImageButton) findViewById(R.id.menu);
+        b_menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(UserActivity.this,LateralMenuActivity.class);
+                startActivity(myIntent);
+            }
+        });
         uname = (TextView) findViewById(R.id.txtUserName);
         name = (TextView) findViewById(R.id.txtName);
         email = (TextView) findViewById(R.id.txtEmail);
         cellphone = (TextView) findViewById(R.id.txtCellphone);
+
+
 
         getUserByUserName();
     }

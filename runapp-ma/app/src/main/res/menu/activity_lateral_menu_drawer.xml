@@ -5,6 +5,10 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_free_home_menu_icon_png_vector"
+            android:title="Inicio" />
+        <item
             android:id="@+id/nav_user"
             android:icon="@drawable/ic_ico_user"
             android:title="Información de usuario" />
@@ -19,7 +23,7 @@
         <item
             android:id="@+id/nav_favoriteRoute"
             android:icon="@drawable/ic_ico_favorite"
-            android:title="Rutas favoritas" />
+            android:title="Mis rutas" />
         <item
             android:id="@+id/nav_myCars"
             android:icon="@drawable/ic_ico_car"

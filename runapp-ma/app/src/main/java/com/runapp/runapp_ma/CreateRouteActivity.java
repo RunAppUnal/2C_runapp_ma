@@ -73,7 +73,12 @@ public class CreateRouteActivity extends AppCompatActivity implements OnMapReady
 
     Context context;
 
+    String username;
 
+
+    Bundle datos;
+
+    ImageButton b_menu;
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -161,6 +166,20 @@ public class CreateRouteActivity extends AppCompatActivity implements OnMapReady
         setContentView(R.layout.activity_create_route);
         SharedPreferences sharedPref = getSharedPreferences("userData",context.MODE_PRIVATE);
         user_id = sharedPref.getInt("userid",0);
+        username = datos.getString("username");
+        userid = datos.getInt("userid");
+
+
+        b_menu = (ImageButton) findViewById(R.id.menu);
+        b_menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(CreateRouteActivity.this,LateralMenuActivity.class);
+                myIntent.putExtra("userid",userid);
+                myIntent.putExtra("username", username);
+                startActivity(myIntent);
+            }
+        });
 
         Bundle mapViewBundle = null;
         if (savedInstanceState !=null) {
@@ -309,7 +328,7 @@ public class CreateRouteActivity extends AppCompatActivity implements OnMapReady
                         int s = response.data().myVehicles().size();
                         for (int i =0; i<s; i++){
                             cars.add(response.data().myVehicles().get(i).plate());
-                            cars_id.add(response.data().myVehicles().get(i).id());
+                            cars_id.add((int) response.data().myVehicles().get(i).id());
                         }
 //                        if (s >0) {
                             fillSpinner();

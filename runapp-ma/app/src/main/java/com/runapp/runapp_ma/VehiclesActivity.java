@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.apollographql.apollo.ApolloCall;
@@ -29,11 +30,23 @@ public class VehiclesActivity extends AppCompatActivity {
     ArrayList<Vehicle> vehicles;
     private String TAG = "VehiclesActivity";
     private Context context = this;
+    ImageButton b_menu;
+
+    String userid, username;
+
+    Bundle datos;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vehicles);
+
+        datos = getIntent().getExtras();
+        userid = datos.getString("userid");
+        username = datos.getString("username");
+
+
         vehicles = new ArrayList<>();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -49,8 +62,19 @@ public class VehiclesActivity extends AppCompatActivity {
             }
         });
 
-        setupActionBar();
+        //setupActionBar();
         getMyVehicles();
+
+        b_menu = (ImageButton) findViewById(R.id.menu);
+        b_menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(VehiclesActivity.this,LateralMenuActivity.class);
+                myIntent.putExtra("userid",userid);
+                myIntent.putExtra("username", username);
+                startActivity(myIntent);
+            }
+        });
 
         lvItems = (ListView) findViewById(R.id.lvItems);
         vehicleAdapter = new VehicleAdapter(vehicles, this);
@@ -88,13 +112,13 @@ public class VehiclesActivity extends AppCompatActivity {
                 int j = response.data().myVehicles().size();
                 for (int i = 0; i < j; i++ ){
                     vehicles.add(new Vehicle(
-                            response.data().myVehicles().get(i).id,
+                            (int)response.data().myVehicles().get(i).id,
                             response.data().myVehicles().get(i).plate,
-                            response.data().myVehicles().get(i).user_id,
+                            (int)response.data().myVehicles().get(i).user_id,
                             response.data().myVehicles().get(i).kind,
-                            response.data().myVehicles().get(i).model,
+                            (int)response.data().myVehicles().get(i).model,
                             response.data().myVehicles().get(i).color,
-                            response.data().myVehicles().get(i).capacity,
+                            (int)response.data().myVehicles().get(i).capacity,
                             response.data().myVehicles().get(i).image,
                             response.data().myVehicles().get(i).brand
                     ));

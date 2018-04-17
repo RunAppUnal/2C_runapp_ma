@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.apollographql.apollo.ApolloCall;
@@ -22,17 +24,39 @@ public class UserActivity extends AppCompatActivity {
     Context context = this;
     private TextView uname, name, email, cellphone;
 
+    String username;
+    int userid;
+
+    Bundle datos;
+
+    ImageButton b_menu;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
+        datos = getIntent().getExtras();
 
-        setupActionBar();
+        username = datos.getString("username");
+        userid = datos.getInt("userid");
 
+
+        b_menu = (ImageButton) findViewById(R.id.menu);
+        b_menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(UserActivity.this,LateralMenuActivity.class);
+                myIntent.putExtra("userid",userid);
+                myIntent.putExtra("username", username);
+                startActivity(myIntent);
+            }
+        });
         uname = (TextView) findViewById(R.id.txtUserName);
         name = (TextView) findViewById(R.id.txtName);
         email = (TextView) findViewById(R.id.txtEmail);
         cellphone = (TextView) findViewById(R.id.txtCellphone);
+
+
 
         getUserByUserName();
     }
@@ -40,6 +64,10 @@ public class UserActivity extends AppCompatActivity {
     private void getUserByUserName(){
         SharedPreferences sharedPrefes = getSharedPreferences("userData",context.MODE_PRIVATE);
         String username = sharedPrefes.getString("username", "");
+        datos = getIntent().getExtras();
+
+        username = datos.getString("username")
+;
         MyApolloClient.getMyApolloClient().query(
                 UserByUserNameQuery.builder().username(username).build()).enqueue(new ApolloCall.Callback<UserByUserNameQuery.Data>() {
             @Override

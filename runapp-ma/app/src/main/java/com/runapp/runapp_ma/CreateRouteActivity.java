@@ -2,6 +2,7 @@ package com.runapp.runapp_ma;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
@@ -65,6 +66,8 @@ public class CreateRouteActivity extends AppCompatActivity implements OnMapReady
 
     ArrayList<String> cars = new ArrayList<>();
     ArrayList<Integer> cars_id = new ArrayList<>();
+
+    Context context;
 
 
 
@@ -152,7 +155,7 @@ public class CreateRouteActivity extends AppCompatActivity implements OnMapReady
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_route);
-        SharedPreferences sharedPref = getPreferences(MODE_PRIVATE);
+        SharedPreferences sharedPref = getSharedPreferences("userData",context.MODE_PRIVATE);
         user_id = sharedPref.getInt("userid",0);
 
         Bundle mapViewBundle = null;

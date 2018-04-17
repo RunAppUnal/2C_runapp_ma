@@ -81,7 +81,10 @@ public class VehiclesActivity extends AppCompatActivity {
     private void getMyVehicles(){
         SharedPreferences sharedPrefes = getSharedPreferences("userData",context.MODE_PRIVATE);
         Integer userid = sharedPrefes.getInt("userid", 0);
-        MyApolloClient.getMyApolloClient().query(MyVehiclesQuery.builder().userid(userid).build()).enqueue(new ApolloCall.Callback<MyVehiclesQuery.Data>() {
+        Log.d(TAG, "USERID PLS "+userid);
+
+        MyApolloClient.getMyApolloClient().query(MyVehiclesQuery.builder().userid(userid).build())
+                .enqueue(new ApolloCall.Callback<MyVehiclesQuery.Data>() {
             @Override
             public void onResponse(@Nonnull Response<MyVehiclesQuery.Data> response) {
                 int j = response.data().myVehicles().size();

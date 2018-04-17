@@ -1,0 +1,25 @@
+mutation CreateBikeRouteMutation(
+$user_id: Int!,
+$origin: [Float]!,
+$destination: [Float]!,
+$time: String
+){
+    createBikeRoute(
+        bikeRoute:{
+        user_id: $user_id,
+        origin: $origin,
+        destination: $destination,
+        time: $time
+        }
+    ){
+        id
+        user_id
+        origin
+        destination
+        route_points{
+            type
+            coordinates
+        }
+        time
+    }
+}

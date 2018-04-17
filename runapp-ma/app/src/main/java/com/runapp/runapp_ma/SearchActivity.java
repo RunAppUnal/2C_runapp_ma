@@ -147,12 +147,12 @@ public class SearchActivity extends AppCompatActivity implements DatePickerDialo
                             int j = response.data().searchOtherRoutes().size();
                             routes = new ArrayList<>();
                             for (int i = 0;i<j;i++){
-                                routes.add(new Route(response.data().searchOtherRoutes().get(i).id(),
+                                routes.add(new Route((int)response.data().searchOtherRoutes().get(i).id(),
                                         response.data().searchOtherRoutes().get(i).title(),
                                         response.data().searchOtherRoutes().get(i).description(),
                                         response.data().searchOtherRoutes().get(i).departure(),
                                         (float) response.data().searchOtherRoutes().get(i).cost(),
-                                        response.data().searchOtherRoutes().get(i).spaces_available()
+                                        (int)response.data().searchOtherRoutes().get(i).spaces_available()
                                 ));
                             }
                             status = true;

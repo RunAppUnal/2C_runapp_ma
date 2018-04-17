@@ -114,13 +114,13 @@ public class VehiclesActivity extends AppCompatActivity {
                 int j = response.data().myVehicles().size();
                 for (int i = 0; i < j; i++ ){
                     vehicles.add(new Vehicle(
-                            response.data().myVehicles().get(i).id,
+                            (int)response.data().myVehicles().get(i).id,
                             response.data().myVehicles().get(i).plate,
-                            response.data().myVehicles().get(i).user_id,
+                            (int)response.data().myVehicles().get(i).user_id,
                             response.data().myVehicles().get(i).kind,
-                            response.data().myVehicles().get(i).model,
+                            (int)response.data().myVehicles().get(i).model,
                             response.data().myVehicles().get(i).color,
-                            response.data().myVehicles().get(i).capacity,
+                            (int)response.data().myVehicles().get(i).capacity,
                             response.data().myVehicles().get(i).image,
                             response.data().myVehicles().get(i).brand
                     ));

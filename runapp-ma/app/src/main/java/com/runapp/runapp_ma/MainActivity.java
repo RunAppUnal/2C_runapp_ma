@@ -1,5 +1,6 @@
 package com.runapp.runapp_ma;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -20,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     ImageButton b_menu;
 
     private SharedPreferences sharedPrefes;
+
     final String TAG = "MainActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,12 +37,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
         sharedPrefes = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences sharedPrefes = getSharedPreferences("userData", MODE_PRIVATE);
         boolean logged = sharedPrefes.getBoolean("logged", false);
         Log.d(TAG, "logged: " + logged);
         if (logged) {
             setContentView(R.layout.activity_main);
-            Toolbar myToolbar = null;
-            myToolbar = findViewById(R.id.toolbar);
+            Toolbar myToolbar = findViewById(R.id.toolbar);
             setSupportActionBar(myToolbar);
             myToolbar.setNavigationIcon(R.drawable.ic_dehaze_black_24dp);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -48,21 +50,15 @@ public class MainActivity extends AppCompatActivity {
             Intent myIntent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(myIntent);
         }
-
-
     }
 
     public void toBikeRoutesActivity(View view) {
         ImageView image = findViewById(R.id.imageView1);
         Intent myIntent = new Intent(MainActivity.this, BikeRoutesActivity.class);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            ActivityOptionsCompat options = ActivityOptionsCompat.
-                    makeSceneTransitionAnimation(MainActivity.this, image, ViewCompat.getTransitionName(image));
-            startActivity(myIntent, options.toBundle());
-        }else{
-            startActivity(myIntent);
-        }
+        ActivityOptionsCompat options = ActivityOptionsCompat.
+                makeSceneTransitionAnimation(MainActivity.this, image, ViewCompat.getTransitionName(image));
+        startActivity(myIntent, options.toBundle());
     }
 
     public void toCarPoolActivity(View view) {

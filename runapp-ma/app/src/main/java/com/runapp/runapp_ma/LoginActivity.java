@@ -85,7 +85,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLogin();
+                Intent myIntent = new Intent(LoginActivity.this,MainActivity.class);
+                startActivity(myIntent);
+                finish();
+
+                //attemptLogin();
             }
         });
 
@@ -261,7 +265,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         private final String mEmail;
         private final String mPassword;
         final String TAG = "LoginActivity";
-        SharedPreferences sharedPrefes = getSharedPreferences("userData",context.MODE_PRIVATE);
+        SharedPreferences sharedPrefes = getSharedPreferences("userData", MODE_PRIVATE);
         UserLoginTask(String email, String password) {
             mEmail = email;
             mPassword = password;
@@ -273,18 +277,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             MyApolloClient.getMyApolloClient().mutate(
                     LoginMutation.builder()
-                    .username(mEmail.toString())
-                    .password(mPassword.toString()).build())
+                    .username(mEmail)
+                    .password(mPassword).build())
                     .enqueue(new ApolloCall.Callback<LoginMutation.Data>() {
                         @Override
                         public void onResponse(@Nonnull Response<LoginMutation.Data> response) {
-                            String temp = "";
-//                            Log.d(TAG, "OnResponse: "+ response.toString());
                             Log.d(TAG, "OnResponse: "+ response.data()+"-");
-//                            if (response.data().toString().compareTo("null")==0){
-//                                temp = "";
-//                            }else
-//                            boolean test = false;
                             if (response.data()==null) {
                                 LoginActivity.this.runOnUiThread(new Runnable() {
                                     @Override
@@ -295,9 +293,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 });
 
                             }else{
-                                SharedPreferences sharedPref = getPreferences(context.MODE_PRIVATE);
-                                SharedPreferences.Editor editor = sharedPref.edit();
-                                editor.putInt("userid",response.data().login().userid());
+                                SharedPreferences.Editor editor = sharedPrefes.edit();
+                                editor.putInt("userid", (int) response.data().login().userid());
                                 editor.putString("username", response.data().login().username());
                                 editor.putBoolean("logged", true);
                                 editor.putString("name",response.data().login().name());
@@ -310,6 +307,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 Intent myIntent = new Intent(LoginActivity.this,LateralMenuActivity.class);
                                 myIntent.putExtra("userid",response.data().login().userid());
                                 myIntent.putExtra("username", response.data().login().username());
+                                //Intent myIntent = new Intent(LoginActivity.this,MainActivity.class);
                                 startActivity(myIntent);
                                 LoginActivity.this.runOnUiThread(new Runnable() {
                                     @Override

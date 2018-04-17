@@ -128,41 +128,6 @@
               "deprecationReason": null
             },
             {
-              "name": "myBikeRoutes",
-              "description": "",
-              "args": [
-                {
-                  "name": "user",
-                  "description": "",
-                  "type": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "SCALAR",
-                      "name": "Int",
-                      "ofType": null
-                    }
-                  },
-                  "defaultValue": null
-                }
-              ],
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "BikeRoute",
-                    "ofType": null
-                  }
-                }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "findCompany",
               "description": "",
               "args": [
@@ -1017,8 +982,8 @@
               "description": "",
               "args": [],
               "type": {
-                "kind": "SCALAR",
-                "name": "String",
+                "kind": "OBJECT",
+                "name": "GeoJSON",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -1059,6 +1024,49 @@
           "fields": null,
           "inputFields": null,
           "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "GeoJSON",
+          "description": "",
+          "fields": [
+            {
+              "name": "type",
+              "description": "",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "coordinates",
+              "description": "",
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Float",
+                    "ofType": null
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
           "enumValues": null,
           "possibleTypes": null
         },
@@ -2581,20 +2589,6 @@
           "fields": null,
           "inputFields": [
             {
-              "name": "id",
-              "description": "",
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "ID",
-                  "ofType": null
-                }
-              },
-              "defaultValue": null
-            },
-            {
               "name": "user_id",
               "description": "",
               "type": {
@@ -3195,8 +3189,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "OBJECT",
-                      "name": "__Type",
-                      "ofType": null
+                      "name": "__Type"
                     }
                   }
                 }
@@ -3259,8 +3252,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "OBJECT",
-                      "name": "__Directive",
-                      "ofType": null
+                      "name": "__Directive"
                     }
                   }
                 }
@@ -3566,8 +3558,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "OBJECT",
-                      "name": "__InputValue",
-                      "ofType": null
+                      "name": "__InputValue"
                     }
                   }
                 }
@@ -3807,8 +3798,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "__DirectiveLocation",
-                      "ofType": null
+                      "name": "__DirectiveLocation"
                     }
                   }
                 }
@@ -3831,8 +3821,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "OBJECT",
-                      "name": "__InputValue",
-                      "ofType": null
+                      "name": "__InputValue"
                     }
                   }
                 }
@@ -4028,11 +4017,6 @@
         {
           "name": "skip",
           "description": "Directs the executor to skip this field or fragment when the `if` argument is true.",
-          "locations": [
-            "FIELD",
-            "FRAGMENT_SPREAD",
-            "INLINE_FRAGMENT"
-          ],
           "args": [
             {
               "name": "if",
@@ -4048,16 +4032,14 @@
               },
               "defaultValue": null
             }
-          ]
+          ],
+          "onOperation": false,
+          "onFragment": true,
+          "onField": true
         },
         {
           "name": "include",
           "description": "Directs the executor to include this field or fragment only when the `if` argument is true.",
-          "locations": [
-            "FIELD",
-            "FRAGMENT_SPREAD",
-            "INLINE_FRAGMENT"
-          ],
           "args": [
             {
               "name": "if",
@@ -4073,15 +4055,14 @@
               },
               "defaultValue": null
             }
-          ]
+          ],
+          "onOperation": false,
+          "onFragment": true,
+          "onField": true
         },
         {
           "name": "deprecated",
           "description": "Marks an element of a GraphQL schema as no longer supported.",
-          "locations": [
-            "FIELD_DEFINITION",
-            "ENUM_VALUE"
-          ],
           "args": [
             {
               "name": "reason",
@@ -4093,7 +4074,10 @@
               },
               "defaultValue": "\"No longer supported\""
             }
-          ]
+          ],
+          "onOperation": false,
+          "onFragment": false,
+          "onField": false
         }
       ]
     }

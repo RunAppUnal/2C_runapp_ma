@@ -75,7 +75,7 @@ public class createBikeRoute extends AsyncTask<Object,Integer,Boolean> {
         PDialog.dismiss();
         if(result){
             super.onPostExecute(result);
-            Intent intent = new Intent(context.get(), NextActivity.class);
+            Intent intent = new Intent(context.get(), BikeRoutesMatchActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.get().startActivity(intent);
         }else{

@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:tools="http://schemas.android.com/tools"
 package="com.runapp.runapp_ma">
 
@@ -16,9 +17,6 @@ package="com.runapp.runapp_ma">
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="true"
     android:theme="@style/AppTheme">
-    <meta-data
-        android:name="com.google.android.geo.API_KEY"
-        android:value="AIzaSyASHRM1Tb8GH9-NMBNgGcCuypByl5_Czqg" />
 
     <activity
         android:name=".LoginActivity"
@@ -75,6 +73,9 @@ package="com.runapp.runapp_ma">
     <meta-data
         android:name="com.google.android.gms.version"
         android:value="@integer/google_play_services_version" />
+    <!--<meta-data-->
+        <!--android:name="com.google.android.geo.API_KEY"-->
+        <!--android:value="AIzaSyASHRM1Tb8GH9-NMBNgGcCuypByl5_Czqg" />-->
 
     <activity
         android:name=".CreateRouteActivity"

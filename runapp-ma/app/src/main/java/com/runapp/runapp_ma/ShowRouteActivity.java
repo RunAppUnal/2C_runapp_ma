@@ -230,8 +230,8 @@ public class ShowRouteActivity extends AppCompatActivity implements OnMapReadyCa
                 .enqueue(new ApolloCall.Callback<RouteByIdQuery.Data>() {
                     @Override
                     public void onResponse(@Nonnull Response<RouteByIdQuery.Data> response) {
-                        user_id = response.data().routeById().user_id();
-                        car_id = response.data().routeById().car_id();
+                        user_id = (int) response.data().routeById().user_id();
+                        car_id = (int) response.data().routeById().car_id();
                         title = response.data().routeById().title();
                         description = response.data().routeById().description();
                         from_lat = String.valueOf(response.data().routeById().from_lat());

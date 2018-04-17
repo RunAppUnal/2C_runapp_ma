@@ -296,7 +296,7 @@ public class CreateRouteActivity extends AppCompatActivity implements OnMapReady
                         int s = response.data().myVehicles().size();
                         for (int i =0; i<s; i++){
                             cars.add(response.data().myVehicles().get(i).plate());
-                            cars_id.add(response.data().myVehicles().get(i).id());
+                            cars_id.add((int) response.data().myVehicles().get(i).id());
                         }
 //                        if (s >0) {
                             fillSpinner();

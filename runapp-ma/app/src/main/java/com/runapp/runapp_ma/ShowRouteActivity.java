@@ -179,7 +179,7 @@ public class ShowRouteActivity extends AppCompatActivity implements OnMapReadyCa
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.adddel);
+
         b_menu = (ImageButton) findViewById(R.id.menu);
         b_menu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -189,7 +189,7 @@ public class ShowRouteActivity extends AppCompatActivity implements OnMapReadyCa
             }
         });
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.adddel);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
         sharedPrefes = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences sharedPrefes = getSharedPreferences("userData", MODE_PRIVATE);
-        boolean logged = sharedPrefes.getBoolean("logged", false);
+        boolean logged = sharedPrefes.getBoolean("logged", true);
         Log.d(TAG, "logged: " + logged);
         if (logged) {
             setContentView(R.layout.activity_main);

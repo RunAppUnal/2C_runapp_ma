@@ -67,6 +67,7 @@ public class createBikeRoute extends AsyncTask<Object,Integer,Boolean> {
                 doInBack = false;
             }
         });
+        Log.e("Create Bike Route", String.valueOf(doInBack));
         return doInBack;
     }
 

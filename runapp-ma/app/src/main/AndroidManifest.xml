@@ -50,7 +50,9 @@ package="com.runapp.runapp_ma">
             android:name="android.support.PARENT_ACTIVITY"
             android:value="com.runapp.runapp_ma.MainActivity" />
     </activity>
-    <activity android:name="com.runapp.runapp_ma.BikeRoutesMatchActivity"/>
+    <activity android:name=".BikeRoutesMatchActivity"
+        android:parentActivityName=".BikeRoutesActivity"
+        android:theme="@style/AppTheme.NoActionBar"/>
     <activity
         android:name=".UserActivity"
         android:label="Usuario" />

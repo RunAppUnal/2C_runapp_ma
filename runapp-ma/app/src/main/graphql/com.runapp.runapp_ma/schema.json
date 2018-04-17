@@ -878,17 +878,25 @@
           "description": "",
           "fields": [
             {
+              "name": "id",
+              "description": "",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "_id",
               "description": "",
               "args": [],
               "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "ID",
-                  "ofType": null
-                }
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -3233,8 +3241,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "OBJECT",
-                      "name": "__Type",
-                      "ofType": null
+                      "name": "__Type"
                     }
                   }
                 }
@@ -3297,8 +3304,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "OBJECT",
-                      "name": "__Directive",
-                      "ofType": null
+                      "name": "__Directive"
                     }
                   }
                 }
@@ -3604,8 +3610,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "OBJECT",
-                      "name": "__InputValue",
-                      "ofType": null
+                      "name": "__InputValue"
                     }
                   }
                 }
@@ -3845,8 +3850,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "__DirectiveLocation",
-                      "ofType": null
+                      "name": "__DirectiveLocation"
                     }
                   }
                 }
@@ -3869,8 +3873,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "OBJECT",
-                      "name": "__InputValue",
-                      "ofType": null
+                      "name": "__InputValue"
                     }
                   }
                 }
@@ -4066,11 +4069,6 @@
         {
           "name": "skip",
           "description": "Directs the executor to skip this field or fragment when the `if` argument is true.",
-          "locations": [
-            "FIELD",
-            "FRAGMENT_SPREAD",
-            "INLINE_FRAGMENT"
-          ],
           "args": [
             {
               "name": "if",
@@ -4086,16 +4084,14 @@
               },
               "defaultValue": null
             }
-          ]
+          ],
+          "onOperation": false,
+          "onFragment": true,
+          "onField": true
         },
         {
           "name": "include",
           "description": "Directs the executor to include this field or fragment only when the `if` argument is true.",
-          "locations": [
-            "FIELD",
-            "FRAGMENT_SPREAD",
-            "INLINE_FRAGMENT"
-          ],
           "args": [
             {
               "name": "if",
@@ -4111,15 +4107,14 @@
               },
               "defaultValue": null
             }
-          ]
+          ],
+          "onOperation": false,
+          "onFragment": true,
+          "onField": true
         },
         {
           "name": "deprecated",
           "description": "Marks an element of a GraphQL schema as no longer supported.",
-          "locations": [
-            "FIELD_DEFINITION",
-            "ENUM_VALUE"
-          ],
           "args": [
             {
               "name": "reason",
@@ -4131,7 +4126,10 @@
               },
               "defaultValue": "\"No longer supported\""
             }
-          ]
+          ],
+          "onOperation": false,
+          "onFragment": false,
+          "onField": false
         }
       ]
     }

@@ -3,6 +3,7 @@ package com.runapp.runapp_ma;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
@@ -73,7 +74,10 @@ public class createBikeRoute extends AsyncTask<Object,Integer,Boolean> {
     protected void onPostExecute(Boolean result){
         PDialog.dismiss();
         if(result){
-
+            super.onPostExecute(result);
+            Intent intent = new Intent(context.get(), NextActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.get().startActivity(intent);
         }else{
 
         }

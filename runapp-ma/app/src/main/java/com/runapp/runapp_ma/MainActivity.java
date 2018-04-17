@@ -16,12 +16,11 @@ import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private SharedPreferences sharedPrefes;
     final String TAG = "MainActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sharedPrefes = getSharedPreferences("userData", MODE_PRIVATE);
+        SharedPreferences sharedPrefes = getSharedPreferences("userData", MODE_PRIVATE);
         boolean logged = sharedPrefes.getBoolean("logged", false);
         Log.d(TAG, "logged: " + logged);
         if (logged) {
@@ -34,8 +33,6 @@ public class MainActivity extends AppCompatActivity {
             Intent myIntent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(myIntent);
         }
-
-
     }
 
     public void toBikeRoutesActivity(View view) {

@@ -1,0 +1,11 @@
+mutation AddUserMutation(
+    $id: Int!
+    $userid: Int!
+    ){
+	addUserFromRoute(
+	id: $id,
+	userid: $userid
+	) {
+    users_in_route
+  }
+}

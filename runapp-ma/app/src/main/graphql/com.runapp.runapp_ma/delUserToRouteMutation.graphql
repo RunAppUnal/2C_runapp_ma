@@ -1,0 +1,11 @@
+mutation DelUserFromRouteMutation(
+    $id: Int!
+    $userid: Int!
+    ){
+	removeUserFromRoute(
+	id: $id,
+	userid: $userid
+	) {
+    users_in_route
+  }
+}

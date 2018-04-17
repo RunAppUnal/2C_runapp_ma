@@ -1,0 +1,9 @@
+mutation DeleteRouteMutation(
+    $id: Int!
+    ){
+  deleteRoute(
+  id: $id
+  ) {
+    id
+  }
+}

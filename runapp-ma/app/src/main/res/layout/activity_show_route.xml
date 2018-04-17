@@ -23,11 +23,11 @@
     <include layout="@layout/content_show_route" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/adddel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@drawable/ic_ico_join" />
+        app:srcCompat="@drawable/ic_ico_create_rute" />
 
 </android.support.design.widget.CoordinatorLayout>

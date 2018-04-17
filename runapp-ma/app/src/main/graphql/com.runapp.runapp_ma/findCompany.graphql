@@ -1,0 +1,12 @@
+query FindCompany(
+    $id: ID!
+){findCompany(id: $id) {
+        _id
+        user_id
+        origin
+        destination
+        originAddr
+        destinationAddr
+    }
+}
+

@@ -26,17 +26,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        b_menu = (ImageButton) findViewById(R.id.menu);
-
-        b_menu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent myIntent = new Intent(MainActivity.this,LateralMenuActivity.class);
-                startActivity(myIntent);
-            }
-        });
-
-        sharedPrefes = PreferenceManager.getDefaultSharedPreferences(this);
+                sharedPrefes = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences sharedPrefes = getSharedPreferences("userData", MODE_PRIVATE);
         boolean logged = sharedPrefes.getBoolean("logged", true);
         Log.d(TAG, "logged: " + logged);
@@ -46,6 +36,17 @@ public class MainActivity extends AppCompatActivity {
             setSupportActionBar(myToolbar);
             myToolbar.setNavigationIcon(R.drawable.ic_dehaze_black_24dp);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+            b_menu = (ImageButton) findViewById(R.id.menu);
+
+            b_menu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d(TAG, "clickListener: ");
+                    Intent myIntent = new Intent(MainActivity.this,LateralMenuActivity.class);
+                    startActivity(myIntent);
+                }
+            });
         }else{
             Intent myIntent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(myIntent);
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void toBikeRoutesActivity(View view) {
-        ImageView image = findViewById(R.id.imageView1);
+        ImageView image = findViewById(R.id.imageView2);
         Intent myIntent = new Intent(MainActivity.this, BikeRoutesActivity.class);
 
         ActivityOptionsCompat options = ActivityOptionsCompat.
@@ -62,5 +63,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void toCarPoolActivity(View view) {
+        ImageView image = findViewById(R.id.imageView1);
+        Intent myIntent = new Intent(MainActivity.this, SearchActivity.class);
+
+        startActivity(myIntent);
     }
 }

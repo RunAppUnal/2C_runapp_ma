@@ -217,8 +217,7 @@ public class ShowRouteActivity extends AppCompatActivity implements OnMapReadyCa
 
         getRoute();
 
-//        mapView.onCreate(savedInstanceState);
-//        setUpMap();
+
 
     }
 

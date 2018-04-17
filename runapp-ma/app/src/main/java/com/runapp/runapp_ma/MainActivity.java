@@ -11,15 +11,29 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity {
+
+
+    ImageButton b_menu;
 
     private SharedPreferences sharedPrefes;
     final String TAG = "MainActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        b_menu = (ImageButton) findViewById(R.id.menu);
+
+        b_menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(MainActivity.this,LateralMenuActivity.class);
+                startActivity(myIntent);
+            }
+        });
+
         sharedPrefes = PreferenceManager.getDefaultSharedPreferences(this);
         boolean logged = sharedPrefes.getBoolean("logged", false);
         Log.d(TAG, "logged: " + logged);

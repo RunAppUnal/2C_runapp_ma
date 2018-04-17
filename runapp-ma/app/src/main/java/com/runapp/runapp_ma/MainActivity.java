@@ -46,6 +46,17 @@ logged=true;
             setSupportActionBar(myToolbar);
             myToolbar.setNavigationIcon(R.drawable.ic_dehaze_black_24dp);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+            b_menu = (ImageButton) findViewById(R.id.menu);
+
+            b_menu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d(TAG, "clickListener: ");
+                    Intent myIntent = new Intent(MainActivity.this,LateralMenuActivity.class);
+                    startActivity(myIntent);
+                }
+            });
         }else{
             Intent myIntent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(myIntent);
@@ -53,7 +64,7 @@ logged=true;
     }
 
     public void toBikeRoutesActivity(View view) {
-        ImageView image = findViewById(R.id.imageView1);
+        ImageView image = findViewById(R.id.imageView2);
         Intent myIntent = new Intent(MainActivity.this, BikeRoutesActivity.class);
 
         ActivityOptionsCompat options = ActivityOptionsCompat.
@@ -62,5 +73,9 @@ logged=true;
     }
 
     public void toCarPoolActivity(View view) {
+        ImageView image = findViewById(R.id.imageView1);
+        Intent myIntent = new Intent(MainActivity.this, SearchActivity.class);
+
+        startActivity(myIntent);
     }
 }

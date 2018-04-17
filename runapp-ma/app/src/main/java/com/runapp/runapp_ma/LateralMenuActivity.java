@@ -20,7 +20,9 @@ public class LateralMenuActivity extends AppCompatActivity
     int userid;
     String username;
 
-    Bundle datos;
+    //Bundle datos;
+    Intent myIntent;
+    int datos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,9 +31,10 @@ public class LateralMenuActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        datos = getIntent().getExtras();
-        userid = datos.getInt("userid");
-        username = datos.getString("username");
+//        datos = getIntent().getExtras();
+        myIntent = getIntent();
+        userid = myIntent.getIntExtra("userid",0);
+        username = myIntent.getStringExtra("username");
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

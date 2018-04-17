@@ -65,6 +65,7 @@ public class CreateRouteActivity extends AppCompatActivity implements OnMapReady
     TextInputEditText tiTitle, tiDescription, tiCost, tiSpace;
     Spinner sVehicles;
     Button save;
+    Intent myIntent;
 
     int userid, carid;
 
@@ -164,22 +165,25 @@ public class CreateRouteActivity extends AppCompatActivity implements OnMapReady
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_route);
-        SharedPreferences sharedPref = getSharedPreferences("userData",context.MODE_PRIVATE);
-        user_id = sharedPref.getInt("userid",0);
-        username = datos.getString("username");
-        userid = datos.getInt("userid");
+//        SharedPreferences sharedPref = getSharedPreferences("userData",context.MODE_PRIVATE);
+//        user_id = sharedPref.getInt("userid",0);
+//        username = datos.getString("username");
+//        userid = datos.getInt("userid");
+        myIntent = getIntent();
+        userid = myIntent.getIntExtra("userid",0);
+        username = myIntent.getStringExtra("username");
 
-
-        b_menu = (ImageButton) findViewById(R.id.menu);
-        b_menu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent myIntent = new Intent(CreateRouteActivity.this,LateralMenuActivity.class);
-                myIntent.putExtra("userid",userid);
-                myIntent.putExtra("username", username);
-                startActivity(myIntent);
-            }
-        });
+//        b_menu = (ImageButton) findViewById(R.id.menu);
+//        b_menu.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent myIntent = new Intent(CreateRouteActivity.this,LateralMenuActivity.class);
+//                Intent myIntent2 = getIntent();
+//                myIntent2.putExtra("userid",userid);
+//                myIntent2.putExtra("username", username);
+//                startActivity(myIntent);
+//            }
+//        });
 
         Bundle mapViewBundle = null;
         if (savedInstanceState !=null) {

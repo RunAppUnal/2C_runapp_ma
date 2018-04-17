@@ -68,6 +68,7 @@ public class ShowRouteActivity extends AppCompatActivity implements OnMapReadyCa
 
     ImageButton b_menu;
 
+    Intent intent4 = getIntent();
 
     int user_id;
     int car_id;
@@ -179,7 +180,8 @@ public class ShowRouteActivity extends AppCompatActivity implements OnMapReadyCa
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
+        intent4 = getIntent();
+        userLogged = intent4.getIntExtra("userid",0);
         b_menu = (ImageButton) findViewById(R.id.menu);
         b_menu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -210,7 +212,7 @@ public class ShowRouteActivity extends AppCompatActivity implements OnMapReadyCa
         if (savedInstanceState !=null) {
             mapViewBundle = savedInstanceState.getBundle(MAP_VIEW_BUNDLE_KEY);
         }
-        userLogged = 100;
+//        userLogged = 100;
 
         mapView = (MapView) findViewById(R.id.mapView);
         mapView.onCreate(mapViewBundle);

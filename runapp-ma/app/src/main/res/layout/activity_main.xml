@@ -22,7 +22,7 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" >
 
             <ImageButton
-                android:id="@+id/menu"
+                android:id="@+id/b_menu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/ic_dehaze_black_24dp" />

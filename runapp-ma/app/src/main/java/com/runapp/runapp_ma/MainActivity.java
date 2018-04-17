@@ -17,7 +17,7 @@ import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity {
 
-
+Boolean logged;
     ImageButton b_menu;
 
     private SharedPreferences sharedPrefes;
@@ -26,20 +26,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        b_menu = (ImageButton) findViewById(R.id.menu);
+        b_menu = (ImageButton) findViewById(R.id.b_menu);
+logged=true;
+//        b_menu.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent myIntent = new Intent(MainActivity.this,LateralMenuActivity.class);
+//                startActivity(myIntent);
+//            }
+//        });
 
-        b_menu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent myIntent = new Intent(MainActivity.this,LateralMenuActivity.class);
-                startActivity(myIntent);
-            }
-        });
-
-        sharedPrefes = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences sharedPrefes = getSharedPreferences("userData", MODE_PRIVATE);
-        boolean logged = sharedPrefes.getBoolean("logged", true);
-        Log.d(TAG, "logged: " + logged);
+//        sharedPrefes = PreferenceManager.getDefaultSharedPreferences(this);
+//        SharedPreferences sharedPrefes = getSharedPreferences("userData", MODE_PRIVATE);
+//        boolean logged = sharedPrefes.getBoolean("logged", true);
+//        Log.d(TAG, "logged: " + logged);
         if (logged) {
             setContentView(R.layout.activity_main);
             Toolbar myToolbar = findViewById(R.id.toolbar);

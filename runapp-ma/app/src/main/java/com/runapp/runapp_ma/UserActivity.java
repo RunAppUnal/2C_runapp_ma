@@ -27,7 +27,8 @@ public class UserActivity extends AppCompatActivity {
     String username;
     int userid;
 
-    Bundle datos;
+//    Bundle datos;
+    Intent intent3 = getIntent();
 
     ImageButton b_menu;
 
@@ -35,10 +36,10 @@ public class UserActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
-        datos = getIntent().getExtras();
-
-        username = datos.getString("username");
-        userid = datos.getInt("userid");
+//        datos = getIntent().getExtras();
+        intent3 = getIntent();
+        username = intent3.getStringExtra("username");
+        userid = intent3.getIntExtra("userid",0);
 
 
         b_menu = (ImageButton) findViewById(R.id.menu);
@@ -62,11 +63,11 @@ public class UserActivity extends AppCompatActivity {
     }
 
     private void getUserByUserName(){
-        SharedPreferences sharedPrefes = getSharedPreferences("userData",context.MODE_PRIVATE);
-        String username = sharedPrefes.getString("username", "");
-        datos = getIntent().getExtras();
-
-        username = datos.getString("username")
+//        SharedPreferences sharedPrefes = getSharedPreferences("userData",context.MODE_PRIVATE);
+//        String username = sharedPrefes.getString("username", "");
+//        datos = getIntent().getExtras();
+    intent3 = getIntent();
+        username = intent3.getStringExtra("username");
 ;
         MyApolloClient.getMyApolloClient().query(
                 UserByUserNameQuery.builder().username(username).build()).enqueue(new ApolloCall.Callback<UserByUserNameQuery.Data>() {

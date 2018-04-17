@@ -17,7 +17,7 @@ public class BikeRoutesActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.adddel);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

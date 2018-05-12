@@ -35,6 +35,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     androidTestImplementation 'com.google.code.findbugs:jsr305:3.0.1'
-    compile 'com.apollographql.apollo:apollo-runtime:0.4.4'
+    compile 'com.apollographql.apollo:apollo-runtime:0.5.0'
     implementation 'com.google.android.gms:play-services-maps:15.0.0'
 }

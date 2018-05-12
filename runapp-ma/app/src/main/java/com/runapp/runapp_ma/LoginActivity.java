@@ -85,11 +85,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent myIntent = new Intent(LoginActivity.this,MainActivity.class);
-                startActivity(myIntent);
-                finish();
+//                Intent myIntent = new Intent(LoginActivity.this,MainActivity.class);
+//                startActivity(myIntent);
+//                finish();
 
-                //attemptLogin();
+                attemptLogin();
             }
         });
 
@@ -262,10 +262,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
         Boolean status = false;
+        Boolean ldap = false;
         private final String mEmail;
         private final String mPassword;
         final String TAG = "LoginActivity";
-        SharedPreferences sharedPrefes = getSharedPreferences("userData", MODE_PRIVATE);
         UserLoginTask(String email, String password) {
             mEmail = email;
             mPassword = password;
@@ -274,66 +274,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
-
-            MyApolloClient.getMyApolloClient().mutate(
-                    LoginMutation.builder()
-                    .username(mEmail)
-                    .password(mPassword).build())
-                    .enqueue(new ApolloCall.Callback<LoginMutation.Data>() {
-                        @Override
-                        public void onResponse(@Nonnull Response<LoginMutation.Data> response) {
-                            Log.d(TAG, "OnResponse: "+ response.data()+"-");
-                            if (response.data()==null) {
-                                LoginActivity.this.runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        mPasswordView.setError(getString(R.string.error_incorrect_password));
-                                        mPasswordView.requestFocus();
-                                    }
-                                });
-
-                            }else{
-                                SharedPreferences.Editor editor = sharedPrefes.edit();
-                                editor.putInt("userid", (int) response.data().login().userid());
-                                editor.putString("username", response.data().login().username());
-                                editor.putBoolean("logged", true);
-                                editor.putString("name",response.data().login().name());
-                                editor.putString("lastname", response.data().login().lastname());
-                                editor.apply();
-                                Log.d(TAG, "if username");
-                                status = true;
-                                Log.d(TAG, "status if: "+status);
-                                //Intent myIntent = new Intent(LoginActivity.this,VehiclesActivity.class);
-                                Intent myIntent = new Intent(LoginActivity.this,LateralMenuActivity.class);
-                                myIntent.putExtra("userid",response.data().login().userid());
-                                myIntent.putExtra("username", response.data().login().username());
-                                //Intent myIntent = new Intent(LoginActivity.this,MainActivity.class);
-                                startActivity(myIntent);
-                                LoginActivity.this.runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        Toast.makeText(LoginActivity.this, "Logged succesfully", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(@Nonnull ApolloException e) {
-
-                            status = false;
-                            Log.d(TAG, "OnFailure: " + e.toString());
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(LoginActivity.this, "Something went wrong, check your network", Toast.LENGTH_SHORT).show();
-
-                                }
-                            });
-                        }
-                    });
-            Log.d(TAG, "status: ");
-
+            doAuth();
+            status = ldap;
             return status;
         }
 
@@ -342,16 +284,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask = null;
             showProgress(false);
             Log.d(TAG, "postExecute : " );
-//            if (success) {
-//                finish();
-//                Intent myIntent = new Intent(LoginActivity.this,MainActivity.class);
-//                startActivity(myIntent);
-//                Log.d(TAG, "postExecute if success: " );
-//            } else {
-//                mPasswordView.setError(getString(R.string.error_incorrect_password));
-//                mPasswordView.requestFocus();
-//                Log.d(TAG, "postExecute if no success: " );
-//            }
         }
 
         @Override
@@ -359,6 +291,105 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask = null;
             showProgress(false);
             Log.d(TAG, "onCancelled: " );
+        }
+
+        protected boolean doAuth(){
+            MyApolloClient.getMyApolloClient().mutate(
+                    AuthMutation.builder()
+                            .email(mEmail)
+                            .password(mPassword).build())
+                    .enqueue(new ApolloCall.Callback<AuthMutation.Data>() {
+                        @Override
+                        public void onResponse(@Nonnull Response<AuthMutation.Data> response) {
+                            Log.d(TAG, "answer: "+response.data().auth().answer());
+                            if (response.data() != null){
+                                Log.d(TAG, "answer2: "+response.data().auth().answer());
+                                if (response.data().auth().answer().equals("true")){
+                                    Log.d(TAG, "answer3: "+response.data().auth().answer());
+                                    ldap = true;
+                                    doLogin();
+                                }else {
+                                    LoginActivity.this.runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            mPasswordView.setError(getString(R.string.error_incorrect_password));
+                                            mPasswordView.requestFocus();
+                                        }
+                                    });
+                                }
+                            }else{
+                                LoginActivity.this.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mPasswordView.setError(getString(R.string.error_incorrect_password));
+                                        mPasswordView.requestFocus();
+                                    }
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(@Nonnull ApolloException e) {
+                            ldap = false;
+                        }
+                    });
+            return ldap;
+
+        }
+
+
+        protected void doLogin() {
+            if (ldap == true) {
+                MyApolloClient.getMyApolloClient().mutate(
+                        LoginMutation.builder()
+                                .email(mEmail + "@unal.edu.co")
+                                .password(mPassword).build())
+                        .enqueue(new ApolloCall.Callback<LoginMutation.Data>() {
+                            @Override
+                            public void onResponse(@Nonnull final Response<LoginMutation.Data> response) {
+                                if (response.data() == null) {
+                                    LoginActivity.this.runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            mPasswordView.setError(getString(R.string.error_incorrect_password));
+                                            mPasswordView.requestFocus();
+                                        }
+                                    });
+
+                                } else {
+                                    Log.d(TAG, "if username");
+                                    status = true;
+                                    Log.d(TAG, "status if: " + status);
+                                    //Intent myIntent = new Intent(LoginActivity.this,VehiclesActivity.class);
+                                    Intent myIntent = new Intent(LoginActivity.this, LateralMenuActivity.class);
+                                    myIntent.putExtra("userid", response.data().login().id());
+                                    myIntent.putExtra("username", response.data().login().username());
+                                    //Intent myIntent = new Intent(LoginActivity.this,MainActivity.class);
+                                    startActivity(myIntent);
+                                    LoginActivity.this.runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(LoginActivity.this, "Logged succesfully as " + response.data().login().username(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(@Nonnull ApolloException e) {
+
+                                status = false;
+                                Log.d(TAG, "OnFailure: " + e.toString());
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(LoginActivity.this, "Something went wrong, check your network", Toast.LENGTH_SHORT).show();
+
+                                    }
+                                });
+                            }
+                        });
+            }
         }
     }
 }

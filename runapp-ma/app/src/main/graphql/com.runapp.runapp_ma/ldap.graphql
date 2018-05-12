@@ -1,0 +1,11 @@
+mutation authMutation(
+  $email: String!
+  $password: String!
+  ){
+  auth(auth:{
+     email: $email,
+     password: $password
+  }){
+     answer
+  }
+}

@@ -47,7 +47,7 @@ logged=true;
             myToolbar.setNavigationIcon(R.drawable.ic_dehaze_black_24dp);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-            b_menu = (ImageButton) findViewById(R.id.menu);
+            b_menu = (ImageButton) findViewById(R.id.b_menu);
 
             b_menu.setOnClickListener(new View.OnClickListener() {
                 @Override

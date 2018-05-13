@@ -41,4 +41,11 @@
     <string name="title_activity_show_route">ShowRoute</string>
     <string name="title_activity_bike_routes">bike_routes</string>
     <string name="title_activity_vehicles">VehiclesActivity</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="title_activity_add_vehicle">AddVehicleActivity</string>
+    <string name="title_activity_update_delete_vehicle">UpdateDeleteVehicleActivity</string>
+    <string name="title_activity_user">UserActivity</string>
+    <string name="title_activity_create_route">CreateRouteActivity</string>
+    <string name="title_activity_bike_routes1">BikeRoutes1Activity</string>
+    <string name="title_activity_bike_routes_match1">BikeRoutesMatch1Activity</string>
 </resources>

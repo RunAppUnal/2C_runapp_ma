@@ -91,11 +91,6 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <uses-library android:name="com.google.android.maps" />
-
-        <!--<activity-->
-            <!--android:name=".BikeRoutesMatch1Activity"-->
-            <!--android:label="@string/title_activity_bike_routes_match1"-->
-            <!--android:theme="@style/AppTheme.NoActionBar"></activity>-->
         <activity
             android:name=".Register"
             android:label="@string/title_activity_register"

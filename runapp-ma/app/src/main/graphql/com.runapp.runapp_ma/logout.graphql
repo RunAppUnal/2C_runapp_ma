@@ -1,0 +1,13 @@
+mutation LogOutMutation(
+    $token: String!
+    $client: String!
+    $uid: String!
+){
+  logout(
+  token: $token
+  uid: $uid
+  client: $client
+  ){
+    success
+  }
+}

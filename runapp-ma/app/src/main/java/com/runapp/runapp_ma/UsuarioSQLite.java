@@ -17,6 +17,7 @@ public class UsuarioSQLite {
     public final static String CAMPO_LASTNAME =  "lastname";
     public final static String CAMPO_USERNAME =  "username";
     public final static String CAMPO_EMAIL =  "email";
+    public final static String CAMPO_CLIENT = "client";
 
 
 
@@ -27,7 +28,8 @@ public class UsuarioSQLite {
             + CAMPO_NAME + " text, "
             + CAMPO_LASTNAME + " text, "
             + CAMPO_USERNAME + " text, "
-            + CAMPO_EMAIL + " text);";
+            + CAMPO_EMAIL + " text, "
+            + CAMPO_CLIENT + "text);";
 
 
     public static String[] consultaUsuario(ConexionSQLiteHelper con) {
@@ -45,10 +47,11 @@ public class UsuarioSQLite {
                 arrData[0] = cursor.getString(0); // id
                 arrData[1] = cursor.getString(1); // uid
                 arrData[2] = cursor.getString(2); // token
-                arrData[3] = cursor.getString(0); // name
-                arrData[4] = cursor.getString(1); // lastname
-                arrData[5] = cursor.getString(2); // username
-                arrData[6] = cursor.getString(2); // email
+                arrData[3] = cursor.getString(3); // name
+                arrData[4] = cursor.getString(4); // lastname
+                arrData[5] = cursor.getString(5); // username
+                arrData[6] = cursor.getString(6); // email
+                arrData[7] = cursor.getString(7); // client
 
                 //System.out.println(cursor.getString(0) + cursor.getString(1) + cursor.getString(2));
             }

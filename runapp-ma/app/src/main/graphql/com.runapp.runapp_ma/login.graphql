@@ -14,5 +14,6 @@ mutation LoginMutation(
      token
      client
      uid
+     email
   }
 }

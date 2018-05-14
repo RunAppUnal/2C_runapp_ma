@@ -70,7 +70,7 @@ public class CreateRouteActivity extends AppCompatActivity implements OnMapReady
     int cost, spaces_available;
     String title, description, waypoints, departure, users_in_route;
     float from_lat, from_lng, to_lat, to_lng;
-    Boolean active;
+    Boolean active, validation;
     TextInputEditText tiTitle, tiDescription, tiCost, tiSpace;
     Spinner sVehicles;
     Button save;
@@ -160,9 +160,10 @@ public class CreateRouteActivity extends AppCompatActivity implements OnMapReady
                     }
                     counter++;
                     addMarkerToMap(latLng.latitude, latLng.longitude, gmap);
-                }else{
-                    middlepoints.add(latLng);
-                    addMarkerToMap(latLng.latitude, latLng.longitude, gmap);
+//                    gmap.addMarker(latLng.latitude, latLng.longitude)
+//                }else{
+//                    middlepoints.add(latLng);
+//                    addMarkerToMap(latLng.latitude, latLng.longitude, gmap);
                 }
             }
         });
@@ -198,10 +199,16 @@ public class CreateRouteActivity extends AppCompatActivity implements OnMapReady
         myIntent = getIntent();
         userid = myIntent.getIntExtra("userid",0);
         username = myIntent.getStringExtra("username");
+        validation = false;
 
         Bundle mapViewBundle = null;
         if (savedInstanceState !=null) {
             mapViewBundle = savedInstanceState.getBundle(MAP_VIEW_BUNDLE_KEY);
+        }
+
+        if (validateToken()==false){
+            Intent invalidIntent = new Intent(CreateRouteActivity.this, LoginActivity.class);
+            startActivity(invalidIntent);
         }
 
         tiTitle = (TextInputEditText) findViewById(R.id.tiTitle);
@@ -386,11 +393,9 @@ public class CreateRouteActivity extends AppCompatActivity implements OnMapReady
         });
     }
 
-    private void formatWaypoints(float lat, float lng){
-        String waypoint = "";
-
-
-    }
+//    private void formatWaypoints(float lat, float lng){
+//        String waypoint = "";
+//    }
 
     private void createRoute(){
         title = tiTitle.getText().toString();
@@ -434,6 +439,37 @@ public class CreateRouteActivity extends AppCompatActivity implements OnMapReady
                     }
                 });
 
+    }
+
+    private boolean validateToken(){
+        ConexionSQLiteHelper con = new ConexionSQLiteHelper(getApplicationContext(), "db_usuarios", null, 1);
+        String []dat  = UsuarioSQLite.consultaUsuario(con);
+        String token = dat[2];
+        String uid = dat[1];
+        String client = dat[7];
+        MyApolloClient.getMyApolloClient().query(
+                ValidateTokenQuery.builder()
+                .token(token)
+                .uid(uid)
+                .client(client).build())
+                .enqueue(new ApolloCall.Callback<ValidateTokenQuery.Data>() {
+                    @Override
+                    public void onResponse(@Nonnull Response<ValidateTokenQuery.Data> response) {
+                        if (response.data()!=null){
+                            if (response.data().validateToken().success().equals("true")){
+                                validation = true;
+                            }else {
+                                validation = false;
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@Nonnull ApolloException e) {
+                        validation = false;
+                    }
+                });
+        return validation;
     }
 
     @Override

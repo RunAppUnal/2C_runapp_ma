@@ -1,0 +1,13 @@
+query validateTokenQuery(
+    $token: String!
+    $client: String!
+    $uid: String!
+){
+  validateToken(
+  token: $token
+  uid: $uid
+  client: $client
+  ){
+    success
+  }
+}

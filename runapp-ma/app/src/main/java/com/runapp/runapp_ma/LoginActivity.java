@@ -3,6 +3,7 @@ package com.runapp.runapp_ma;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -59,6 +60,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mProgressView;
     private View mLoginFormView;
     Context context = this;
+    Button b_register;
 
     @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     @Override
@@ -68,6 +70,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         // Set up the login form.
         mEmailView = findViewById(R.id.email);
 
+        b_register = (Button) findViewById(R.id.b_register);
+        b_register.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent regIntent = new Intent(LoginActivity.this, Register.class);
+                startActivity(regIntent);
+            }
+        });
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -357,9 +367,19 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                     });
 
                                 } else {
-                                    Log.d(TAG, "if username");
                                     status = true;
-                                    Log.d(TAG, "status if: " + status);
+                                    ContentValues values = new ContentValues();
+                                    values.put(UsuarioSQLite.CAMPO_ID, response.data().login().id());
+                                    values.put(UsuarioSQLite.CAMPO_UID, response.data().login().uid());
+                                    values.put(UsuarioSQLite.CAMPO_TOKEN, response.data().login().token());
+                                    values.put(UsuarioSQLite.CAMPO_NAME, response.data().login().name());
+                                    values.put(UsuarioSQLite.CAMPO_LASTNAME, response.data().login().lastname());
+                                    values.put(UsuarioSQLite.CAMPO_USERNAME, response.data().login().username());
+                                    values.put(UsuarioSQLite.CAMPO_EMAIL, response.data().login().email());
+                                    values.put(UsuarioSQLite.CAMPO_CLIENT, response.data().login().client());
+
+                                    ConexionSQLiteHelper con = new ConexionSQLiteHelper(LoginActivity.this, "db_usuarios", null, 1);
+                                    UsuarioSQLite.registrarUsuario(con, values);
                                     Intent myIntent = new Intent(LoginActivity.this, LateralMenuActivity.class);
                                     myIntent.putExtra("userid", response.data().login().id());
                                     myIntent.putExtra("username", response.data().login().username());

@@ -48,4 +48,5 @@
     <string name="title_activity_create_route">CreateRouteActivity</string>
     <string name="title_activity_bike_routes1">BikeRoutes1Activity</string>
     <string name="title_activity_bike_routes_match1">BikeRoutesMatch1Activity</string>
+    <string name="title_activity_register">register</string>
 </resources>

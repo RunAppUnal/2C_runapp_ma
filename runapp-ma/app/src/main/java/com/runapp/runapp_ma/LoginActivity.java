@@ -301,7 +301,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     .enqueue(new ApolloCall.Callback<AuthMutation.Data>() {
                         @Override
                         public void onResponse(@Nonnull Response<AuthMutation.Data> response) {
-                            Log.d(TAG, "answer: "+response.data().auth().answer());
+//                            Log.d(TAG, "answer: "+response.data().auth().answer());
                             if (response.data() != null){
                                 Log.d(TAG, "answer2: "+response.data().auth().answer());
                                 if (response.data().auth().answer().equals("true")){

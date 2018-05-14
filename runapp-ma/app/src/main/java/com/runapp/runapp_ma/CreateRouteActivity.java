@@ -86,10 +86,6 @@ public class CreateRouteActivity extends AppCompatActivity implements OnMapReady
     String username;
 
 
-    Bundle datos;
-
-    ImageButton b_menu;
-
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -141,6 +137,7 @@ public class CreateRouteActivity extends AppCompatActivity implements OnMapReady
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        final ArrayList<LatLng> middlepoints = new ArrayList<>();
         gmap = googleMap;
         gmap.setMinZoomPreference(8);
         gmap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
@@ -162,6 +159,9 @@ public class CreateRouteActivity extends AppCompatActivity implements OnMapReady
                         to_lng = (float) latLng.longitude;
                     }
                     counter++;
+                    addMarkerToMap(latLng.latitude, latLng.longitude, gmap);
+                }else{
+                    middlepoints.add(latLng);
                     addMarkerToMap(latLng.latitude, latLng.longitude, gmap);
                 }
             }
@@ -195,26 +195,9 @@ public class CreateRouteActivity extends AppCompatActivity implements OnMapReady
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-//        SharedPreferences sharedPref = getSharedPreferences("userData",context.MODE_PRIVATE);
-//        user_id = sharedPref.getInt("userid",0);
-//        username = datos.getString("username");
-//        userid = datos.getInt("userid");
         myIntent = getIntent();
         userid = myIntent.getIntExtra("userid",0);
         username = myIntent.getStringExtra("username");
-
-//        b_menu = (ImageButton) findViewById(R.id.menu);
-//        b_menu.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent myIntent = new Intent(CreateRouteActivity.this,LateralMenuActivity.class);
-//                Intent myIntent2 = getIntent();
-//                myIntent2.putExtra("userid",userid);
-//                myIntent2.putExtra("username", username);
-//                startActivity(myIntent);
-//            }
-//        });
 
         Bundle mapViewBundle = null;
         if (savedInstanceState !=null) {
@@ -403,13 +386,19 @@ public class CreateRouteActivity extends AppCompatActivity implements OnMapReady
         });
     }
 
+    private void formatWaypoints(float lat, float lng){
+        String waypoint = "";
+
+
+    }
+
     private void createRoute(){
         title = tiTitle.getText().toString();
         description = tiDescription.getText().toString();
-        waypoints = "";
+        waypoints = "[]";
         departure = tiSalida.getText().toString();
         cost = Integer.parseInt(tiCost.getText().toString());
-        users_in_route = "{}";
+        users_in_route = "";
         active = true;
         Log.d(TAG, "LATS AND LNGS: "+from_lat + " "+from_lng + " "+ to_lng + "" + to_lat);
         spaces_available = Integer.parseInt(tiSpace.getText().toString());

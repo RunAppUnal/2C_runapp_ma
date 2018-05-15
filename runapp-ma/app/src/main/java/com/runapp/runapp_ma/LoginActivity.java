@@ -95,9 +95,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent myIntent = new Intent(LoginActivity.this,MainActivity.class);
-//                startActivity(myIntent);
-//                finish();
 
                 attemptLogin();
             }
@@ -381,8 +378,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                     ConexionSQLiteHelper con = new ConexionSQLiteHelper(LoginActivity.this, "db_usuarios", null, 1);
                                     UsuarioSQLite.registrarUsuario(con, values);
                                     Intent myIntent = new Intent(LoginActivity.this, LateralMenuActivity.class);
-                                    myIntent.putExtra("userid", response.data().login().id());
-                                    myIntent.putExtra("username", response.data().login().username());
                                     startActivity(myIntent);
                                     LoginActivity.this.runOnUiThread(new Runnable() {
                                         @Override

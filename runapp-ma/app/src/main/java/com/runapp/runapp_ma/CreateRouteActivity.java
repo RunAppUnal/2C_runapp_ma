@@ -76,15 +76,12 @@ public class CreateRouteActivity extends AppCompatActivity implements OnMapReady
     Button save;
     Intent myIntent;
 
-    int userid, carid;
+    int carid;
 
     ArrayList<String> cars = new ArrayList<>();
     ArrayList<Integer> cars_id = new ArrayList<>();
 
     Context context;
-
-    String username;
-
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -196,9 +193,9 @@ public class CreateRouteActivity extends AppCompatActivity implements OnMapReady
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        myIntent = getIntent();
-        userid = myIntent.getIntExtra("userid",0);
-        username = myIntent.getStringExtra("username");
+//        myIntent = getIntent();
+//        userid = myIntent.getIntExtra("userid",0);
+//        username = myIntent.getStringExtra("username");
         validation = false;
 
         Bundle mapViewBundle = null;
@@ -444,6 +441,7 @@ public class CreateRouteActivity extends AppCompatActivity implements OnMapReady
     private boolean validateToken(){
         ConexionSQLiteHelper con = new ConexionSQLiteHelper(getApplicationContext(), "db_usuarios", null, 1);
         String []dat  = UsuarioSQLite.consultaUsuario(con);
+        user_id = Integer.parseInt(dat[0]);
         String token = dat[2];
         String uid = dat[1];
         String client = dat[7];
@@ -474,23 +472,16 @@ public class CreateRouteActivity extends AppCompatActivity implements OnMapReady
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.create_route, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -505,40 +496,24 @@ public class CreateRouteActivity extends AppCompatActivity implements OnMapReady
 
         if (id == R.id.nav_createRoute) {
             Intent i = new Intent(this, CreateRouteActivity.class);
-            //i.putExtra("userid",userid);
-            //i.putExtra("username", username);
             startActivity(i);
         } else if (id == R.id.nav_searchRoute) {
             Intent i = new Intent(this, SearchActivity.class);
-            //i.putExtra("userid",userid);
-            //i.putExtra("username", username);
-            //i.putExtra("from", 0);
             startActivity(i);
         } else if (id == R.id.nav_favoriteRoute) {
             Intent i = new Intent(this, SearchActivity.class);
-            //i.putExtra("userid",userid);
-            //i.putExtra("username", username);
-            //i.putExtra("from", 1);
             startActivity(i);
         } else if (id == R.id.nav_myCars) {
             Intent i = new Intent(this, VehiclesActivity.class);
-            //i.putExtra("userid",userid);
-            //i.putExtra("username", username);
             startActivity(i);
         } else if (id == R.id.nav_bicycle) {
             Intent i = new Intent(this, BikeRoutesActivity.class);
-            //i.putExtra("userid",userid);
-            //i.putExtra("username", username);
             startActivity(i);
         } else if (id == R.id.nav_user) {
             Intent i = new Intent(this, UserActivity.class);
-            //i.putExtra("userid",userid);
-            //i.putExtra("username", username);
             startActivity(i);
         } else if (id == R.id.nav_home) {
             Intent i = new Intent(this, MainActivity.class);
-            //i.putExtra("userid",userid);
-            //i.putExtra("username", username);
             startActivity(i);
         }
 

@@ -29,7 +29,7 @@ public class UsuarioSQLite {
             + CAMPO_LASTNAME + " text, "
             + CAMPO_USERNAME + " text, "
             + CAMPO_EMAIL + " text, "
-            + CAMPO_CLIENT + "text);";
+            + CAMPO_CLIENT + " text);";
 
 
     public static String[] consultaUsuario(ConexionSQLiteHelper con) {

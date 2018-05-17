@@ -176,8 +176,10 @@ public class UpdateDeleteVehicleActivity extends AppCompatActivity implements Na
                 }
                 brand = tibrand.getText().toString();
                 kind = spinner.getSelectedItem().toString();
-                sharedPrefes = getSharedPreferences("userData",context.MODE_PRIVATE);
-                userid = sharedPrefes.getInt("userid", 0);
+                ConexionSQLiteHelper con = new ConexionSQLiteHelper(getApplicationContext(), "db_usuarios", null, 1);
+                String []dat  = UsuarioSQLite.consultaUsuario(con);
+                userid = Integer.parseInt(dat[0]);
+
                 boolean valid = validForm();
                 if (!valid){
                     MyApolloClient.getMyApolloClient().mutate(UpdateVehicleMutation.builder()
@@ -271,40 +273,24 @@ public class UpdateDeleteVehicleActivity extends AppCompatActivity implements Na
 
         if (id == R.id.nav_createRoute) {
             Intent i = new Intent(this, CreateRouteActivity.class);
-            //i.putExtra("userid",userid);
-            //i.putExtra("username", username);
             startActivity(i);
         } else if (id == R.id.nav_searchRoute) {
             Intent i = new Intent(this, SearchActivity.class);
-            //i.putExtra("userid",userid);
-            //i.putExtra("username", username);
-            //i.putExtra("from", 0);
             startActivity(i);
         } else if (id == R.id.nav_favoriteRoute) {
             Intent i = new Intent(this, SearchActivity.class);
-            //i.putExtra("userid",userid);
-            //i.putExtra("username", username);
-            //i.putExtra("from", 1);
             startActivity(i);
         } else if (id == R.id.nav_myCars) {
             Intent i = new Intent(this, VehiclesActivity.class);
-            //i.putExtra("userid",userid);
-            //i.putExtra("username", username);
             startActivity(i);
         } else if (id == R.id.nav_bicycle) {
             Intent i = new Intent(this, BikeRoutesActivity.class);
-            //i.putExtra("userid",userid);
-            //i.putExtra("username", username);
             startActivity(i);
         } else if (id == R.id.nav_user) {
             Intent i = new Intent(this, UserActivity.class);
-            //i.putExtra("userid",userid);
-            //i.putExtra("username", username);
             startActivity(i);
         } else if (id == R.id.nav_home) {
             Intent i = new Intent(this, MainActivity.class);
-            //i.putExtra("userid",userid);
-            //i.putExtra("username", username);
             startActivity(i);
         }
 

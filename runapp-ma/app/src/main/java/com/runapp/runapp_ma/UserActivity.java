@@ -35,15 +35,16 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
     String username;
     int userid;
 
-//    Bundle datos;
-    Intent intent3 = getIntent();
-
-    ImageButton b_menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
+
+        ConexionSQLiteHelper con = new ConexionSQLiteHelper(getApplicationContext(), "db_usuarios", null, 1);
+        String []dat  = UsuarioSQLite.consultaUsuario(con);
+        userid = Integer.parseInt(dat[0]);
+        username = dat[5];
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -67,10 +68,6 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 //        datos = getIntent().getExtras();
 
-        intent3 = getIntent();
-        username = intent3.getStringExtra("username");
-        userid = intent3.getIntExtra("userid",0);
-
         uname = (TextView) findViewById(R.id.txtUserName);
         name = (TextView) findViewById(R.id.txtName);
         email = (TextView) findViewById(R.id.txtEmail);
@@ -82,12 +79,6 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void getUserByUserName(){
-//        SharedPreferences sharedPrefes = getSharedPreferences("userData",context.MODE_PRIVATE);
-//        String username = sharedPrefes.getString("username", "");
-//        datos = getIntent().getExtras();
-    intent3 = getIntent();
-        username = intent3.getStringExtra("username");
-;
         MyApolloClient.getMyApolloClient().query(
                 UserByUserNameQuery.builder().username(username).build()).enqueue(new ApolloCall.Callback<UserByUserNameQuery.Data>() {
             @Override
@@ -160,40 +151,24 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
 
         if (id == R.id.nav_createRoute) {
             Intent i = new Intent(this, CreateRouteActivity.class);
-            //i.putExtra("userid",userid);
-            //i.putExtra("username", username);
             startActivity(i);
         } else if (id == R.id.nav_searchRoute) {
             Intent i = new Intent(this, SearchActivity.class);
-            //i.putExtra("userid",userid);
-            //i.putExtra("username", username);
-            //i.putExtra("from", 0);
             startActivity(i);
         } else if (id == R.id.nav_favoriteRoute) {
             Intent i = new Intent(this, SearchActivity.class);
-            //i.putExtra("userid",userid);
-            //i.putExtra("username", username);
-            //i.putExtra("from", 1);
             startActivity(i);
         } else if (id == R.id.nav_myCars) {
             Intent i = new Intent(this, VehiclesActivity.class);
-            //i.putExtra("userid",userid);
-            //i.putExtra("username", username);
             startActivity(i);
         } else if (id == R.id.nav_bicycle) {
             Intent i = new Intent(this, BikeRoutesActivity.class);
-            //i.putExtra("userid",userid);
-            //i.putExtra("username", username);
             startActivity(i);
         } else if (id == R.id.nav_user) {
             Intent i = new Intent(this, UserActivity.class);
-            //i.putExtra("userid",userid);
-            //i.putExtra("username", username);
             startActivity(i);
         } else if (id == R.id.nav_home) {
             Intent i = new Intent(this, MainActivity.class);
-            //i.putExtra("userid",userid);
-            //i.putExtra("username", username);
             startActivity(i);
         }
 

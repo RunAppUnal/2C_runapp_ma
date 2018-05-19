@@ -84,51 +84,10 @@ public class LateralMenuActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        boolean FragmentTransaction = false;
-        android.support.v4.app.Fragment fragment = null;
+        commonMethods.navegationItemSelect(this, item, id);
 
-        if (id == R.id.nav_createRoute) {
-            Intent i = new Intent(this, CreateRouteActivity.class);
-            i.putExtra("userid",userid);
-            i.putExtra("username", username);
-            startActivity(i);
-        } else if (id == R.id.nav_searchRoute) {
-            Intent i = new Intent(this, SearchActivity.class);
-            i.putExtra("userid",userid);
-            i.putExtra("username", username);
-            i.putExtra("from", 0);
-            startActivity(i);
-        } else if (id == R.id.nav_favoriteRoute) {
-            Intent i = new Intent(this, SearchActivity.class);
-            i.putExtra("userid",userid);
-            i.putExtra("username", username);
-            i.putExtra("from", 1);
-            startActivity(i);
-        } else if (id == R.id.nav_myCars) {
-            Intent i = new Intent(this, VehiclesActivity.class);
-            i.putExtra("userid",userid);
-            i.putExtra("username", username);
-            startActivity(i);
-        } else if (id == R.id.nav_bicycle) {
-            Intent i = new Intent(this, BikeRoutesActivity.class);
-            i.putExtra("userid",userid);
-            i.putExtra("username", username);
-            startActivity(i);
-        } else if (id == R.id.nav_user) {
-            Intent i = new Intent(this, UserActivity.class);
-            i.putExtra("userid",userid);
-            i.putExtra("username", username);
-            startActivity(i);
-        } else if (id == R.id.nav_home) {
-            Intent i = new Intent(this, MainActivity.class);
-            i.putExtra("userid",userid);
-            i.putExtra("username", username);
-            startActivity(i);
-        }
-
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        //DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        //drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 }

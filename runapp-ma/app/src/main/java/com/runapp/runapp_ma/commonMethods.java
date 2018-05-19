@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.MenuItem;
 
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
@@ -50,6 +51,31 @@ public class commonMethods extends Application{
                 public void onFailure(@Nonnull ApolloException e) {
                 }
             });
+    }
+
+    public static void navegationItemSelect(Context context,MenuItem item, int id){
+        if (id == R.id.nav_createRoute) {
+            Intent i = new Intent(context, CreateRouteActivity.class);
+            context.startActivity(i);
+        } else if (id == R.id.nav_searchRoute) {
+            Intent i = new Intent(context, SearchActivity.class);
+            context.startActivity(i);
+        } else if (id == R.id.nav_favoriteRoute) {
+            Intent i = new Intent(context, SearchActivity.class);
+            context.startActivity(i);
+        } else if (id == R.id.nav_myCars) {
+            Intent i = new Intent(context, VehiclesActivity.class);
+            context.startActivity(i);
+        } else if (id == R.id.nav_bicycle) {
+            Intent i = new Intent(context, BikeRoutesActivity.class);
+            context.startActivity(i);
+        } else if (id == R.id.nav_user) {
+            Intent i = new Intent(context, UserActivity.class);
+            context.startActivity(i);
+        } else if (id == R.id.nav_home) {
+            Intent i = new Intent(context, MainActivity.class);
+            context.startActivity(i);
         }
     }
+}
 

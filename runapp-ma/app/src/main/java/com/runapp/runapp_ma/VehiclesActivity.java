@@ -179,35 +179,10 @@ public class VehiclesActivity extends AppCompatActivity implements NavigationVie
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        boolean FragmentTransaction = false;
-        android.support.v4.app.Fragment fragment = null;
+        commonMethods.navegationItemSelect(this, item, id);
 
-        if (id == R.id.nav_createRoute) {
-            Intent i = new Intent(this, CreateRouteActivity.class);
-            startActivity(i);
-        } else if (id == R.id.nav_searchRoute) {
-            Intent i = new Intent(this, SearchActivity.class);
-            startActivity(i);
-        } else if (id == R.id.nav_favoriteRoute) {
-            Intent i = new Intent(this, SearchActivity.class);
-            startActivity(i);
-        } else if (id == R.id.nav_myCars) {
-            Intent i = new Intent(this, VehiclesActivity.class);
-            startActivity(i);
-        } else if (id == R.id.nav_bicycle) {
-            Intent i = new Intent(this, BikeRoutesActivity.class);
-            startActivity(i);
-        } else if (id == R.id.nav_user) {
-            Intent i = new Intent(this, UserActivity.class);
-            startActivity(i);
-        } else if (id == R.id.nav_home) {
-            Intent i = new Intent(this, MainActivity.class);
-            startActivity(i);
-        }
-
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        //DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        //drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 

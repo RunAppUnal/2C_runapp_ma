@@ -43,6 +43,7 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
 
         ConexionSQLiteHelper con = new ConexionSQLiteHelper(getApplicationContext(), "db_usuarios", null, 1);
         String []dat  = UsuarioSQLite.consultaUsuario(con);
+        commonMethods.validateToken(dat[2], dat[1], dat[7]);
         userid = Integer.parseInt(dat[0]);
         username = dat[5];
 

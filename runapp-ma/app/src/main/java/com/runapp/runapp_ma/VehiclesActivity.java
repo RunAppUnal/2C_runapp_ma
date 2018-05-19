@@ -52,6 +52,7 @@ public class VehiclesActivity extends AppCompatActivity implements NavigationVie
         ConexionSQLiteHelper con = new ConexionSQLiteHelper(getApplicationContext(), "db_usuarios", null, 1);
         String []dat  = UsuarioSQLite.consultaUsuario(con);
         user_id = Integer.parseInt(dat[0]);
+        commonMethods.validateToken(dat[2], dat[1], dat[7]);
 
 
         vehicles = new ArrayList<>();

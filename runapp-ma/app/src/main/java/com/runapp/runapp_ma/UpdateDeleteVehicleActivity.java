@@ -64,6 +64,10 @@ public class UpdateDeleteVehicleActivity extends AppCompatActivity implements Na
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_delete_vehicle);
 
+        ConexionSQLiteHelper con = new ConexionSQLiteHelper(getApplicationContext(), "db_usuarios", null, 1);
+        String []dat  = UsuarioSQLite.consultaUsuario(con);
+        userid = Integer.parseInt(dat[0]);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -176,9 +180,7 @@ public class UpdateDeleteVehicleActivity extends AppCompatActivity implements Na
                 }
                 brand = tibrand.getText().toString();
                 kind = spinner.getSelectedItem().toString();
-                ConexionSQLiteHelper con = new ConexionSQLiteHelper(getApplicationContext(), "db_usuarios", null, 1);
-                String []dat  = UsuarioSQLite.consultaUsuario(con);
-                userid = Integer.parseInt(dat[0]);
+
 
                 boolean valid = validForm();
                 if (!valid){

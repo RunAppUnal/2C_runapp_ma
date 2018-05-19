@@ -60,6 +60,10 @@ public class AddVehicleActivity extends AppCompatActivity implements NavigationV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_vehicle);
+        ConexionSQLiteHelper con = new ConexionSQLiteHelper(getApplicationContext(), "db_usuarios", null, 1);
+        String []dat  = UsuarioSQLite.consultaUsuario(con);
+        commonMethods.validateToken(dat[2], dat[1], dat[7]);
+        userid = Integer.parseInt(dat[0]);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -131,9 +135,7 @@ public class AddVehicleActivity extends AppCompatActivity implements NavigationV
                 }
                 brand = tibrand.getText().toString();
                 kind = spinner.getSelectedItem().toString();
-                ConexionSQLiteHelper con = new ConexionSQLiteHelper(getApplicationContext(), "db_usuarios", null, 1);
-                String []dat  = UsuarioSQLite.consultaUsuario(con);
-                userid = Integer.parseInt(dat[0]);
+
                 boolean valid = validForm();
                 if (!valid) {
                     MyApolloClient.getMyApolloClient().mutate(CreateVehicleMutation.builder()

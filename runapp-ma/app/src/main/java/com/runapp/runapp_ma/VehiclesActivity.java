@@ -112,19 +112,21 @@ public class VehiclesActivity extends AppCompatActivity implements NavigationVie
                 .enqueue(new ApolloCall.Callback<MyVehiclesQuery.Data>() {
             @Override
             public void onResponse(@Nonnull Response<MyVehiclesQuery.Data> response) {
-                int j = response.data().myVehicles().size();
-                for (int i = 0; i < j; i++ ){
-                    vehicles.add(new Vehicle(
-                            (int)response.data().myVehicles().get(i).id,
-                            response.data().myVehicles().get(i).plate,
-                            (int)response.data().myVehicles().get(i).user_id,
-                            response.data().myVehicles().get(i).kind,
-                            (int)response.data().myVehicles().get(i).model,
-                            response.data().myVehicles().get(i).color,
-                            (int)response.data().myVehicles().get(i).capacity,
-                            response.data().myVehicles().get(i).image,
-                            response.data().myVehicles().get(i).brand
-                    ));
+                if(response.data() != null) {
+                    int j = response.data().myVehicles().size();
+                    for (int i = 0; i < j; i++) {
+                        vehicles.add(new Vehicle(
+                                (int) response.data().myVehicles().get(i).id,
+                                response.data().myVehicles().get(i).plate,
+                                (int) response.data().myVehicles().get(i).user_id,
+                                response.data().myVehicles().get(i).kind,
+                                (int) response.data().myVehicles().get(i).model,
+                                response.data().myVehicles().get(i).color,
+                                (int) response.data().myVehicles().get(i).capacity,
+                                response.data().myVehicles().get(i).image,
+                                response.data().myVehicles().get(i).brand
+                        ));
+                    }
                 }
             }
 

@@ -61,11 +61,12 @@ public class SearchActivity extends AppCompatActivity implements DatePickerDialo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        ConexionSQLiteHelper con = new ConexionSQLiteHelper(SearchActivity.this, "db_usuarios", null, 1);
+        String []dat  = UsuarioSQLite.consultaUsuario(con);
+        commonMethods.validateToken(dat[2], dat[1], dat[7]);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

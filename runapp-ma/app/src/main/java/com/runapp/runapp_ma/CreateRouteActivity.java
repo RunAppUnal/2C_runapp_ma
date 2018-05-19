@@ -68,7 +68,7 @@ public class CreateRouteActivity extends AppCompatActivity implements OnMapReady
     int dayFinal, monthFinal, yearFinal, hourFinal, minuteFinal;
 
     int cost, spaces_available;
-    String title, description, waypoints, departure, users_in_route;
+    String title, description, waypoints, departure, users_in_route, token, uid, client;
     float from_lat, from_lng, to_lat, to_lng;
     Boolean active, validation;
     TextInputEditText tiTitle, tiDescription, tiCost, tiSpace;
@@ -172,7 +172,9 @@ public class CreateRouteActivity extends AppCompatActivity implements OnMapReady
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_route);
-
+        ConexionSQLiteHelper con = new ConexionSQLiteHelper(CreateRouteActivity.this, "db_usuarios", null, 1);
+        String []dat  = UsuarioSQLite.consultaUsuario(con);
+        commonMethods.validateToken(dat[2], dat[1], dat[7]);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -193,20 +195,11 @@ public class CreateRouteActivity extends AppCompatActivity implements OnMapReady
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-//        myIntent = getIntent();
-//        userid = myIntent.getIntExtra("userid",0);
-//        username = myIntent.getStringExtra("username");
-        validation = false;
-
         Bundle mapViewBundle = null;
         if (savedInstanceState !=null) {
             mapViewBundle = savedInstanceState.getBundle(MAP_VIEW_BUNDLE_KEY);
         }
 
-        if (validateToken()==false){
-            Intent invalidIntent = new Intent(CreateRouteActivity.this, LoginActivity.class);
-            startActivity(invalidIntent);
-        }
 
         tiTitle = (TextInputEditText) findViewById(R.id.tiTitle);
         tiDescription = (TextInputEditText) findViewById(R.id.tiDescription);
@@ -438,37 +431,6 @@ public class CreateRouteActivity extends AppCompatActivity implements OnMapReady
 
     }
 
-    private boolean validateToken(){
-        ConexionSQLiteHelper con = new ConexionSQLiteHelper(getApplicationContext(), "db_usuarios", null, 1);
-        String []dat  = UsuarioSQLite.consultaUsuario(con);
-        user_id = Integer.parseInt(dat[0]);
-        String token = dat[2];
-        String uid = dat[1];
-        String client = dat[7];
-        MyApolloClient.getMyApolloClient().query(
-                ValidateTokenQuery.builder()
-                .token(token)
-                .uid(uid)
-                .client(client).build())
-                .enqueue(new ApolloCall.Callback<ValidateTokenQuery.Data>() {
-                    @Override
-                    public void onResponse(@Nonnull Response<ValidateTokenQuery.Data> response) {
-                        if (response.data()!=null){
-                            if (response.data().validateToken().success().equals("true")){
-                                validation = true;
-                            }else {
-                                validation = false;
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(@Nonnull ApolloException e) {
-                        validation = false;
-                    }
-                });
-        return validation;
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

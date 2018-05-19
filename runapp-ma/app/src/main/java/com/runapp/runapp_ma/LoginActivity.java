@@ -365,6 +365,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                                 } else {
                                     status = true;
+                                    Log.d(TAG, "sera que guardas puto");
                                     ContentValues values = new ContentValues();
                                     values.put(UsuarioSQLite.CAMPO_ID, response.data().login().id());
                                     values.put(UsuarioSQLite.CAMPO_UID, response.data().login().uid());

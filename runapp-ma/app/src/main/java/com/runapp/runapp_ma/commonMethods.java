@@ -53,7 +53,7 @@ public class commonMethods extends Application{
             });
     }
 
-    public static void navegationItemSelect(Context context,MenuItem item, int id){
+    public static void navegationItemSelect(final Context context, MenuItem item, int id){
         if (id == R.id.nav_createRoute) {
             Intent i = new Intent(context, CreateRouteActivity.class);
             context.startActivity(i);
@@ -75,7 +75,27 @@ public class commonMethods extends Application{
         } else if (id == R.id.nav_home) {
             Intent i = new Intent(context, MainActivity.class);
             context.startActivity(i);
+        } else if (id == R.id.nav_logout){
+            ConexionSQLiteHelper con = new ConexionSQLiteHelper(context, "db_usuarios", null, 1);
+            String []dat  = UsuarioSQLite.consultaUsuario(con);
+            MyApolloClient.getMyApolloClient().mutate(LogOutMutation.builder()
+                .uid(dat[1])
+                .token(dat[2])
+                .client(dat[7]).build()).enqueue(new ApolloCall.Callback<LogOutMutation.Data>() {
+                @Override
+                public void onResponse(@Nonnull Response<LogOutMutation.Data> response) {
+                    context.deleteDatabase("db_usuarios");
+                    Intent i = new Intent(context, LoginActivity.class);
+                    context.startActivity(i);
+                }
+
+                @Override
+                public void onFailure(@Nonnull ApolloException e) {
+
+                }
+            });
         }
+
     }
 }
 

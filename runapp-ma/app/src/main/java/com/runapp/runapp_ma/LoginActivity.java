@@ -376,9 +376,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                     values.put(UsuarioSQLite.CAMPO_EMAIL, response.data().login().email());
                                     values.put(UsuarioSQLite.CAMPO_CLIENT, response.data().login().client());
 
+                                    LoginActivity.this.deleteDatabase("db_usuarios");
                                     ConexionSQLiteHelper con = new ConexionSQLiteHelper(LoginActivity.this, "db_usuarios", null, 1);
                                     UsuarioSQLite.registrarUsuario(con, values);
-                                    Intent myIntent = new Intent(LoginActivity.this, LateralMenuActivity.class);
+                                    Intent myIntent = new Intent(LoginActivity.this, MainActivity.class);
                                     startActivity(myIntent);
                                     LoginActivity.this.runOnUiThread(new Runnable() {
                                         @Override

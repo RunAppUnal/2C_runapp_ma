@@ -38,7 +38,8 @@ public class VehiclesActivity extends AppCompatActivity implements NavigationVie
     private Context context = this;
     ImageButton b_menu;
 
-    String userid, username;
+    String  username;
+    Integer user_id;
 
     Bundle datos;
 
@@ -48,21 +49,23 @@ public class VehiclesActivity extends AppCompatActivity implements NavigationVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vehicles);
 
-        datos = getIntent().getExtras();
-        userid = datos.getString("userid");
-        username = datos.getString("username");
+        ConexionSQLiteHelper con = new ConexionSQLiteHelper(getApplicationContext(), "db_usuarios", null, 1);
+        String []dat  = UsuarioSQLite.consultaUsuario(con);
+        user_id = Integer.parseInt(dat[0]);
 
 
         vehicles = new ArrayList<>();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.adddel);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                //        .setAction("Action", null).show();
+                Intent myIntent = new Intent(VehiclesActivity.this,AddVehicleActivity.class);
+                startActivity(myIntent);
             }
         });
 
@@ -103,11 +106,8 @@ public class VehiclesActivity extends AppCompatActivity implements NavigationVie
     }
 
     private void getMyVehicles(){
-        SharedPreferences sharedPrefes = getSharedPreferences("userData",context.MODE_PRIVATE);
-        Integer userid = sharedPrefes.getInt("userid", 0);
-        Log.d(TAG, "USERID PLS "+userid);
-
-        MyApolloClient.getMyApolloClient().query(MyVehiclesQuery.builder().userid(userid).build())
+        System.out.println("------>>> id" + user_id);
+        MyApolloClient.getMyApolloClient().query(MyVehiclesQuery.builder().userid(user_id).build())
                 .enqueue(new ApolloCall.Callback<MyVehiclesQuery.Data>() {
             @Override
             public void onResponse(@Nonnull Response<MyVehiclesQuery.Data> response) {
@@ -183,40 +183,24 @@ public class VehiclesActivity extends AppCompatActivity implements NavigationVie
 
         if (id == R.id.nav_createRoute) {
             Intent i = new Intent(this, CreateRouteActivity.class);
-            i.putExtra("userid",userid);
-            i.putExtra("username", username);
             startActivity(i);
         } else if (id == R.id.nav_searchRoute) {
             Intent i = new Intent(this, SearchActivity.class);
-            i.putExtra("userid",userid);
-            i.putExtra("username", username);
-            i.putExtra("from", 0);
             startActivity(i);
         } else if (id == R.id.nav_favoriteRoute) {
             Intent i = new Intent(this, SearchActivity.class);
-            i.putExtra("userid",userid);
-            i.putExtra("username", username);
-            i.putExtra("from", 1);
             startActivity(i);
         } else if (id == R.id.nav_myCars) {
             Intent i = new Intent(this, VehiclesActivity.class);
-            i.putExtra("userid",userid);
-            i.putExtra("username", username);
             startActivity(i);
         } else if (id == R.id.nav_bicycle) {
             Intent i = new Intent(this, BikeRoutesActivity.class);
-            i.putExtra("userid",userid);
-            i.putExtra("username", username);
             startActivity(i);
         } else if (id == R.id.nav_user) {
             Intent i = new Intent(this, UserActivity.class);
-            i.putExtra("userid",userid);
-            i.putExtra("username", username);
             startActivity(i);
         } else if (id == R.id.nav_home) {
             Intent i = new Intent(this, MainActivity.class);
-            i.putExtra("userid",userid);
-            i.putExtra("username", username);
             startActivity(i);
         }
 

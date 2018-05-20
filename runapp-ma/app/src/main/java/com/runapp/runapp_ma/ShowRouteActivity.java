@@ -499,32 +499,7 @@ public class ShowRouteActivity extends AppCompatActivity implements OnMapReadyCa
         }
     }
 
-    private  void deleteRoute(){
-        MyApolloClient.getMyApolloClient().mutate(
-                DeleteRouteMutation.builder()
-                .id(r_id).build())
-                .enqueue(new ApolloCall.Callback<DeleteRouteMutation.Data>() {
-                    @Override
-                    public void onResponse(@Nonnull Response<DeleteRouteMutation.Data> response) {
-                        ShowRouteActivity.this.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(ShowRouteActivity.this, "Has borrado la ruta", Toast.LENGTH_LONG).show();
-                            }
-                        });
-                        Intent intent = new Intent(ShowRouteActivity.this, SearchActivity.class);
-                        intent.putExtra("from", 1);
-                        startActivity(intent);
 
-                    }
-
-                    @Override
-                    public void onFailure(@Nonnull ApolloException e) {
-
-                    }
-                });
-
-        }
 
 
     @Override

@@ -175,6 +175,7 @@ public class CreateRouteActivity extends AppCompatActivity implements OnMapReady
         ConexionSQLiteHelper con = new ConexionSQLiteHelper(CreateRouteActivity.this, "db_usuarios", null, 1);
         String []dat  = UsuarioSQLite.consultaUsuario(con);
         commonMethods.validateToken(dat[2], dat[1], dat[7]);
+        user_id = Integer.parseInt(dat[0]);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -345,7 +346,6 @@ public class CreateRouteActivity extends AppCompatActivity implements OnMapReady
                             cars.add(response.data().myVehicles().get(i).plate());
                             cars_id.add((int) response.data().myVehicles().get(i).id());
                         }
-//                        if (s >0) {
                             fillSpinner();
                         }
                     }
@@ -417,8 +417,9 @@ public class CreateRouteActivity extends AppCompatActivity implements OnMapReady
                     @Override
                     public void onResponse(@Nonnull Response<CreateRouteMutation.Data> response) {
                         if (response.data()!=null) {
-                            Intent intent = new Intent(CreateRouteActivity.this, ShowRouteActivity.class);
-                            intent.putExtra("routeid", response.data().createRoute().id());
+                            Intent intent = new Intent(CreateRouteActivity.this, ShowMyRouteActivity.class);
+                            int tmp = (int) response.data().createRoute().id();
+                            intent.putExtra("routeid", tmp);
                             startActivity(intent);
                         }
                     }
@@ -452,11 +453,7 @@ public class CreateRouteActivity extends AppCompatActivity implements OnMapReady
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
         commonMethods.navegationItemSelect(this, item, id);
-
-        //DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        //drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 

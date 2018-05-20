@@ -14,8 +14,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
@@ -66,6 +68,9 @@ public class ShowMyRouteActivity extends AppCompatActivity
     TextView s_colour;
     TextView s_model;
     TextView s_capacity;
+
+    Button edit;
+    Button delete;
 
 
     ListView usersIn;
@@ -209,6 +214,16 @@ public class ShowMyRouteActivity extends AppCompatActivity
 
         usersIn = (ListView) findViewById(R.id.usersIn);
 
+        edit = (Button) findViewById(R.id.b_edit);
+        delete = (Button) findViewById(R.id.b_delete);
+
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteRoute();
+            }
+        });
+
         getRoute();
     }
 
@@ -328,6 +343,33 @@ public class ShowMyRouteActivity extends AppCompatActivity
 
                     }
                 });
+    }
+
+    private  void deleteRoute(){
+        MyApolloClient.getMyApolloClient().mutate(
+                DeleteRouteMutation.builder()
+                        .id(r_id).build())
+                .enqueue(new ApolloCall.Callback<DeleteRouteMutation.Data>() {
+                    @Override
+                    public void onResponse(@Nonnull Response<DeleteRouteMutation.Data> response) {
+                        ShowMyRouteActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(ShowMyRouteActivity.this, "Has borrado la ruta", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                        Intent intent = new Intent(ShowMyRouteActivity.this, SearchActivity.class);
+                        intent.putExtra("mine", 1);
+                        startActivity(intent);
+
+                    }
+
+                    @Override
+                    public void onFailure(@Nonnull ApolloException e) {
+
+                    }
+                });
+
     }
 
     private GeoApiContext getGeoContext() {

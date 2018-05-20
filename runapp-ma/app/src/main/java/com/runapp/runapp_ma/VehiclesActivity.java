@@ -41,7 +41,6 @@ public class VehiclesActivity extends AppCompatActivity implements NavigationVie
     String  username;
     Integer user_id;
 
-    Bundle datos;
 
 
     @Override

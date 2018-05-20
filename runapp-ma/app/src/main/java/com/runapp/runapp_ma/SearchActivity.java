@@ -42,7 +42,6 @@ public class SearchActivity extends AppCompatActivity implements DatePickerDialo
     ImageButton b_picker;
     ImageButton b_reset;
     ImageButton b_find;
-    ImageButton b_menu;
     EditText e_word;
     EditText e_cost;
     EditText e_spaces;
@@ -51,7 +50,7 @@ public class SearchActivity extends AppCompatActivity implements DatePickerDialo
     String s_time;
     boolean status = false;
     Calendar c;
-    int day, month, year, hour, minute, from;
+    int day, month, year, from, userid;
 
     ArrayList<Route> routes = new ArrayList<>();
 
@@ -66,7 +65,10 @@ public class SearchActivity extends AppCompatActivity implements DatePickerDialo
 
         ConexionSQLiteHelper con = new ConexionSQLiteHelper(SearchActivity.this, "db_usuarios", null, 1);
         String []dat  = UsuarioSQLite.consultaUsuario(con);
+        userid = Integer.parseInt(dat[0]);
         commonMethods.validateToken(dat[2], dat[1], dat[7]);
+        Intent iii = getIntent();
+        from = iii.getIntExtra("mine",0);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -90,32 +92,14 @@ public class SearchActivity extends AppCompatActivity implements DatePickerDialo
         b_picker = (ImageButton) findViewById(R.id.b_picker);
         b_reset = (ImageButton) findViewById(R.id.reset);
         b_find = (ImageButton) findViewById(R.id.find);
-        //b_menu = (ImageButton) findViewById(R.id.menu);
         e_word = (EditText) findViewById(R.id.word);
         e_cost = (EditText) findViewById(R.id.cost);
         e_spaces = (EditText) findViewById(R.id.spaces);
         e_list = (ListView) findViewById(R.id.results);
 
         Intent myIntent = getIntent();
-        //from = myIntent.getIntExtra("from",0);
-
-//        if (from == 1) {
-//            myRoutesQuery();
-//        }else{
-//            boolean finalStatus = false;
-//            finalStatus = RoutesQuery();
-//        }
-
         s_date = "";
         s_time = "";
-
-        /*b_menu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent myIntent = new Intent(SearchActivity.this,LateralMenuActivity.class);
-                startActivity(myIntent);
-            }
-        });*/
 
         b_find.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,12 +142,6 @@ public class SearchActivity extends AppCompatActivity implements DatePickerDialo
         String cost = "";
         String departure = "";
         String spaces = "";
-        int userid = 0;
-
-//        word = e_word.getText().toString();
-
-        SharedPreferences sharedPrefs = getSharedPreferences("userData", MODE_PRIVATE);
-        userid = sharedPrefs.getInt("userid",0);
         word = e_word.getText().toString();
         cost = e_cost.getText().toString();
         spaces = e_spaces.getText().toString();
@@ -182,8 +160,6 @@ public class SearchActivity extends AppCompatActivity implements DatePickerDialo
                 new ApolloCall.Callback<SearchRoutesQuery.Data>() {
                     @Override
                     public void onResponse(@Nonnull Response<SearchRoutesQuery.Data> response) {
-                        Log.d(TAG, "data: "+ response.data().searchOtherRoutes().isEmpty());
-                        Log.d(TAG, "data: "+ response.data().searchOtherRoutes().size());
                         if (response.data() == null || response.data().searchOtherRoutes().isEmpty()==true){
                             status = false;
                         }else{
@@ -224,12 +200,7 @@ public class SearchActivity extends AppCompatActivity implements DatePickerDialo
         String cost = "";
         String departure = "";
         String spaces = "";
-        int userid = 0;
 
-//        word = e_word.getText().toString();
-
-        SharedPreferences sharedPrefs = getSharedPreferences("userData", MODE_PRIVATE);
-        userid = sharedPrefs.getInt("userid",0);
         word = e_word.getText().toString();
         cost = e_cost.getText().toString();
         spaces = e_spaces.getText().toString();
@@ -248,8 +219,6 @@ public class SearchActivity extends AppCompatActivity implements DatePickerDialo
                 new ApolloCall.Callback<SearchMyRoutesQuery.Data>() {
                     @Override
                     public void onResponse(@Nonnull Response<SearchMyRoutesQuery.Data> response) {
-                        Log.d(TAG, "data: "+ response.data().searchMyRoutes().isEmpty());
-                        Log.d(TAG, "data: "+ response.data().searchMyRoutes().size());
                         if (response.data() == null || response.data().searchMyRoutes().isEmpty()==true){
                             status = false;
                         }else{
@@ -314,9 +283,15 @@ public class SearchActivity extends AppCompatActivity implements DatePickerDialo
                         Context ctx = view.getContext();
                         Route r = (Route) e_list.getItemAtPosition(position);
                         int r_id = r.getId();
-                        Intent myIntent = new Intent(SearchActivity.this,ShowRouteActivity.class);
-                        myIntent.putExtra("routeid", r_id);
-                        startActivity(myIntent);
+                        if (from == 1){
+                            Intent ii = new Intent(SearchActivity.this, ShowMyRouteActivity.class);
+                            ii.putExtra("routeid", r_id);
+                            startActivity(ii);
+                        }else {
+                            Intent myIntent = new Intent(SearchActivity.this, ShowRouteActivity.class);
+                            myIntent.putExtra("routeid", r_id);
+                            startActivity(myIntent);
+                        }
                     }
                 }
         );
@@ -325,19 +300,14 @@ public class SearchActivity extends AppCompatActivity implements DatePickerDialo
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.search, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -348,13 +318,8 @@ public class SearchActivity extends AppCompatActivity implements DatePickerDialo
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
-
         commonMethods.navegationItemSelect(this, item, id);
-
-        //DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        //drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 }

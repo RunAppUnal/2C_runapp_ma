@@ -5,8 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".ShowRouteActivity"
-    tools:showIn="@layout/app_bar_show_route">
+    tools:context=".ShowMyRouteActivity"
+    tools:showIn="@layout/app_bar_show_my_route">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -34,11 +35,11 @@
                     android:id="@+id/cat1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Informacion de la ruta"
+                    android:text="Informacion de mi ruta"
                     android:textAlignment="center"
                     android:textColor="@android:color/black"
                     android:textStyle="bold"
-                    tools:text="Informacion de la ruta" />
+                    tools:text="Informacion de mi ruta" />
 
                 <TextView
                     android:id="@+id/title"
@@ -138,6 +139,27 @@
                     android:id="@+id/mapView"
                     android:layout_width="match_parent"
                     android:layout_height="300dp" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp" />
+
+                <TextView
+                    android:id="@+id/catn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Usuarios en mi ruta"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp" />
+
+                <ListView
+                    android:id="@+id/usersIn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
                 <Space
                     android:layout_width="match_parent"
@@ -246,58 +268,15 @@
                     android:layout_height="wrap_content"
                     android:text="TextView" />
 
-                <TextView
-                    android:id="@+id/cat3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Informacion de conductor"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/black"
-                    android:textStyle="bold"
-                    tools:text="Informacion de conductor" />
-
-                <TextView
-                    android:id="@+id/name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Nombre"
-                    android:textColor="@android:color/black"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/s_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="TextView" />
-
                 <Space
                     android:layout_width="match_parent"
                     android:layout_height="15dp" />
 
-                <TextView
-                    android:id="@+id/email"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="TextView"
-                    android:textColor="@android:color/black"
-                    android:textStyle="bold"
-                    tools:text="Email" />
-
-                <TextView
-                    android:id="@+id/s_email"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="TextView" />
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp" />
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
 
 
     </LinearLayout>
-
 
 
 </android.support.constraint.ConstraintLayout>

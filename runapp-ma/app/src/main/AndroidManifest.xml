@@ -91,9 +91,14 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <uses-library android:name="com.google.android.maps" />
+
         <activity
             android:name=".Register"
             android:label="@string/title_activity_register"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ShowMyRouteActivity"
+            android:label="@string/title_activity_show_my_route"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

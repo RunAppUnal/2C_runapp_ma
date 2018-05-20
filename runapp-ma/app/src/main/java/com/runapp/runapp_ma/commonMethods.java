@@ -62,6 +62,7 @@ public class commonMethods extends Application{
             context.startActivity(i);
         } else if (id == R.id.nav_favoriteRoute) {
             Intent i = new Intent(context, SearchActivity.class);
+            i.putExtra("mine",1);
             context.startActivity(i);
         } else if (id == R.id.nav_myCars) {
             Intent i = new Intent(context, VehiclesActivity.class);

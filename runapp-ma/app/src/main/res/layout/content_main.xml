@@ -37,7 +37,7 @@
             android:paddingRight="0dp"
             android:paddingTop="0dp"
             android:transitionName="activity_transition_car_pool"
-            app:srcCompat="@drawable/carpool2"
+            app:srcCompat="@drawable/carpool"
             tools:ignore="UnusedAttribute" />
 
         <ImageView
@@ -57,7 +57,7 @@
             android:paddingRight="0dp"
             android:paddingTop="0dp"
             android:transitionName="activity_transition_bike_routes"
-            app:srcCompat="@drawable/bikejoin2"
+            app:srcCompat="@drawable/bikejoin"
             tools:ignore="UnusedAttribute" />
 
     </LinearLayout>

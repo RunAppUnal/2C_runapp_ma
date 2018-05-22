@@ -249,7 +249,7 @@ public class ShowMyRouteActivity extends AppCompatActivity
                         Log.d(TAG, "waypoints: "+waypoints);
                         departure = response.data().routeById().departure();
                         cost = String.valueOf(response.data().routeById().cost());
-                        users_in_route = response.data().routeById().users_in_route().split(",");
+                        users_in_route = response.data().routeById().users_in_route().split(", ");
                         Log.d(TAG, "users in route: " + users_in_route.toString());
                         spaces_available = String.valueOf(response.data().routeById().spaces_available());
                         ShowMyRouteActivity.this.runOnUiThread(new Runnable() {
@@ -264,7 +264,10 @@ public class ShowMyRouteActivity extends AppCompatActivity
                         });
                         getCarInfo();
                         getDirections();
-
+                        Log.d(TAG, "users in route ------> "+ users_in_route[0].toString());
+                        if (users_in_route.length>0) {
+                            fillUsers();
+                        }
                     }
 
                     @Override
@@ -276,24 +279,28 @@ public class ShowMyRouteActivity extends AppCompatActivity
 
     private void fillUsers(){
         users = new ArrayList<>();
-        for (int i = 0; i<users_in_route.length;i++){
-            MyApolloClient.getMyApolloClient().query(
-                    UserByIdQuery.builder()
-                            .userid(Long.parseLong(users_in_route[i])).build())
-                    .enqueue(new ApolloCall.Callback<UserByIdQuery.Data>() {
-                        @Override
-                        public void onResponse(@Nonnull Response<UserByIdQuery.Data> response) {
-                            Log.d(TAG, "GetOwner: "+ response.data());
-                            if (response.data()!=null) {
-                                users.add(new User(response.data().userById().name(),response.data().userById().lastname(), response.data().userById().email()));
+        for (int i = 0; i<users_in_route.length;i++) {
+            if (users_in_route[i].equals("") == false) {
+                MyApolloClient.getMyApolloClient().query(
+                        UserByIdQuery.builder()
+                                .userid(Long.parseLong(users_in_route[i])).build())
+                        .enqueue(new ApolloCall.Callback<UserByIdQuery.Data>() {
+                            @Override
+                            public void onResponse(@Nonnull Response<UserByIdQuery.Data> response) {
+                                if (response.data() != null) {
+                                    Log.d(TAG, "GetOwner: " + response.data());
+                                    if (response.data() != null) {
+                                        users.add(new User(response.data().userById().name(), response.data().userById().lastname(), response.data().userById().email()));
+                                    }
+                                }
                             }
-                        }
 
-                        @Override
-                        public void onFailure(@Nonnull ApolloException e) {
-                            Log.d(TAG, "getUserById failure: "+e);
-                        }
-                    });
+                            @Override
+                            public void onFailure(@Nonnull ApolloException e) {
+                                Log.d(TAG, "getUserById failure: " + e);
+                            }
+                        });
+            }
         }
         populateView();
 
@@ -304,6 +311,7 @@ public class ShowMyRouteActivity extends AppCompatActivity
             @Override
             public void run() {
                 UserAdapter userAdapter = new UserAdapter(ShowMyRouteActivity.this, users);
+                usersIn.setAdapter(userAdapter);
             }
         });
     }

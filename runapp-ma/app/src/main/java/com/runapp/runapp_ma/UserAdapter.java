@@ -2,6 +2,7 @@ package com.runapp.runapp_ma;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -34,7 +36,7 @@ public class UserAdapter extends ArrayAdapter<User>{
 
         TextView name = (TextView) rowView.findViewById(R.id.d_name);
         final TextView email = (TextView) rowView.findViewById(R.id.d_email);
-        Button mail = (Button) rowView.findViewById(R.id.b_mail);
+        ImageButton mail = (ImageButton) rowView.findViewById(R.id.b_mail);
 
         name.setText(singleUserItem.getName()+" "+singleUserItem.getLastname());
         email.setText(singleUserItem.getEmail());

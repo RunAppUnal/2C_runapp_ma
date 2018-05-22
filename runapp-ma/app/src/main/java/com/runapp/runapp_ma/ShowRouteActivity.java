@@ -201,22 +201,17 @@ public class ShowRouteActivity extends AppCompatActivity implements OnMapReadyCa
         navigationView.setNavigationItemSelectedListener(this);
 
         intent4 = getIntent();
-        userLogged = intent4.getIntExtra("userid",0);
+//        userLogged = intent4.getIntExtra("userid",0);
+//        userLogged =
+        ConexionSQLiteHelper con = new ConexionSQLiteHelper(ShowRouteActivity.this, "db_usuarios", null, 1);
+        String []dat  = UsuarioSQLite.consultaUsuario(con);
+        userLogged = Integer.parseInt(dat[0]);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.adddel);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (user_id != userLogged) {
                     addDeluser();
-                }else {
-                    ShowRouteActivity.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(ShowRouteActivity.this, "No puedes unirte a tu propia ruta ;)", Toast.LENGTH_LONG).show();
-                        }
-                    });
-                }
             }
         });
 
@@ -322,6 +317,7 @@ public class ShowRouteActivity extends AppCompatActivity implements OnMapReadyCa
                     public void onResponse(@Nonnull Response<UserByIdQuery.Data> response) {
                         Log.d(TAG, "GetOwner: "+ response.data());
                         if (response.data()!=null) {
+
                             name = response.data().userById().name() + " " + response.data().userById().lastname();
                             email = response.data().userById().email();
                             ShowRouteActivity.this.runOnUiThread(new Runnable() {

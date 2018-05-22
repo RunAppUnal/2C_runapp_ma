@@ -42,7 +42,6 @@ public class createBikeRoute extends AsyncTask<Object,Integer,Boolean> {
 
     @Override
     protected Boolean doInBackground(Object... args) {
-        int user_id = context.get().getSharedPreferences("userData", MODE_PRIVATE).getInt("userid",0);
 
         MyApolloClient.getMyApolloClient().mutate(
              CreateBikeRouteMutation.builder()
@@ -55,8 +54,8 @@ public class createBikeRoute extends AsyncTask<Object,Integer,Boolean> {
         ).enqueue(new ApolloCall.Callback<CreateBikeRouteMutation.Data>() {
             @Override
             public void onResponse(@Nonnull Response<CreateBikeRouteMutation.Data> response) {
-                SharedPreferences.Editor editor = context.get().getSharedPreferences("userData", MODE_PRIVATE).edit();
-                editor.putString("lastname", response.data().createBikeRoute().id());
+                SharedPreferences.Editor editor = context.get().getSharedPreferences("bikeData", MODE_PRIVATE).edit();
+                editor.putString("id", response.data().createBikeRoute().id());
                 doInBack = true;
                 editor.apply();
             }

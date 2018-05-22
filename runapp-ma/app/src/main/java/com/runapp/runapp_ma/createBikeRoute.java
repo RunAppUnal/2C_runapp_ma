@@ -43,6 +43,9 @@ public class createBikeRoute extends AsyncTask<Object,Integer,Boolean> {
     @Override
     protected Boolean doInBackground(Object... args) {
 
+        ConexionSQLiteHelper con = new ConexionSQLiteHelper(context.get(), "db_usuarios", null, 1);
+        String[] dat = UsuarioSQLite.consultaUsuario(con);
+        int user_id = Integer.parseInt(dat[0]);
         MyApolloClient.getMyApolloClient().mutate(
              CreateBikeRouteMutation.builder()
                      .user_id(user_id)

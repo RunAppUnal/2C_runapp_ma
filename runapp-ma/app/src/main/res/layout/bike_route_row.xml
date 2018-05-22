@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.gms.maps.MapView
+            xmlns:map="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/mapView2"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            map:liteMode="true" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="Nombre"
+            android:textColor="#000"
+            android:textSize="21sp"
+            map:layout_constraintTop_toBottomOf="@+id/mapView2" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="22dp"
+            android:layout_marginTop="2dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="Destino: "
+            android:textSize="17sp"
+            map:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Ver"
+            map:layout_constraintBottom_toBottomOf="parent"
+            map:layout_constraintStart_toStartOf="parent"
+            map:layout_constraintTop_toBottomOf="Ver"
+            style="?android:attr/borderlessButtonStyle"
+            android:backgroundTint="@color/cardview_light_background"
+            android:textColor="@color/colorAccentDark"/>
+
+        <Button
+            android:layout_width="86dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Match"
+            map:layout_constraintBottom_toBottomOf="parent"
+            map:layout_constraintStart_toEndOf="@+id/button1"
+            map:layout_constraintTop_toBottomOf="@+id/textView4"
+            map:layout_constraintVertical_bias="0.0"
+            android:elevation="0dp"
+            android:backgroundTint="@color/cardview_light_background"
+            style="?android:attr/borderlessButtonStyle"
+            android:textColor="@color/colorAccentDark"/>
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.v7.widget.CardView>

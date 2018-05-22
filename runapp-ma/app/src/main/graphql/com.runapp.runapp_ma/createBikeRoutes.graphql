@@ -13,13 +13,9 @@ $time: String
         }
     ){
         id
-        user_id
-        origin
-        destination
         route_points{
             type
             coordinates
         }
-        time
     }
 }

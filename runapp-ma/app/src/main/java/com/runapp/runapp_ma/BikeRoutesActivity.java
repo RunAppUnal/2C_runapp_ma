@@ -4,25 +4,17 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.Toast;
 
 import com.apollographql.apollo.ApolloCall;
@@ -30,30 +22,43 @@ import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.DirectionsApi;
+import com.google.maps.GeoApiContext;
+import com.google.maps.android.PolyUtil;
+import com.google.maps.errors.ApiException;
+import com.google.maps.model.DirectionsResult;
+import com.google.maps.model.TravelMode;
 import com.runapp.runapp_ma.utils.EditTextDatePicker;
 import com.runapp.runapp_ma.utils.EditTextTimePicker;
 
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Nonnull;
 
-public class BikeRoutesActivity extends AppCompatActivity implements OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
-    MapView map;
+public class BikeRoutesActivity extends AppCompatActivity implements OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener, GoogleMap.OnMarkerDragListener {
+    GoogleMap gmap;
+    MapView mapView;
     Marker destination;
     Marker origin;
     EditTextDatePicker date;
     EditTextTimePicker time;
     private ProgressDialog PDialog;
-
+    float from_lat, from_lng, to_lat, to_lng;
+    int counter;
+    String TAG = "CreateRouteActivity";
+    Polyline line;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,39 +86,65 @@ public class BikeRoutesActivity extends AppCompatActivity implements OnMapReadyC
 
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        CollapsingToolbarLayout collapsingTool = findViewById(R.id.toolbar_layout);
-        ;
-        collapsingTool.setTitle("BiciJoin");
+
 
         date = new EditTextDatePicker(this,R.id.date);
         time = new EditTextTimePicker(this,R.id.time);
 
-        map = findViewById(R.id.mapView);
-        map.onCreate(savedInstanceState);
-        map.getMapAsync(this);
+        mapView = findViewById(R.id.mapView);
+        mapView.onCreate(savedInstanceState);
+        mapView.getMapAsync(this);
     }
 
     @Override
     public void onMapReady(GoogleMap map) {
+        gmap = map;
+        gmap.setMinZoomPreference(12);
+        gmap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        gmap.setOnMarkerDragListener(this);
+        UiSettings uiSettings = gmap.getUiSettings();
+        uiSettings.setZoomControlsEnabled(true);
+        uiSettings.setScrollGesturesEnabled(true);
+        LatLng unal = new LatLng(4.635540, -74.082807);
+        gmap.moveCamera(CameraUpdateFactory.newLatLng(unal));
 
-        LatLng UN = new LatLng(4.636360, -74.083331);
-        LatLng UN2 = new LatLng(4.666360, -74.086331);
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(UN, 12));
-        destination = map.addMarker(new MarkerOptions()
-                .position(UN)
-                .title("Destino")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
-                .draggable(true));
-        origin = map.addMarker(new MarkerOptions()
-                .position(UN2)
-                .title("Origen")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
-                .draggable(true));
+        gmap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                if (counter<2) {
+                    if (counter == 0) {
+                        from_lat = (float) latLng.latitude;
+                        from_lng = (float) latLng.longitude;
+                    } else if (counter == 1) {
+                        to_lat = (float) latLng.latitude;
+                        to_lng = (float) latLng.longitude;
+                    }
+                    counter++;
+                    addMarkerToMap(latLng.latitude, latLng.longitude, gmap);
+//                    gmap.addMarker(latLng.latitude, latLng.longitude)
+//                }else{
+//                    middlepoints.add(latLng);
+//                    addMarkerToMap(latLng.latitude, latLng.longitude, gmap);
+                }
+            }
+        });
+
+
+//        destination = map.addMarker(new MarkerOptions()
+//                .position(UN)
+//                .title("Destino")
+//                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+//                .draggable(true));
+//        origin = map.addMarker(new MarkerOptions()
+//                .position(UN2)
+//                .title("Origen")
+//                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+//                .draggable(true));
     }
     @Override
     public final void onDestroy()
     {
-        map.onDestroy();
+        mapView.onDestroy();
         super.onDestroy();
     }
 
@@ -123,7 +154,7 @@ public class BikeRoutesActivity extends AppCompatActivity implements OnMapReadyC
     @Override
     public final void onLowMemory()
     {
-        map.onLowMemory();
+        mapView.onLowMemory();
         super.onLowMemory();
     }
 
@@ -133,7 +164,7 @@ public class BikeRoutesActivity extends AppCompatActivity implements OnMapReadyC
     @Override
     public final void onPause()
     {
-        map.onPause();
+        mapView.onPause();
         super.onPause();
     }
 
@@ -144,51 +175,63 @@ public class BikeRoutesActivity extends AppCompatActivity implements OnMapReadyC
     protected void onResume()
     {
         super.onResume();
-        map.onResume();
+        mapView.onResume();
     }
 
     public void submit(View view) {
-        List<Double> orig = Arrays.asList(origin.getPosition().longitude, origin.getPosition().latitude);
-        List<Double> dest = Arrays.asList(destination.getPosition().longitude, destination.getPosition().latitude);
-        PDialog =  ProgressDialog.show(this, "Subiendo ruta ...", "Un momento por favor", true);
+        if(date.toString().length() < 2){
+            Toast.makeText(this, "Agregar fecha",Toast.LENGTH_SHORT).show();
+        }else if(time.toString().length() < 2){
+            Toast.makeText(this, "Agregar hora",Toast.LENGTH_SHORT).show();
+        }else if(origin == null){
+            Toast.makeText(this, "Agregar origen",Toast.LENGTH_SHORT).show();
+        }else if(destination == null){
+            Toast.makeText(this, "Agregar destino",Toast.LENGTH_SHORT).show();
+        }else {
+            List<Double> orig = Arrays.asList(origin.getPosition().longitude, origin.getPosition().latitude);
+            List<Double> dest = Arrays.asList(destination.getPosition().longitude, destination.getPosition().latitude);
+            PDialog = ProgressDialog.show(this, "Subiendo ruta ...", "Un momento por favor", true);
 
-        int user_id = getSharedPreferences("userData", MODE_PRIVATE).getInt("userid", 0);
-        MyApolloClient.getMyApolloClient().mutate(
-                CreateBikeRouteMutation.builder()
-                        .user_id(user_id)
-                        .origin(orig)
-                        .destination(dest)
-                        .time(date.toString() + " " + time.toString())
-                        .user_id(user_id)
-                        .build()
-        ).enqueue(new ApolloCall.Callback<CreateBikeRouteMutation.Data>() {
-            @Override
-            public void onResponse(@Nonnull final Response<CreateBikeRouteMutation.Data> response) {
-                SharedPreferences.Editor editor = getSharedPreferences("userData", MODE_PRIVATE).edit();
-                editor.putString("bikeRouteID", response.data().createBikeRoute().id());
-                editor.apply();
-                BikeRoutesActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent myIntent = new Intent(BikeRoutesActivity.this,BikeRoutesMatchActivity.class);
-                        myIntent.putExtra("bikeRouteID",response.data().createBikeRoute().id());
-                        PDialog.dismiss();
-                        startActivity(myIntent);
+            ConexionSQLiteHelper con = new ConexionSQLiteHelper(getApplicationContext(), "db_usuarios", null, 1);
+            String[] dat = UsuarioSQLite.consultaUsuario(con);
+            int user_id = Integer.parseInt(dat[0]);
+            MyApolloClient.getMyApolloClient().mutate(
+                    CreateBikeRouteMutation.builder()
+                            .user_id(user_id)
+                            .origin(orig)
+                            .destination(dest)
+                            .time(date.toString() + " " + time.toString())
+                            .build()
+            ).enqueue(new ApolloCall.Callback<CreateBikeRouteMutation.Data>() {
+                @Override
+                public void onResponse(@Nonnull final Response<CreateBikeRouteMutation.Data> response) {
+                    SharedPreferences.Editor editor = getSharedPreferences("bikeData", MODE_PRIVATE).edit();
+                    editor.putString("bikeRouteID", response.data().createBikeRoute().id());
+                    editor.apply();
+                    BikeRoutesActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent myIntent = new Intent(BikeRoutesActivity.this, BikeRoutesMatchActivity.class);
+                            myIntent.putExtra("bikeRouteID", response.data().createBikeRoute().id());
+                            PDialog.dismiss();
+                            startActivity(myIntent);
 
-                    }
-                });
-            }
+                        }
+                    });
+                }
 
-            @Override
-            public void onFailure(@Nonnull ApolloException e) {
-                BikeRoutesActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        PDialog.dismiss();
-                    }
-                });
-            }
-        });
+                @Override
+                public void onFailure(@Nonnull ApolloException e) {
+                    BikeRoutesActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast toast = Toast.makeText(getApplicationContext(), "Algo ocurrio con la conexion.",Toast.LENGTH_LONG);
+                            PDialog.dismiss();
+                        }
+                    });
+                }
+            });
+        }
     }
 
 
@@ -229,5 +272,96 @@ public class BikeRoutesActivity extends AppCompatActivity implements OnMapReadyC
         //DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         //drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void addMarkerToMap(double lat, double lng, GoogleMap mMap) {
+        String marketTitle = "Salida";
+        if (counter == 2){
+            marketTitle = "Llegada";
+            destination = mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(lat,lng))
+                    .title(marketTitle)
+                    .draggable(true)
+            );
+            afterArrivalSelected();
+        }else{
+            origin = mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(lat,lng))
+                    .title(marketTitle)
+                    .draggable(true)
+            );
+        }
+    }
+
+    private void addPolyline(DirectionsResult results, GoogleMap mMap) {
+        if(line != null){
+            line.remove();
+        }
+        List<LatLng> decodedPath = PolyUtil.decode(results.routes[0].overviewPolyline.getEncodedPath());
+        line = mMap.addPolyline(new PolylineOptions().addAll(decodedPath));
+    }
+
+    private void afterArrivalSelected(){
+        BikeRoutesActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                DirectionsResult route = getDirections();
+                if (route != null) {
+                    addPolyline(route, gmap);
+                    //addMarkersToMap(route, gmap)
+                }
+            }
+        });
+    }
+
+    private GeoApiContext getGeoContext() {
+        GeoApiContext geoApiContext = new GeoApiContext();
+        return geoApiContext.setQueryRateLimit(3)
+                .setApiKey(getString(R.string.directionsApiKey))
+                .setConnectTimeout(1, TimeUnit.SECONDS)
+                .setReadTimeout(1, TimeUnit.SECONDS)
+                .setWriteTimeout(1, TimeUnit.SECONDS);
+    }
+
+    private DirectionsResult getDirections(){
+
+
+        com.google.maps.model.LatLng origin2 = new com.google.maps.model.LatLng( origin.getPosition().latitude,origin.getPosition().longitude);
+        com.google.maps.model.LatLng end = new com.google.maps.model.LatLng(destination.getPosition().latitude,destination.getPosition().longitude);
+        GeoApiContext geo = getGeoContext();
+        try {
+            return DirectionsApi.newRequest(geo)
+                    .mode(TravelMode.DRIVING)
+                    .origin(origin2)
+                    .destination(end)
+//                    .waypoints("["+waypoints+"]")
+                    .await();
+        } catch (ApiException e) {
+            Log.d(TAG, "ApiException: "+e);
+            return null;
+        } catch (InterruptedException e) {
+            Log.d(TAG, "InterruptedException: "+e);
+            return null;
+        } catch (IOException e) {
+            Log.d(TAG, "IOException: "+e);
+            return null;
+        }
+
+    }
+
+    @Override
+    public void onMarkerDragStart(Marker marker) {
+
+    }
+
+    @Override
+    public void onMarkerDrag(Marker marker) {
+    }
+
+    @Override
+    public void onMarkerDragEnd(Marker marker) {
+        if (counter>1){
+            afterArrivalSelected();
+        }
     }
 }
